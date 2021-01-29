@@ -9,7 +9,10 @@
 from PyQt5.QtGui import QPixmap
 
 logo_path = "./Resource/Images/Icon/win_logo.ico"
+# Mac路径
 wid_canvas_image_path = "/Users/orange/PycharmProjects/LAPS/Resource/Images/Png/wid_canvas_sample.png"
+# Windows路径
+# wid_canvas_image_path = "C:\Users\Orange\PycharmProjects\LAPS\Resource\Images\Png\wid_canvas_sample.png"
 
 win_index = None
 win_painting = None
