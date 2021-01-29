@@ -6,10 +6,10 @@
 # @File : app_info.py
 # @Remark : 
 # -----------------------------
-
+from PyQt5.QtGui import QPixmap
 
 logo_path = "./Resource/Images/Icon/win_logo.ico"
+wid_canvas_image_path = "/Users/orange/PycharmProjects/LAPS/Resource/Images/Png/wid_canvas_sample.png"
 
-
-Win_Index = None
-Win_Painting = None
+win_index = None
+win_painting = None

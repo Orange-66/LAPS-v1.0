@@ -52,9 +52,9 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="10">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0">
      <item>
-      <widget class="QGraphicsView" name="Canvas"/>
+      <widget class="Wid_Canvas" name="widget" native="true"/>
      </item>
     </layout>
    </item>
@@ -115,6 +115,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Wid_Canvas</class>
+   <extends>QWidget</extends>
+   <header location="global">wid_canvas</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

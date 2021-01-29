@@ -6,26 +6,31 @@
 # @File : win_tool.py
 # @Remark : 控制窗口的工具类
 # -----------------------------
+import sys
+
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDesktopWidget
+from PyQt5.QtWidgets import QDesktopWidget, QApplication
 
 
-class Win_Tool:
-
-    # 设置窗口图标
-    @classmethod
-    def add_icon(cls, app, icon_path):
-        icon = QIcon(icon_path)
-        app.setWindowIcon(icon)
+# 添加窗口图标
+def add_icon(app, icon_path):
+    icon = QIcon(icon_path)
+    app.setWindowIcon(icon)
 
 
-    # 居中放置
-    @classmethod
-    def center(cls, win):
-        # 获取屏幕大小
-        screen = QDesktopWidget().screenGeometry()
-        # 获取窗口大小
-        size = win.geometry()
-        # print(size.width(), size.height(), screen.width(), screen.height())
+# 居中放置
+def center(win):
+    # 获取屏幕大小
+    screen = QDesktopWidget().screenGeometry()
+    # 获取窗口大小
+    size = win.geometry()
 
-        win.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
+    win.move((screen.width() - size.width()) / 2, (screen.height() - size.height()) / 2)
+
+
+# 窗体测试
+def win_test(window):
+    app = QApplication(sys.argv)
+    form = window()
+    form.show()
+    sys.exit(app.exec_())

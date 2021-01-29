@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '../UI/ui_painting.ui'
+# Form implementation generated from reading ui file 'ui_painting.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -29,10 +29,9 @@ class Ui_Painting(object):
         self.verticalLayout.addLayout(self.horizontalLayout_3)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.Canvas = QtWidgets.QGraphicsView(Painting)
-        self.Canvas.setObjectName("Canvas")
-        self.horizontalLayout_2.addWidget(self.Canvas)
-        self.horizontalLayout_2.setStretch(0, 10)
+        self.widget = Wid_Canvas(Painting)
+        self.widget.setObjectName("widget")
+        self.horizontalLayout_2.addWidget(self.widget)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -73,3 +72,4 @@ class Ui_Painting(object):
         self.image_next_button.setText(_translate("Painting", ">"))
         self.pushButton_2.setText(_translate("Painting", "取消"))
         self.pushButton.setText(_translate("Painting", "确认"))
+from Widget.wid_canvas import Wid_Canvas
