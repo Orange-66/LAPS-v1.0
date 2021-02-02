@@ -46,21 +46,38 @@ def to_xxx_file(file_type, filename, suffix=""):
     return os.path.splitext(filename)[0] + suffix + file_type
 
 
-# 调用系统命令把UI文件转换成Python文件
+# 调用系统命令把UI文件转换成Python文件-开发
 def ui_to_py():
     ui_file_list = get_xxx_file_list(ui_dir, ".ui")
 
     for i in tqdm(range(len(ui_file_list)), ascii=True, desc="Process: "):
         ui_file = ui_file_list[i]
+
         # 不可直接执行版本-开发
         py_file = to_xxx_file(".py", ui_file)
         cmd = 'pyuic5 {ui_file} -o {py_file}'.format(ui_file=ui_dir + ui_file, py_file=ui_py_dir + py_file)
 
-        # 可直接执行版本-测试
-        # py_file_x = to_xxx_file(".py", ui_file, "_x")
-        # cmd_x = 'pyuic5 {ui_file} -o {py_file} -x'.format(ui_file=ui_dir + ui_file, py_file=ui_py_x_dir + py_file_x)
         os.system(cmd)
-        # os.system(cmd_x)
+
+
+# 调用系统命令把UI文件转换成Python文件-测试
+def ui_to_py_x():
+    ui_file_list = get_xxx_file_list(ui_dir, ".ui")
+
+    for i in tqdm(range(len(ui_file_list)), ascii=True, desc="Process: "):
+        ui_file = ui_file_list[i]
+
+        # 可直接执行版本-测试
+        py_file_x = to_xxx_file(".py", ui_file, "_x")
+        cmd_x = 'pyuic5 {ui_file} -o {py_file} -x'.format(ui_file=ui_dir + ui_file, py_file=ui_py_x_dir + py_file_x)
+
+        os.system(cmd_x)
+
+
+# 调用系统命令把UI文件转换成Python文件-开发以及测试
+def ui_to_py_both():
+    ui_to_py()
+    ui_to_py_x()
 
 
 # 调用系统命令把qrc文件转换成Python文件
@@ -96,6 +113,17 @@ def png_to_icon():
 
 # 程序的主入口
 if __name__ == "__main__":
+    # 调用系统命令把UI文件转换成Python文件-开发
     ui_to_py()
+
+    # 调用系统命令把UI文件转换成Python文件-测试
+    # ui_to_py_x()
+
+    # 调用系统命令把UI文件转换成Python文件-开发以及测试
+    # ui_to_py_both()
+
+    # 调用系统命令把qrc文件转换成Python文件
     # qrc_to_py()
+
+    # 把png文件转换成ico文件
     # png_to_icon()
