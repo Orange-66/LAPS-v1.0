@@ -57,10 +57,10 @@ def ui_to_py():
         cmd = 'pyuic5 {ui_file} -o {py_file}'.format(ui_file=ui_dir + ui_file, py_file=ui_py_dir + py_file)
 
         # 可直接执行版本-测试
-        py_file_x = to_xxx_file(".py", ui_file, "_x")
-        cmd_x = 'pyuic5 {ui_file} -o {py_file} -x'.format(ui_file=ui_dir + ui_file, py_file=ui_py_x_dir + py_file_x)
+        # py_file_x = to_xxx_file(".py", ui_file, "_x")
+        # cmd_x = 'pyuic5 {ui_file} -o {py_file} -x'.format(ui_file=ui_dir + ui_file, py_file=ui_py_x_dir + py_file_x)
         os.system(cmd)
-        os.system(cmd_x)
+        # os.system(cmd_x)
 
 
 # 调用系统命令把qrc文件转换成Python文件
@@ -96,6 +96,6 @@ def png_to_icon():
 
 # 程序的主入口
 if __name__ == "__main__":
-    # ui_to_py()
+    ui_to_py()
     # qrc_to_py()
-    png_to_icon()
+    # png_to_icon()

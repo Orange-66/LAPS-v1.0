@@ -6,108 +6,83 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>523</width>
+    <width>525</width>
     <height>371</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>绘图</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="9,0,1">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0">
      <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>第 3 张 / 共 7 张</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
+      <widget class="Wid_Canvas" name="wid_canvas" native="true"/>
      </item>
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0">
-     <item>
-      <widget class="Wid_Canvas" name="widget" native="true"/>
-     </item>
-    </layout>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QSpinBox" name="spin_proportion"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="btn_backward">
        <property name="maximumSize">
         <size>
-         <width>78</width>
+         <width>16777215</width>
          <height>16777215</height>
         </size>
        </property>
        <property name="text">
-        <string>&lt;</string>
+        <string>&lt; 后撤</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Z</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_brush">
+      <widget class="QPushButton" name="btn_forward">
        <property name="text">
-        <string>画笔</string>
+        <string>前进 &gt;</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+X</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_undo">
+      <widget class="QPushButton" name="btn_clear">
        <property name="text">
-        <string>撤销</string>
+        <string>清除</string>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+C</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="image_next_button">
-       <property name="text">
-        <string>&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="btn_cancel">
        <property name="text">
         <string>取消</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="btn_done">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
        <property name="text">
-        <string>确认</string>
+        <string>完成</string>
+       </property>
+       <property name="shortcut">
+        <string>Return</string>
        </property>
       </widget>
      </item>
@@ -119,7 +94,7 @@
   <customwidget>
    <class>Wid_Canvas</class>
    <extends>QWidget</extends>
-   <header location="global">wid_canvas</header>
+   <header location="global">Widget.wid_canvas</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

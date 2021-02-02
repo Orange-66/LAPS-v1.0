@@ -6,7 +6,6 @@
 # @File : main.py
 # @Remark : GUI应用程序主程序入口
 # -----------------------------
-
 import sys
 
 from PyQt5.QtWidgets import QApplication
