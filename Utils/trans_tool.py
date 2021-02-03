@@ -30,7 +30,7 @@ qrc_py_dir = '../Resource/Qrc-py/'
 png_icon_dir = '../Resource/Images/Icon/'
 
 
-# 列出目录下的所有qrc文件
+# 列出目录下的所有xxx文件
 def get_xxx_file_list(file_dir, file_type):
     filename_list = []
     files = os.listdir(file_dir)
@@ -114,7 +114,7 @@ def png_to_icon():
 # 将此PyQT项目转换成exe文件
 def project_to_exe(project_name="LAPS"):
     # 打包项目
-    cmd_step_1 = 'pyinstaller -F -w ' \
+    cmd = 'pyinstaller -F -w ' \
           '-i ../../Resource/Images/Icon/win_logo.ico ' \
           '../main.py ' \
           '--workpath ./EXE/ ' \
@@ -123,16 +123,22 @@ def project_to_exe(project_name="LAPS"):
           '--name {project_name} ' \
           '--clean '.format(project_name=project_name)
 
+    os.system(cmd)
+
     # 删除spec文件
-    cmd_step_2 = 'del {project_name}.spec'.format(project_name=project_name)
+    root_dir = "./EXE/"
+    spec_filename = "LAPS.spec"
+    if os.path.exists(os.path.join(root_dir, spec_filename)):
+        os.remove(os.path.join(root_dir, spec_filename))
 
     # 删除workspace文件夹
-    cmd_step_3 = 'rmdir /s/q {project_name}'.format(project_name=project_name)
-
-    os.system(cmd_step_1)
-    os.system(cmd_step_2)
-    os.system(cmd_step_3)
-
+    root_dir = "./EXE/LAPS/"
+    files = os.listdir(root_dir)
+    for filename in files:
+        if os.path.exists(os.path.join(root_dir, filename)):
+            os.remove(os.path.join(root_dir, filename))
+    if os.path.exists(root_dir):
+        os.rmdir(root_dir)
 
 # 程序的主入口
 if __name__ == "__main__":
