@@ -111,6 +111,12 @@ def png_to_icon():
             print('connot convert :', png_file)
 
 
+# 将此PyQT项目转换成exe文件
+def project_to_exe():
+    cmd = 'pyinstaller -F -w -i ../Resource/Images/Icon/win_logo.ico ../main.py --workpath ./EXE/'
+    os.system(cmd)
+
+
 # 程序的主入口
 if __name__ == "__main__":
     # 调用系统命令把UI文件转换成Python文件-开发

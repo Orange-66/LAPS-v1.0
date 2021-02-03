@@ -16,6 +16,9 @@ from Window.win_painting import Win_Painting
 
 class Win_Index(QMainWindow, Ui_Index):
 
+    album_index = 0
+    album_list = []
+
     def __init__(self, parent=None):
         super().__init__(parent)  # 调用父类构造函数，创建窗体
         # self.ui = Ui_Index()  # 创建UI对象
@@ -24,8 +27,25 @@ class Win_Index(QMainWindow, Ui_Index):
     @pyqtSlot()
     # 绘画按钮-点击-槽函数
     def on_btn_painting_clicked(self):
+        print("on_btn_painting_clicked")
         app_info.Win_Painting = Win_Painting()
         app_info.Win_Painting.show()
+
+    @pyqtSlot()
+    # 上一张图片按钮-点击-槽函数
+    def on_btn_up_page_clicked(self):
+        print("on_btn_up_page_clicked")
+
+
+    @pyqtSlot()
+    # 下一张图片按钮-点击-槽函数
+    def on_btn_down_page_clicked(self):
+        print("on_btn_down_page_clicked")
+
+    @pyqtSlot()
+    # 图片信息按钮-点击-槽函数
+    def on_btn_page_info_clicked(self):
+        print("on_btn_page_info_clicked")
 
 
 # ============窗体测试程序============
