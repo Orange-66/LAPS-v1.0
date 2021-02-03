@@ -112,16 +112,26 @@ def png_to_icon():
 
 
 # 将此PyQT项目转换成exe文件
-def project_to_exe():
-    cmd = 'pyinstaller -F -w ' \
+def project_to_exe(project_name="LAPS"):
+    # 打包项目
+    cmd_step_1 = 'pyinstaller -F -w ' \
           '-i ../Resource/Images/Icon/win_logo.ico ' \
           '../main.py ' \
           '--workpath ./EXE/ ' \
           '--specpath ./EXE/ ' \
           '--distpath ./EXE/ ' \
-          '--name LAPS ' \
-          '--clean '
-    os.system(cmd)
+          '--name {project_name} ' \
+          '--clean '.format(project_name=project_name)
+
+    # 删除spec文件
+    cmd_step_2 = 'del {project_name}.spec'.format(project_name=project_name)
+
+    # 删除workspace文件夹
+    cmd_step_3 = 'rmdir /s/q {project_name}'.format(project_name=project_name)
+
+    os.system(cmd_step_1)
+    os.system(cmd_step_2)
+    os.system(cmd_step_3)
 
 
 # 程序的主入口
