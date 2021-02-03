@@ -6,9 +6,6 @@
 # @File : wid_canvas.py
 # @Remark : 画布组件
 # -----------------------------
-
-
-import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -18,61 +15,52 @@ from Utils import win_tool
 
 class Wid_Canvas(QWidget):
     # 绘画路径
-    draw_path = []
+    painting_path = []
     # 缓存路径
-    tem_draw_path = []
+    tem_painting_path = []
+    # 设置画笔
+    pen = QPen()
+    pen.setWidth(app_info.pen_width)
+    pen.setColor(app_info.pen_color)
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.finishPoint = QPoint()
-        self.pen = QPen()
-        self.pen.setWidth(app_info.pen_width)
-        self.pen.setColor(app_info.pen_color)
-        self.pix_back = QPixmap()
-        self.init_ui()
+        self.cursor_point = QPoint()
 
-    def init_ui(self):
         self.resize(600, 500)
 
-        # 底层画布
-        self.init_back()
-
-    def init_back(self):
-        self.pix_back = QPixmap(600, 500)  # 设置画布大小
-        self.replace_back();
+        self.canvas = QPixmap(600, 500)  # 设置画布大小
+        self.canvas_clear();
 
     # ========================事件函数========================
-    # def keyPressEvent(self, event):
-    #     # 前进操作
-    #     if event.key() == Qt.Key_Y and QApplication.keyboardModifiers() == Qt.ControlModifier:
-    #         self.forward()
-    #
-    #     # 后撤操作
-    #     if event.key() == Qt.Key_Z and QApplication.keyboardModifiers() == Qt.ControlModifier:
-    #         self.backward()
-
     # 绘图
     def paintEvent(self, event):
-        self.replace_back()
+        self.canvas_clear()
 
-        p = QPainter(self.pix_back)
-        p.setPen(self.pen)
-        self.draw(p)
+        painter = QPainter(self.canvas)
+        painter.setPen(self.pen)
 
-        if self.hasMouseTracking():
-            p.drawLine(self.draw_path[len(self.draw_path) - 1], self.finishPoint)
+        if len(self.painting_path) > 1:
+            start = self.painting_path[0]
+            for i in self.painting_path:
+                finish = i
+                painter.drawLine(start, finish)
+                start = finish
 
-        p.drawPixmap(0, 0, self.pix_back)
+        if self.hasMouseTracking() and len(self.painting_path) > 0:
+            painter.drawLine(self.painting_path[len(self.painting_path) - 1], self.cursor_point)
 
-        p = QPainter(self)
-        p.drawPixmap(0, 0, self.pix_back)
+        # painter.drawPixmap(0, 0, self.canvas)
+
+        painter = QPainter(self)
+        painter.drawPixmap(0, 0, self.canvas)
 
     # 当鼠标左键按下时触发该函数
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
-            self.tem_draw_path.clear()
-            self.finishPoint = event.pos()
-            self.draw_path.append(self.finishPoint)
+            self.tem_painting_path.clear()
+            self.cursor_point = event.pos()
+            self.painting_path.append(self.cursor_point)
             self.update()
             self.setMouseTracking(True)
         if event.button() == Qt.RightButton:
@@ -80,7 +68,7 @@ class Wid_Canvas(QWidget):
 
     # 当鼠标移动时触发该函数
     def mouseMoveEvent(self, event):
-        self.finishPoint = event.pos()
+        self.cursor_point = event.pos()
         self.update()  # 调用paintEvent函数，重新绘制
 
     # 双击鼠标左键取消绘图
@@ -90,50 +78,47 @@ class Wid_Canvas(QWidget):
 
     # ========================自定义函数========================
     # 重绘背景图片
-    def replace_back(self):
-        self.pix_back.fill(Qt.white)  # 设置画布背景颜色为白色
-
-        p = QPainter(self.pix_back)
-        image = QPixmap(app_info.wid_canvas_image_path)
-        p.drawPixmap(0, 0, 600, 500, image)
-
-    # 绘制画笔痕迹
-    def draw(self, painter, draw_path=draw_path):
-        if len(self.draw_path) > 0:
-            start = draw_path[0]
-            for i in draw_path:
-                finish = i
-                painter.drawLine(start, finish)
-                start = finish
+    def canvas_clear(self):
+        painter = QPainter(self.canvas)
+        canvas_image = QPixmap(app_info.wid_canvas_image_path)
+        painter.drawPixmap(0, 0, 600, 500, canvas_image)
 
     # 前进操作
     def forward(self):
-        if len(self.tem_draw_path) > 0:
-            pop_item = self.tem_draw_path.pop()
-            self.draw_path.append(pop_item)
+        self.setMouseTracking(False)
+        if len(self.tem_painting_path) > 0:
+            if len(self.painting_path) == 0:
+                pop_item = self.tem_painting_path.pop()
+                self.painting_path.append(pop_item)
+            pop_item = self.tem_painting_path.pop()
+            self.painting_path.append(pop_item)
             self.update()
         else:
             print("前无可取")
 
     # 后撤操作
     def backward(self):
-        if len(self.draw_path) > 0:
-            pop_item = self.draw_path.pop()
-            self.tem_draw_path.append(pop_item)
+        self.setMouseTracking(False)
+        if len(self.painting_path) > 0:
+            if len(self.painting_path) == 2:
+                pop_item = self.painting_path.pop()
+                self.tem_painting_path.append(pop_item)
+            pop_item = self.painting_path.pop()
+            self.tem_painting_path.append(pop_item)
             self.update()
         else:
             print("后无可退")
 
     # 清除操作
     def clear(self):
-        self.draw_path.clear()
+        self.setMouseTracking(False)
+        self.painting_path.clear()
         self.update()
 
     # 完成操作
     def done(self):
-        self.pix_back
-        painting_image = QImage()
-        return painting_image
+        self.setMouseTracking(False)
+
 
 
 # ============窗体测试程序============
