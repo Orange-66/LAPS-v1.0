@@ -113,7 +113,14 @@ def png_to_icon():
 
 # 将此PyQT项目转换成exe文件
 def project_to_exe():
-    cmd = 'pyinstaller -F -w -i ../Resource/Images/Icon/win_logo.ico ../main.py --workpath ./EXE/'
+    cmd = 'pyinstaller -F -w ' \
+          '-i ../Resource/Images/Icon/win_logo.ico ' \
+          '../main.py ' \
+          '--workpath ./EXE/ ' \
+          '--specpath ./EXE/ ' \
+          '--distpath ./EXE/ ' \
+          '--name LAPS ' \
+          '--clean '
     os.system(cmd)
 
 
