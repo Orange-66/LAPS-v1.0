@@ -115,7 +115,7 @@ def png_to_icon():
 def project_to_exe(project_name="LAPS"):
     # 打包项目
     cmd_step_1 = 'pyinstaller -F -w ' \
-          '-i ../Resource/Images/Icon/win_logo.ico ' \
+          '-i ../../Resource/Images/Icon/win_logo.ico ' \
           '../main.py ' \
           '--workpath ./EXE/ ' \
           '--specpath ./EXE/ ' \
