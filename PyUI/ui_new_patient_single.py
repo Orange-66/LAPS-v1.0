@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui_new_patient_single.ui'
+# Form implementation generated from reading ui file '../UI/ui_new_patient_single.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
