@@ -15,7 +15,6 @@ from Window.win_painting import Win_Painting
 
 
 class Win_Index(QMainWindow, Ui_Index):
-
     album_index = 0
     album_list = []
 
@@ -23,6 +22,16 @@ class Win_Index(QMainWindow, Ui_Index):
         super().__init__(parent)  # 调用父类构造函数，创建窗体
         # self.ui = Ui_Index()  # 创建UI对象
         self.setupUi(self)  # 构造UI界面
+
+    @pyqtSlot()
+    # 新建按钮-点击-槽函数
+    def on_btn_new_clicked(self):
+        print("on_btn_new_clicked")
+
+    @pyqtSlot()
+    # 导入按钮-点击-槽函数
+    def on_btn_import_clicked(self):
+        print("on_btn_import_clicked")
 
     @pyqtSlot()
     # 绘画按钮-点击-槽函数
@@ -35,7 +44,6 @@ class Win_Index(QMainWindow, Ui_Index):
     # 上一张图片按钮-点击-槽函数
     def on_btn_up_page_clicked(self):
         print("on_btn_up_page_clicked")
-
 
     @pyqtSlot()
     # 下一张图片按钮-点击-槽函数
