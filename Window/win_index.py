@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow)
 from PyUI.ui_index import Ui_Index
 from Utils import app_info, tool_win
 from Window.win_painting import Win_Painting
+from Window.win_new_single import Win_New_Single
 
 
 class Win_Index(QMainWindow, Ui_Index):
@@ -25,8 +26,10 @@ class Win_Index(QMainWindow, Ui_Index):
 
     @pyqtSlot()
     # 新建按钮-点击-槽函数
-    def on_btn_new_clicked(self):
-        print("on_btn_new_clicked")
+    def on_btn_new_single_clicked(self):
+        print("on_btn_new_single_clicked")
+        app_info.Win_New_Single = Win_New_Single()
+        app_info.Win_New_Single.show()
 
     @pyqtSlot()
     # 导入按钮-点击-槽函数

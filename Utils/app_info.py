@@ -20,6 +20,7 @@ wid_canvas_image_path = "/Users/orange/PycharmProjects/LAPS/Resource/Images/Png/
 
 win_index = None
 win_painting = None
+win_new_single = None
 
 # -------------画笔-------------
 

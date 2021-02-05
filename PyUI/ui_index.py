@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '../UI/ui_index.ui'
+# Form implementation generated from reading ui file 'ui_index.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -21,9 +21,9 @@ class Ui_Index(object):
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.btn_new = QtWidgets.QPushButton(self.centralwidget)
-        self.btn_new.setObjectName("btn_new")
-        self.horizontalLayout.addWidget(self.btn_new)
+        self.btn_new_single = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_new_single.setObjectName("btn_new_single")
+        self.horizontalLayout.addWidget(self.btn_new_single)
         self.btn_import = QtWidgets.QPushButton(self.centralwidget)
         self.btn_import.setObjectName("btn_import")
         self.horizontalLayout.addWidget(self.btn_import)
@@ -166,7 +166,7 @@ class Ui_Index(object):
     def retranslateUi(self, Index):
         _translate = QtCore.QCoreApplication.translate
         Index.setWindowTitle(_translate("Index", "LAP分析系统"))
-        self.btn_new.setText(_translate("Index", "新建"))
+        self.btn_new_single.setText(_translate("Index", "新建"))
         self.btn_import.setText(_translate("Index", "导入"))
         self.btn_painting.setText(_translate("Index", "绘图"))
         self.zoom_button.setText(_translate("Index", "缩放"))

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Import_Patient_Single</class>
- <widget class="QWidget" name="Import_Patient_Single">
+ <class>New_Single</class>
+ <widget class="QWidget" name="New_Single">
   <property name="geometry">
    <rect>
     <x>0</x>
