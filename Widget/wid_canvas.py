@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from Utils import app_info
-from Utils import win_tool
+from Utils import tool_win
 
 
 class Wid_Canvas(QWidget):
@@ -123,4 +123,4 @@ class Wid_Canvas(QWidget):
 
 # ============窗体测试程序============
 if __name__ == "__main__":
-    win_tool.win_test(Wid_Canvas)
+    tool_win.win_test(Wid_Canvas)

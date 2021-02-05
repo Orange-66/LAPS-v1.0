@@ -10,7 +10,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import (QApplication, QMainWindow)
 
 from PyUI.ui_index import Ui_Index
-from Utils import app_info, win_tool
+from Utils import app_info, tool_win
 from Window.win_painting import Win_Painting
 
 
@@ -50,4 +50,4 @@ class Win_Index(QMainWindow, Ui_Index):
 
 # ============窗体测试程序============
 if __name__ == "__main__":  # 用于当前窗体测试
-    win_tool.win_test(Win_Index)
+    tool_win.win_test(Win_Index)

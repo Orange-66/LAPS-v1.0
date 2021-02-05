@@ -3,6 +3,6 @@
 # @Author : Qi Tianyue
 # @Github : Orange-66
 # @PROJECT : LAPS 
-# @File : file_tool.py
+# @File : tool_file.py
 # @Remark : 控制文件的工具类
 # -----------------------------

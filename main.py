@@ -11,7 +11,7 @@ import sys
 from PyQt5.QtWidgets import QApplication
 
 from Utils import app_info
-from Utils import win_tool
+from Utils import tool_win
 from Window.win_index import Win_Index
 
 if __name__ == "__main__":
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     app_info.win_index.show()
 
     # 修饰窗体
-    win_tool.center(app_info.win_index)
-    win_tool.add_icon(app, app_info.logo_path)
+    tool_win.center(app_info.win_index)
+    tool_win.add_icon(app, app_info.logo_path)
 
     sys.exit(app.exec_())

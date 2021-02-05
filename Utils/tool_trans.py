@@ -3,8 +3,8 @@
 # @Author : Qi Tianyue
 # @Github : Orange-66
 # @PROJECT : LAPS 
-# @File : trans_tool.py
-# @Remark : 转换工具
+# @File : tool_trans.py
+# @Remark : 转换格式类型的工具类
 # -----------------------------
 import os
 from tqdm import *

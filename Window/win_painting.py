@@ -9,7 +9,7 @@
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QApplication
 from PyUI.ui_painting import Ui_Painting
-from Utils import win_tool, app_info
+from Utils import tool_win, app_info
 
 
 class Win_Painting(QWidget, Ui_Painting):
@@ -52,4 +52,4 @@ class Win_Painting(QWidget, Ui_Painting):
 
 # ============窗体测试程序============
 if __name__ == "__main__":
-    win_tool.win_test(Win_Painting)
+    tool_win.win_test(Win_Painting)

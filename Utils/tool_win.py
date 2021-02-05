@@ -3,7 +3,7 @@
 # @Author : Qi Tianyue
 # @Github : Orange-66
 # @PROJECT : LAPS 
-# @File : win_tool.py
+# @File : tool_win.py
 # @Remark : 控制窗口的工具类
 # -----------------------------
 import sys

@@ -3,8 +3,8 @@
 # @Author : Qi Tianyue
 # @Github : Orange-66
 # @PROJECT : LAPS 
-# @File : useless_container.py
-# @Remark : 无用的代码存放地
+# @File : tool_useless.py
+# @Remark : 无用的工具类
 # -----------------------------
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
