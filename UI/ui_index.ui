@@ -14,183 +14,107 @@
    <string>LAP分析系统</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_6">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="8,1,1">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QPushButton" name="btn_new_single">
-        <property name="text">
-         <string>新建</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btn_import">
-        <property name="text">
-         <string>导入</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btn_painting">
-        <property name="text">
-         <string>绘图</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="zoom_button">
-        <property name="text">
-         <string>缩放</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="retrieval_button">
-        <property name="text">
-         <string>检索</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="label_button">
-        <property name="text">
-         <string>标记</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="delete_button">
-        <property name="text">
-         <string>删除</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="lock_button">
-        <property name="text">
-         <string>锁定</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,5,0,5">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,6,2">
+         <item>
+          <widget class="QPushButton" name="btn_up_page">
+           <property name="text">
+            <string>&lt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_page_info">
+           <property name="text">
+            <string>第 NAN 张 / 共 NAN 张</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_down_page">
+           <property name="text">
+            <string>&gt;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0">
+         <item>
+          <widget class="QGraphicsView" name="graphics_original_image"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="8">
+         <item>
+          <widget class="QGraphicsView" name="graphics_processed_image"/>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="8,2,2">
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QFrame" name="frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout" stretch="0,5,0,5">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,6,2">
-             <item>
-              <widget class="QPushButton" name="btn_up_page">
-               <property name="text">
-                <string>&lt;</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="btn_page_info">
-               <property name="text">
-                <string>第 NAN 张 / 共 NAN 张</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="btn_down_page">
-               <property name="text">
-                <string>&gt;</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="8">
-             <item>
-              <widget class="QGraphicsView" name="wid_original_image"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="Line" name="line">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="8">
-             <item>
-              <widget class="QGraphicsView" name="wid_processed_image"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QFrame" name="frame_3">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <widget class="QFrame" name="frame_3">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_4" stretch="1,9">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_4" stretch="2,10">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <item>
-              <widget class="QGraphicsView" name="graphicsView_3"/>
-             </item>
-             <item>
-              <widget class="QGraphicsView" name="graphicsView_4"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QTableWidget" name="tableWidget"/>
-           </item>
-          </layout>
+          <widget class="QGraphicsView" name="graphics_left_image"/>
+         </item>
+         <item>
+          <widget class="QGraphicsView" name="graphics_right_image"/>
          </item>
         </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QFrame" name="frame_4">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_5" stretch="1,11">
-           <item>
-            <widget class="QTextEdit" name="textEdit"/>
-           </item>
-           <item>
-            <widget class="QListWidget" name="listWidget"/>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-     </layout>
+       </item>
+       <item>
+        <widget class="QTableView" name="table_image_info"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="frame_4">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,9">
+       <item>
+        <widget class="QTextEdit" name="textEdit"/>
+       </item>
+       <item>
+        <widget class="QTableView" name="table_patient_list"/>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -222,7 +146,61 @@
    <addaction name="menu_2"/>
    <addaction name="menu_3"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>true</bool>
+   </attribute>
+   <addaction name="act_new_single"/>
+   <addaction name="act_import"/>
+   <addaction name="separator"/>
+   <addaction name="act_painting"/>
+   <addaction name="separator"/>
+   <addaction name="act_backward"/>
+   <addaction name="act_cancel"/>
+   <addaction name="act_delete"/>
+   <addaction name="act_save"/>
+  </widget>
+  <action name="act_new_single">
+   <property name="text">
+    <string>新建</string>
+   </property>
+  </action>
+  <action name="act_import">
+   <property name="text">
+    <string>导入</string>
+   </property>
+  </action>
+  <action name="act_painting">
+   <property name="text">
+    <string>绘图</string>
+   </property>
+  </action>
+  <action name="act_backward">
+   <property name="text">
+    <string>撤销</string>
+   </property>
+  </action>
+  <action name="act_cancel">
+   <property name="text">
+    <string>取消</string>
+   </property>
+  </action>
+  <action name="act_delete">
+   <property name="text">
+    <string>删除</string>
+   </property>
+  </action>
+  <action name="act_save">
+   <property name="text">
+    <string>保存</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

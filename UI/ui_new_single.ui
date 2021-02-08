@@ -23,6 +23,9 @@
          <property name="text">
           <string>日期</string>
          </property>
+         <property name="buddy">
+          <cstring>line_create_date</cstring>
+         </property>
         </widget>
        </item>
        <item>
@@ -70,6 +73,9 @@
          <property name="text">
           <string>姓名</string>
          </property>
+         <property name="buddy">
+          <cstring>line_name</cstring>
+         </property>
         </widget>
        </item>
        <item>
@@ -83,6 +89,9 @@
         <widget class="QLabel" name="label_10">
          <property name="text">
           <string>舒张压DBP</string>
+         </property>
+         <property name="buddy">
+          <cstring>spin_dbp</cstring>
          </property>
         </widget>
        </item>
@@ -104,6 +113,9 @@
         <widget class="QLabel" name="label_6">
          <property name="text">
           <string>肥胖程度BMI</string>
+         </property>
+         <property name="buddy">
+          <cstring>spin_bmi</cstring>
          </property>
         </widget>
        </item>
@@ -133,6 +145,9 @@
          <property name="text">
           <string>体重</string>
          </property>
+         <property name="buddy">
+          <cstring>spin_weight</cstring>
+         </property>
         </widget>
        </item>
        <item>
@@ -160,6 +175,9 @@
          <property name="text">
           <string>编号</string>
          </property>
+         <property name="buddy">
+          <cstring>line_id</cstring>
+         </property>
         </widget>
        </item>
        <item>
@@ -173,6 +191,9 @@
         <widget class="QLabel" name="label_8">
          <property name="text">
           <string>身高</string>
+         </property>
+         <property name="buddy">
+          <cstring>spin_stature</cstring>
          </property>
         </widget>
        </item>
@@ -198,6 +219,9 @@
          <property name="text">
           <string>体表面积BSA</string>
          </property>
+         <property name="buddy">
+          <cstring>spin_bsa</cstring>
+         </property>
         </widget>
        </item>
        <item>
@@ -222,6 +246,9 @@
          <property name="text">
           <string>年龄</string>
          </property>
+         <property name="buddy">
+          <cstring>spin_age</cstring>
+         </property>
         </widget>
        </item>
        <item>
@@ -242,6 +269,9 @@
         <widget class="QLabel" name="label_11">
          <property name="text">
           <string>性别</string>
+         </property>
+         <property name="buddy">
+          <cstring>combo_gender</cstring>
          </property>
         </widget>
        </item>
@@ -270,6 +300,9 @@
         <widget class="QLabel" name="label_9">
          <property name="text">
           <string>收缩压SBP</string>
+         </property>
+         <property name="buddy">
+          <cstring>spin_sbp</cstring>
          </property>
         </widget>
        </item>
@@ -474,6 +507,31 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>line_create_date</tabstop>
+  <tabstop>graphicsView_2</tabstop>
+  <tabstop>graphicsView_4</tabstop>
+  <tabstop>graphicsView_5</tabstop>
+  <tabstop>graphicsView_6</tabstop>
+  <tabstop>graphicsView</tabstop>
+  <tabstop>graphicsView_8</tabstop>
+  <tabstop>graphicsView_9</tabstop>
+  <tabstop>graphicsView_10</tabstop>
+  <tabstop>graphicsView_7</tabstop>
+  <tabstop>graphicsView_3</tabstop>
+  <tabstop>btn_cancel</tabstop>
+  <tabstop>btn_done</tabstop>
+  <tabstop>line_name</tabstop>
+  <tabstop>spin_dbp</tabstop>
+  <tabstop>spin_bmi</tabstop>
+  <tabstop>spin_weight</tabstop>
+  <tabstop>line_id</tabstop>
+  <tabstop>spin_stature</tabstop>
+  <tabstop>spin_bsa</tabstop>
+  <tabstop>spin_age</tabstop>
+  <tabstop>combo_gender</tabstop>
+  <tabstop>spin_sbp</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

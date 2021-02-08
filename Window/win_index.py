@@ -7,41 +7,57 @@
 # @Remark : 主窗口
 # -----------------------------
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import (QApplication, QMainWindow)
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QAbstractItemView)
 
 from PyUI.ui_index import Ui_Index
-from Utils import app_info, tool_win
+from Utils import settings, tool_win
+from Utils import tool_db
 from Window.win_painting import Win_Painting
 from Window.win_new_single import Win_New_Single
 
 
-class Win_Index(QMainWindow, Ui_Index):
+class Win_Index(QMainWindow):
     album_index = 0
     album_list = []
 
+    # ========================构造函数========================
     def __init__(self, parent=None):
         super().__init__(parent)  # 调用父类构造函数，创建窗体
-        # self.ui = Ui_Index()  # 创建UI对象
-        self.setupUi(self)  # 构造UI界面
+        self.__ui = Ui_Index()  # 创建UI对象
+        self.__ui.setupUi(self)  # 构造UI界面
 
-    @pyqtSlot()
+        # table_patient_list的显示属性设置
+        # self.__ui.table_patient_list.setSelectionBehavior(QAbstractItemView.SelectItems)
+        # self.__ui.table_patient_list.setSelectionMode(QAbstractItemView.SingleSelection)
+        # self.__ui.table_patient_list.setAlternatingRowColors(True)
+        # self.__ui.table_patient_list.verticalHeader().setDefaultSectionSize(22)
+        # self.__ui.table_patient_list.horizontalHeader().setDefaultSectionSize(60)
+        #
+        # tool_database.mapping("table_patient_list", self.__ui.table_patient_list)
+    # ========================重载事件函数========================
+    def closeEvent(self, event):
+        tool_win.close_all()
+        # tool_db.close()
+
+    # ========================自动关联槽函数========================
+    @pyqtSlot(bool)
     # 新建按钮-点击-槽函数
-    def on_btn_new_single_clicked(self):
+    def on_act_new_single_triggered(self):
         print("on_btn_new_single_clicked")
-        app_info.Win_New_Single = Win_New_Single()
-        app_info.Win_New_Single.show()
+        settings.Win_New_Single = Win_New_Single()
+        settings.Win_New_Single.show()
 
-    @pyqtSlot()
+    @pyqtSlot(bool)
     # 导入按钮-点击-槽函数
-    def on_btn_import_clicked(self):
+    def on_act_import_triggered(self):
         print("on_btn_import_clicked")
 
-    @pyqtSlot()
+    @pyqtSlot(bool)
     # 绘画按钮-点击-槽函数
-    def on_btn_painting_clicked(self):
+    def on_act_painting_triggered(self):
         print("on_btn_painting_clicked")
-        app_info.Win_Painting = Win_Painting()
-        app_info.Win_Painting.show()
+        settings.Win_Painting = Win_Painting()
+        settings.Win_Painting.show()
 
     @pyqtSlot()
     # 上一张图片按钮-点击-槽函数
@@ -57,6 +73,10 @@ class Win_Index(QMainWindow, Ui_Index):
     # 图片信息按钮-点击-槽函数
     def on_btn_page_info_clicked(self):
         print("on_btn_page_info_clicked")
+
+    # ========================自定义函数========================
+    # def __refresh_patient_list(self):
+    #     tool_database
 
 
 # ============窗体测试程序============

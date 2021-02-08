@@ -11,11 +11,13 @@ import sys
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDesktopWidget, QApplication
 
+from Utils import settings
+
 
 # 添加窗口图标
-def add_icon(app, icon_path):
+def add_icon(icon_path):
     icon = QIcon(icon_path)
-    app.setWindowIcon(icon)
+    settings.app.setWindowIcon(icon)
 
 
 # 居中放置
@@ -34,3 +36,9 @@ def win_test(window):
     form = window()
     form.show()
     sys.exit(app.exec_())
+
+
+# 关闭所有窗口，结束应用
+def close_all():
+    print("应用结束！")
+    settings.app.exit()

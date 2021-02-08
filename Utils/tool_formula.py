@@ -9,7 +9,8 @@
 
 # bmi公式
 def formula_bmi(stature, weight):
-    # print(weight / (stature/100) ** 2)
+    print("1231231212312", stature, weight)
+    print(weight / (stature/100) ** 2)
     return weight / (stature/100) ** 2
 
 

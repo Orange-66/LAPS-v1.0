@@ -8,6 +8,26 @@
 # -----------------------------
 import datetime
 
+from PyQt5.QtCore import QTime, QDate, QDateTime
+
+
+def q_date_current_date():
+    result = QDate.currentDate()
+    # print(result)
+    return result
+
+
+def q_time_current_time():
+    result = QTime.currentTime()
+    # print(result)
+    return result
+
+
+def q_datetime_current_datetime():
+    result = QDateTime.currentDateTime()
+    # print(result)
+    return result
+
 
 def current_date():
     result = datetime.datetime.now().strftime('%Y/%m/%d')

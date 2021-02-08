@@ -9,33 +9,34 @@
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QApplication
 from PyUI.ui_painting import Ui_Painting
-from Utils import tool_win, app_info
+from Utils import tool_win, settings
 
 
-class Win_Painting(QWidget, Ui_Painting):
+class Win_Painting(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)  # 调用父类构造函数，创建窗体
-        # self.ui = Ui_Painting()  # 创建UI对象
-        self.setupUi(self)  # 构造UI界面
+        self.__ui = Ui_Painting()  # 创建UI对象
+        self.__ui.setupUi(self)  # 构造UI界面
 
+    # ========================自动关联槽函数========================
     @pyqtSlot()
     # 前进按钮-点击-槽函数
     def on_btn_forward_clicked(self):
         # print("on_btn_forward_clicked")
-        self.wid_canvas.forward()
+        self.__ui.wid_canvas.forward()
 
     @pyqtSlot()
     # 后退按钮-点击-槽函数
     def on_btn_backward_clicked(self):
         # print("on_btn_backward_clicked")
-        self.wid_canvas.backward()
+        self.__ui.wid_canvas.backward()
 
     @pyqtSlot()
     # 清除按钮-点击-槽函数
     def on_btn_clear_clicked(self):
         # print("on_btn_clear_clicked")
-        self.wid_canvas.clear()
+        self.__ui.wid_canvas.clear()
 
     @pyqtSlot()
     # 完成按钮-点击-槽函数

@@ -3,10 +3,13 @@
 # @Author : Qi Tianyue
 # @Github : Orange-66
 # @PROJECT : LAPS 
-# @File : app_info.py
+# @File : settings.py
 # @Remark : 应用中各项参数
 # -----------------------------
 from PyQt5.QtGui import QPixmap, QColor
+
+# -------------应用-------------
+app = None
 
 # -------------路径-------------
 

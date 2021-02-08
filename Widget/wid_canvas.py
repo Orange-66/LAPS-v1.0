@@ -9,7 +9,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-from Utils import app_info
+from Utils import settings
 from Utils import tool_win
 
 
@@ -20,8 +20,8 @@ class Wid_Canvas(QWidget):
     tem_painting_path = []
     # 设置画笔
     pen = QPen()
-    pen.setWidth(app_info.pen_width)
-    pen.setColor(app_info.pen_color)
+    pen.setWidth(settings.pen_width)
+    pen.setColor(settings.pen_color)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -80,7 +80,7 @@ class Wid_Canvas(QWidget):
     # 重绘背景图片
     def canvas_clear(self):
         painter = QPainter(self.canvas)
-        canvas_image = QPixmap(app_info.wid_canvas_image_path)
+        canvas_image = QPixmap(settings.wid_canvas_image_path)
         painter.drawPixmap(0, 0, 600, 500, canvas_image)
 
     # 前进操作
@@ -118,7 +118,6 @@ class Wid_Canvas(QWidget):
     # 完成操作
     def done(self):
         self.setMouseTracking(False)
-
 
 
 # ============窗体测试程序============

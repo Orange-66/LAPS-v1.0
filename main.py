@@ -10,20 +10,20 @@ import sys
 
 from PyQt5.QtWidgets import QApplication
 
-from Utils import app_info
+from Utils import settings
 from Utils import tool_win
 from Window.win_index import Win_Index
 
 if __name__ == "__main__":
     # 创建GUI应用程序
-    app = QApplication(sys.argv)
+    settings.app = QApplication(sys.argv)
     # 创建主窗体
-    app_info.win_index = Win_Index()
+    settings.win_index = Win_Index()
     # 显示主窗体
-    app_info.win_index.show()
+    settings.win_index.show()
 
     # 修饰窗体
-    tool_win.center(app_info.win_index)
-    tool_win.add_icon(app, app_info.logo_path)
+    tool_win.center(settings.win_index)
+    tool_win.add_icon(settings.logo_path)
 
-    sys.exit(app.exec_())
+    sys.exit(settings.app.exec_())
