@@ -25,18 +25,18 @@ class Win_New_Single(QWidget):
     # ========================自动关联槽函数========================
     @pyqtSlot(int)
     def on_spin_stature_valueChanged(self, string):
-        print("on_line_stature_textChanged", string)
+        tool_win.console_print("on_line_stature_textChanged", string)
         self.__refresh_bmi_bsa()
 
     @pyqtSlot(float)
     def on_spin_weight_valueChanged(self, string):
-        print("on_line_weight_textChanged", string)
+        tool_win.console_print("on_line_weight_textChanged", string)
         self.__refresh_bmi_bsa()
 
     @pyqtSlot()
     # 完成按钮-点击-槽函数
     def on_btn_done_clicked(self):
-        # print("on_btn_done_clicked")
+        # tool_win.console_print("on_btn_done_clicked")
         # 获取窗口所有信息
         create_date = self.__ui.line_create_date.text()
         patient_id = self.__ui.line_id.text()
@@ -50,13 +50,13 @@ class Win_New_Single(QWidget):
         bmi_degree = self.__ui.label_degree.text()
         sbp = self.__ui.spin_sbp.value()
         dbp = self.__ui.spin_dbp.value()
-        print(create_date, patient_id, name, gender, age, stature, weight, bsa, bmi, bmi_degree, sbp, dbp)
+        tool_win.console_print(create_date, patient_id, name, gender, age, stature, weight, bsa, bmi, bmi_degree, sbp, dbp)
         self.close()
 
     @pyqtSlot()
     # 取消按钮-点击-槽函数
     def on_btn_cancel_clicked(self):
-        # print("on_btn_cancel_clicked")
+        # tool_win.console_print("on_btn_cancel_clicked")
         self.close()
 
     # ========================自定义函数========================
@@ -71,7 +71,7 @@ class Win_New_Single(QWidget):
             ))
             self.__ui.label_degree.setText(tool_formula.formula_bmi_degree(float(self.__ui.spin_bmi.value())))
 
-            print(self.__ui.spin_bmi.value())
+            tool_win.console_print(self.__ui.spin_bmi.value())
         except ValueError:
             pass
         except ZeroDivisionError:

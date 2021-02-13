@@ -25,8 +25,53 @@ def open_db():
         return False
 
 
+# 关闭数据库
 def close_db():
     return db.close()
+
+
+# 增添项目
+def create_item():
+    open_db()
+    query = QSqlQuery(db)
+    query.exec("select * from employee where EmpNo =-1")  # 实际不查询出记录，只查询字段信息
+
+    curRec = query.record()  # 获取当前记录,实际为空记录,但有字段信息
+    curRec.setValue("EmpNo", self.qryModel.rowCount() + 3000)
+
+    dlgData = QmyDialogData(self)
+    dlgData.setInsertRecord(curRec)  # 插入记录
+
+    ret = dlgData.exec()  # 以模态方式显示对话框
+    if (ret != QDialog.Accepted):
+        return
+
+    recData = dlgData.getRecordData()
+
+    query.prepare('''INSERT INTO employee (EmpNo,Name,Gender,Birthday,
+                Province,Department,Salary,Memo,Photo) 
+                VALUES(:EmpNo,:Name, :Gender,:Birthday,:Province,
+                :Department,:Salary,:Memo,:Photo)''')
+
+    query.bindValue(":EmpNo", recData.value("EmpNo"))
+    query.bindValue(":Name", recData.value("Name"))
+    query.bindValue(":Gender", recData.value("Gender"))
+    query.bindValue(":Birthday", recData.value("Birthday"))
+
+    query.bindValue(":Province", recData.value("Province"))
+    query.bindValue(":Department", recData.value("Department"))
+
+    query.bindValue(":Salary", recData.value("Salary"));
+    query.bindValue(":Memo", recData.value("Memo"));
+    query.bindValue(":Photo", recData.value("Photo"));
+
+    res = query.exec()  # 执行SQL语句
+    if (res == False):
+        QMessageBox.critical(self, "错误",
+                             "插入记录错误\n" + query.lastError().text())
+    else:  # 插入，删除记录后需要重新设置SQL语句查询
+        sqlStr = self.qryModel.query().executedQuery()  # 执行过的SELECT语句
+        self.qryModel.setQuery(sqlStr)  # reset 重新查询数据
 
 
 # 获得所有字段名称

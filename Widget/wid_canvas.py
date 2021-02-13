@@ -94,7 +94,7 @@ class Wid_Canvas(QWidget):
             self.painting_path.append(pop_item)
             self.update()
         else:
-            print("前无可取")
+            tool_win.console_print("前无可取")
 
     # 后撤操作
     def backward(self):
@@ -107,7 +107,7 @@ class Wid_Canvas(QWidget):
             self.tem_painting_path.append(pop_item)
             self.update()
         else:
-            print("后无可退")
+            tool_win.console_print("后无可退")
 
     # 清除操作
     def clear(self):

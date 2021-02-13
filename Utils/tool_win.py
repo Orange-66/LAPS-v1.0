@@ -38,6 +38,12 @@ def win_test(window):
     sys.exit(app.exec_())
 
 
+# 控制台打印
+def console_print(result):
+    print(result)
+    # pass
+
+
 # 关闭所有窗口，结束应用
 def close_all():
     print("应用结束！")

@@ -24,6 +24,6 @@ if __name__ == "__main__":
 
     # 修饰窗体
     tool_win.center(settings.win_index)
-    tool_win.add_icon(settings.logo_path)
+    # tool_win.add_icon(settings.logo_path)
 
     sys.exit(settings.app.exec_())
