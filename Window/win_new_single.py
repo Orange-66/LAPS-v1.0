@@ -51,7 +51,7 @@ class Win_New_Single(QWidget):
         sbp = self.__ui.spin_sbp.value()
         dbp = self.__ui.spin_dbp.value()
         # tool_win.console_print(create_date, patient_id, name, gender, age, stature, weight, bsa, bmi, bmi_degree, sbp, dbp)
-        Tool_Db.insert_info(Tool_Db(), patient_id, name, create_date, None,
+        tool_db.insert_info(patient_id, name, create_date, None,
                             gender, age, stature, weight, sbp, dbp, bsa, bmi, bmi_degree, 0)
         self.close()
 
