@@ -1,5 +1,12 @@
 <RCC>
   <qresource prefix="Root">
+    <file>Images/Png/backwark.png</file>
+    <file>Images/Png/cancel.png</file>
+    <file>Images/Png/delete.png</file>
+    <file>Images/Png/import.png</file>
+    <file>Images/Png/new.png</file>
+    <file>Images/Png/painting.png</file>
+    <file>Images/Png/save.png</file>
     <file>Images/Icon/win_logo.ico</file>
   </qresource>
 </RCC>

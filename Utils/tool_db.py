@@ -29,11 +29,9 @@ def close_db():
     return settings.db.close()
 
 
-def find_by_id(query_model, current):
-    if not current.isValid():
-        return None
+def find_by_id(query_model, row):
 
-    cur_record = query_model.record(current.row())
+    cur_record = query_model.record(row)
 
     query_model_2 = QSqlQuery(settings.db)
     query_model_2.prepare('''SELECT * FROM patient_info WHERE id = :id ORDER BY id''')
@@ -98,6 +96,8 @@ def find_all():
         query_model.setHeaderData(0, Qt.Horizontal, "状态")
         query_model.setHeaderData(1, Qt.Horizontal, "编号")
         query_model.setHeaderData(2, Qt.Horizontal, "姓名")
+
+        find_by_id(query_model, 0)
 
         return query_model
 

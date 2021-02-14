@@ -115,6 +115,9 @@
        </item>
        <item>
         <widget class="QTableWidget" name="table_image_info">
+         <property name="autoScroll">
+          <bool>true</bool>
+         </property>
          <attribute name="horizontalHeaderVisible">
           <bool>false</bool>
          </attribute>
@@ -379,6 +382,15 @@
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>25</width>
+     <height>25</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -396,36 +408,64 @@
    <addaction name="act_save"/>
   </widget>
   <action name="act_new_single">
+   <property name="icon">
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Png/new.png</normaloff>:/Root/Images/Png/new.png</iconset>
+   </property>
    <property name="text">
     <string>新建</string>
    </property>
   </action>
   <action name="act_import">
+   <property name="icon">
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Png/import.png</normaloff>:/Root/Images/Png/import.png</iconset>
+   </property>
    <property name="text">
     <string>导入</string>
    </property>
   </action>
   <action name="act_painting">
+   <property name="icon">
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Png/painting.png</normaloff>:/Root/Images/Png/painting.png</iconset>
+   </property>
    <property name="text">
     <string>绘图</string>
    </property>
   </action>
   <action name="act_backward">
+   <property name="icon">
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Png/backwark.png</normaloff>:/Root/Images/Png/backwark.png</iconset>
+   </property>
    <property name="text">
     <string>撤销</string>
    </property>
   </action>
   <action name="act_cancel">
+   <property name="icon">
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Png/cancel.png</normaloff>:/Root/Images/Png/cancel.png</iconset>
+   </property>
    <property name="text">
     <string>取消</string>
    </property>
   </action>
   <action name="act_delete">
+   <property name="icon">
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Png/delete.png</normaloff>:/Root/Images/Png/delete.png</iconset>
+   </property>
    <property name="text">
     <string>删除</string>
    </property>
   </action>
   <action name="act_save">
+   <property name="icon">
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Png/save.png</normaloff>:/Root/Images/Png/save.png</iconset>
+   </property>
    <property name="text">
     <string>保存</string>
    </property>

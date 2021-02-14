@@ -51,19 +51,20 @@ class Win_Index(QMainWindow):
         self.__ui.table_patient_list.setSelectionModel(select_model)
 
     def do_currentRowChanged(self, current, previous):
-        item_list = tool_db.find_by_id(self.query_model, current)
-        if item_list is not None:
-            self.__ui.table_image_info.setItem(1, 1, item_list[0])
-            self.__ui.table_image_info.setItem(2, 1, item_list[1])
-            self.__ui.table_image_info.setItem(2, 3, item_list[2])
-            self.__ui.table_image_info.setItem(3, 1, item_list[3])
-            self.__ui.table_image_info.setItem(3, 3, item_list[4])
-            self.__ui.table_image_info.setItem(4, 1, item_list[5])
-            self.__ui.table_image_info.setItem(4, 3, item_list[6])
-            self.__ui.table_image_info.setItem(5, 1, item_list[7])
-            self.__ui.table_image_info.setItem(5, 3, item_list[8])
-            self.__ui.table_image_info.setItem(6, 1, item_list[9])
-            self.__ui.table_image_info.setItem(6, 3, item_list[10])
+        if current.isValid():
+            item_list = tool_db.find_by_id(self.query_model, current.row())
+            if item_list is not None:
+                self.__ui.table_image_info.setItem(1, 1, item_list[0])
+                self.__ui.table_image_info.setItem(2, 1, item_list[1])
+                self.__ui.table_image_info.setItem(2, 3, item_list[2])
+                self.__ui.table_image_info.setItem(3, 1, item_list[3])
+                self.__ui.table_image_info.setItem(3, 3, item_list[4])
+                self.__ui.table_image_info.setItem(4, 1, item_list[5])
+                self.__ui.table_image_info.setItem(4, 3, item_list[6])
+                self.__ui.table_image_info.setItem(5, 1, item_list[7])
+                self.__ui.table_image_info.setItem(5, 3, item_list[8])
+                self.__ui.table_image_info.setItem(6, 1, item_list[9])
+                self.__ui.table_image_info.setItem(6, 3, item_list[10])
 
     # ========================重载事件函数========================
     def closeEvent(self, event):
