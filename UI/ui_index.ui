@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>839</width>
+    <width>858</width>
     <height>555</height>
    </rect>
   </property>
@@ -14,7 +14,7 @@
    <string>LAP分析系统</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../Resource/resource.qrc">
+   <iconset>
     <normaloff>:/icons/Images/Icon/win_logo.ico</normaloff>:/icons/Images/Icon/win_logo.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -56,7 +56,17 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0">
          <item>
-          <widget class="QGraphicsView" name="graphics_original_image"/>
+          <widget class="QLabel" name="label">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background:rgb(255, 255, 255)</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -68,9 +78,16 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="8">
+        <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0">
          <item>
-          <widget class="QGraphicsView" name="graphics_processed_image"/>
+          <widget class="QLabel" name="label_2">
+           <property name="styleSheet">
+            <string notr="true">background:rgb(255, 255, 255)</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -97,7 +114,189 @@
         </layout>
        </item>
        <item>
-        <widget class="QTableView" name="table_image_info"/>
+        <widget class="QTableWidget" name="table_image_info">
+         <attribute name="horizontalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>新建行</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>新建列</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>新建列</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>新建列</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>新建列</string>
+          </property>
+         </column>
+         <item row="1" column="0">
+          <property name="text">
+           <string>日期</string>
+          </property>
+         </item>
+         <item row="1" column="2">
+          <property name="text">
+           <string/>
+          </property>
+         </item>
+         <item row="2" column="0">
+          <property name="text">
+           <string>编号</string>
+          </property>
+         </item>
+         <item row="2" column="2">
+          <property name="text">
+           <string>姓名</string>
+          </property>
+         </item>
+         <item row="3" column="0">
+          <property name="text">
+           <string>性别</string>
+          </property>
+         </item>
+         <item row="3" column="2">
+          <property name="text">
+           <string>年龄</string>
+          </property>
+         </item>
+         <item row="4" column="0">
+          <property name="text">
+           <string>身高</string>
+          </property>
+         </item>
+         <item row="4" column="2">
+          <property name="text">
+           <string>体重</string>
+          </property>
+         </item>
+         <item row="5" column="0">
+          <property name="text">
+           <string>SBP</string>
+          </property>
+         </item>
+         <item row="5" column="2">
+          <property name="text">
+           <string>DBP</string>
+          </property>
+         </item>
+         <item row="6" column="0">
+          <property name="text">
+           <string>BSA</string>
+          </property>
+         </item>
+         <item row="6" column="2">
+          <property name="text">
+           <string>BMI</string>
+          </property>
+         </item>
+         <item row="7" column="0">
+          <property name="text">
+           <string>LAP</string>
+          </property>
+         </item>
+         <item row="7" column="2">
+          <property name="text">
+           <string>TAU</string>
+          </property>
+         </item>
+         <item row="8" column="1">
+          <property name="text">
+           <string>e</string>
+          </property>
+         </item>
+         <item row="8" column="2">
+          <property name="text">
+           <string>a</string>
+          </property>
+         </item>
+         <item row="8" column="3">
+          <property name="text">
+           <string>s</string>
+          </property>
+         </item>
+         <item row="9" column="0">
+          <property name="text">
+           <string>MV</string>
+          </property>
+         </item>
+         <item row="9" column="1">
+          <property name="text">
+           <string/>
+          </property>
+         </item>
+         <item row="10" column="0">
+          <property name="text">
+           <string>IAS</string>
+          </property>
+         </item>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -153,7 +352,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>839</width>
+     <width>858</width>
      <height>24</height>
     </rect>
    </property>

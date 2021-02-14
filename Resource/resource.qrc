@@ -1,5 +1,5 @@
 <RCC>
-  <qresource prefix="icons">
+  <qresource prefix="Root">
     <file>Images/Icon/win_logo.ico</file>
   </qresource>
 </RCC>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Time : 2021/1/22 10:41 下午
-# @Author : Qi Tianyue
+# @Author : Qi Tian yue
 # @Github : Orange-66
 # @PROJECT : LAPS 
 # @File : win_painting.py

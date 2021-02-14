@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Time : 2021/1/22 5:01 下午
-# @Author : Qi Tianyue
+# @Author : Qi Tian yue
 # @Github : Orange-66
 # @PROJECT : LAPS
 # @File : main.py
@@ -22,8 +22,8 @@ if __name__ == "__main__":
     # 显示主窗体
     settings.win_index.show()
 
-    # 修饰窗体
+    # 修饰窗体-居中、添加logo
     tool_win.center(settings.win_index)
-    # tool_win.add_icon(settings.logo_path)
+    tool_win.add_icon(settings.logo_path)
 
     sys.exit(settings.app.exec_())

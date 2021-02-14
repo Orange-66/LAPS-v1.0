@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Time : 2021/2/5 8:14 下午
-# @Author : Qi Tianyue
+# @Author : Qi Tian yue
 # @Github : Orange-66
 # @PROJECT : LAPS 
 # @File : win_new_single.py
@@ -9,7 +9,7 @@
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QApplication
 from PyUI.ui_new_single import Ui_New_Single
-from Utils import tool_win, settings, tool_time, tool_formula
+from Utils import tool_win, settings, tool_time, tool_formula, tool_db
 
 
 class Win_New_Single(QWidget):
@@ -50,7 +50,9 @@ class Win_New_Single(QWidget):
         bmi_degree = self.__ui.label_degree.text()
         sbp = self.__ui.spin_sbp.value()
         dbp = self.__ui.spin_dbp.value()
-        tool_win.console_print(create_date, patient_id, name, gender, age, stature, weight, bsa, bmi, bmi_degree, sbp, dbp)
+        # tool_win.console_print(create_date, patient_id, name, gender, age, stature, weight, bsa, bmi, bmi_degree, sbp, dbp)
+        Tool_Db.insert_info(Tool_Db(), patient_id, name, create_date, None,
+                            gender, age, stature, weight, sbp, dbp, bsa, bmi, bmi_degree, 0)
         self.close()
 
     @pyqtSlot()

@@ -148,7 +148,7 @@ def project_to_exe(project_name="LAPS"):
 # 程序的主入口
 if __name__ == "__main__":
     # 调用系统命令把UI文件转换成Python文件-开发
-    ui_to_py()
+    # ui_to_py()
 
     # 调用系统命令把UI文件转换成Python文件-测试
     # ui_to_py_x()
@@ -163,4 +163,4 @@ if __name__ == "__main__":
     # png_to_icon()
 
     # 将此PyQT项目转换成exe文件
-    # project_to_exe()
+    project_to_exe()

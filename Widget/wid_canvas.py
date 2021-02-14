@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Time : 2021/1/22 10:41 下午
-# @Author : Qi Tianyue
+# @Author : Qi Tian yue
 # @Github : Orange-66
 # @PROJECT : LAPS
 # @File : wid_canvas.py
@@ -27,10 +27,10 @@ class Wid_Canvas(QWidget):
         super().__init__(parent)
         self.cursor_point = QPoint()
 
-        self.resize(600, 500)
+        self.resize(600, 1200)
 
         self.canvas = QPixmap(600, 500)  # 设置画布大小
-        self.canvas_clear();
+        self.canvas_clear()
 
     # ========================事件函数========================
     # 绘图

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Time : 2021/1/22 5:01 下午
-# @Author : Qi Tianyue
+# @Author : Qi Tian yue
 # @Github : Orange-66
 # @PROJECT : LAPS 
 # @File : win_index.py
@@ -8,7 +8,7 @@
 # -----------------------------
 from PyQt5.QtCore import pyqtSlot, Qt, QItemSelectionModel
 from PyQt5.QtSql import QSqlDatabase, QSqlQueryModel, QSqlQuery
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QAbstractItemView, QMessageBox)
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QAbstractItemView, QMessageBox, QTableWidgetItem)
 
 from PyUI.ui_index import Ui_Index
 from Utils import settings, tool_win, tool_db
@@ -34,44 +34,36 @@ class Win_Index(QMainWindow):
         self.__ui.table_patient_list.verticalHeader().setDefaultSectionSize(22)
         self.__ui.table_patient_list.horizontalHeader().setDefaultSectionSize(53)
 
-        self.db = QSqlDatabase.addDatabase("QSQLITE")
-        self.db.setDatabaseName("./Resource/Database/laps.db")
-        if self.db.open():
-            self.qryModel = QSqlQueryModel(self)
-            self.qryModel.setQuery('''SELECT state, id, name FROM patient_info ORDER BY id''')
-            if self.qryModel.lastError().isValid():
-                QMessageBox.warning(self, "错误", "数据表查询错误，出错消息\n" + self.qryModel.lastError().text())
+        self.__ui.table_image_info.setSpan(0, 0, 1, 4)
+        self.__ui.table_image_info.setSpan(1, 1, 1, 3)
 
-            self.qryModel.setHeaderData(0, Qt.Horizontal, "状态")
-            self.qryModel.setHeaderData(1, Qt.Horizontal, "编号")
-            self.qryModel.setHeaderData(2, Qt.Horizontal, "姓名")
+        item_title = QTableWidgetItem("患者基本信息", 1000)
+        item_title.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+        self.__ui.table_image_info.setItem(0, 0, item_title)
 
-            self.selModel = QItemSelectionModel(self.qryModel)
-            self.selModel.currentRowChanged.connect(self.do_currentRowChanged)
 
-            self.__ui.table_patient_list.setModel(self.qryModel)
-            self.__ui.table_patient_list.setSelectionModel(self.selModel)
-        else:
-            QMessageBox.warning(self, "错误", "打开数据库失败")
+        # 查询并刷新患者列表
+        self.query_model = tool_db.find_all()
+        select_model = QItemSelectionModel(self.query_model)
+        select_model.currentRowChanged.connect(self.do_currentRowChanged)
+
+        self.__ui.table_patient_list.setModel(self.query_model)
+        self.__ui.table_patient_list.setSelectionModel(select_model)
 
     def do_currentRowChanged(self, current, previous):
-        if not current.isValid():
-            return
-        curRec = self.qryModel.record(current.row())
-        id = curRec.value("id")
-        self.qryModel_2 = QSqlQuery(self.db)
-        self.qryModel_2.prepare('''SELECT * FROM patient_info WHERE id = :id ORDER BY id''')
-        self.qryModel_2.bindValue(":id", id)
-        if not self.qryModel_2.exec():
-            QMessageBox.warning(self, "错误", "数据表查询错误，出错消息\n" + self.qryModel.lastError().text())
-            return
-        else:
-            self.qryModel_2.first()
-
-        tool_win.console_print(self.qryModel_2.value("name"))
-
-        self.qryModel.setHeaderData(0, Qt.Horizontal, "状态")
-        tool_win.console_print(id)
+        item_list = tool_db.find_by_id(self.query_model, current)
+        if item_list is not None:
+            self.__ui.table_image_info.setItem(1, 1, item_list[0])
+            self.__ui.table_image_info.setItem(2, 1, item_list[1])
+            self.__ui.table_image_info.setItem(2, 3, item_list[2])
+            self.__ui.table_image_info.setItem(3, 1, item_list[3])
+            self.__ui.table_image_info.setItem(3, 3, item_list[4])
+            self.__ui.table_image_info.setItem(4, 1, item_list[5])
+            self.__ui.table_image_info.setItem(4, 3, item_list[6])
+            self.__ui.table_image_info.setItem(5, 1, item_list[7])
+            self.__ui.table_image_info.setItem(5, 3, item_list[8])
+            self.__ui.table_image_info.setItem(6, 1, item_list[9])
+            self.__ui.table_image_info.setItem(6, 3, item_list[10])
 
     # ========================重载事件函数========================
     def closeEvent(self, event):

@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import QDesktopWidget, QApplication
 from Utils import settings
 
 
+
 # 添加窗口图标
 def add_icon(icon_path):
     icon = QIcon(icon_path)
@@ -39,8 +40,10 @@ def win_test(window):
 
 
 # 控制台打印
-def console_print(result):
-    print(result)
+def console_print(*args):
+    for i in args:
+        print(i, end='')
+    print()
     # pass
 
 
