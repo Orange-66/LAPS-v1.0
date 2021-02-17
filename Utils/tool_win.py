@@ -6,13 +6,13 @@
 # @File : tool_win.py
 # @Remark : 控制窗口的工具类
 # -----------------------------
+import os
 import sys
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDesktopWidget, QApplication
 
-from Utils import settings
-
+from Utils import settings, tool_file
 
 
 # 添加窗口图标
@@ -51,3 +51,9 @@ def console_print(*args):
 def close_all():
     print("应用结束！")
     settings.app.exit()
+
+
+# 自定义系统风格
+def set_qss(style_name):
+    qss_path = os.path.join('.', 'Resource', 'Qss', style_name + '.qss')
+    tool_file.load_qss(qss_path)

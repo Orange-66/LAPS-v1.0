@@ -26,4 +26,6 @@ if __name__ == "__main__":
     tool_win.center(settings.win_index)
     tool_win.add_icon(settings.logo_path)
 
+    tool_win.set_qss("MacOS")
+
     sys.exit(settings.app.exec_())
