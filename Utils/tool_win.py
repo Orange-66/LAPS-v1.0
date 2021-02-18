@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Time : 2021/1/24 4:15 下午
-# @Author : Qi Tianyue
+# @Author : Qi Tian yue
 # @Github : Orange-66
 # @PROJECT : LAPS 
 # @File : tool_win.py
@@ -39,17 +39,18 @@ def win_test(window):
     sys.exit(app.exec_())
 
 
-# 控制台打印
-def console_print(*args):
+# 日志打印
+def logging(*args):
+    result_str = ''
     for i in args:
-        print(i, end='')
-    print()
-    # pass
+        result_str += i
+    print(result_str)
+    settings.log.debug(result_str)
 
 
 # 关闭所有窗口，结束应用
 def close_all():
-    print("应用结束！")
+    logging("应用结束！")
     settings.app.exit()
 
 

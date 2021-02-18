@@ -107,7 +107,7 @@ def png_to_icon():
             path = os.path.join(png_icon_dir, icon_file)
             icon.save(path)
         except IOError:
-            print('connot convert :', png_file)
+            tool_win.logging('connot convert :', png_file)
 
 
 # 将此PyQT项目转换成exe文件
@@ -130,7 +130,7 @@ def project_to_exe(project_name="LAPS"):
     if os.path.exists(os.path.join(root_dir, spec_filename)):
         os.remove(os.path.join(root_dir, spec_filename))
     else:
-        print(f'没有找到 [{os.path.join(root_dir, spec_filename)}] 文件或文件夹')
+        tool_win.logging(f'没有找到 [{os.path.join(root_dir, spec_filename)}] 文件或文件夹')
 
     # 删除workspace文件夹
     root_dir = "./EXE/LAPS/"
@@ -142,7 +142,7 @@ def project_to_exe(project_name="LAPS"):
 
         os.rmdir(root_dir)
     else:
-        print(f'没有找到 [{root_dir}] 文件或文件夹')
+        tool_win.logging(f'没有找到 [{root_dir}] 文件或文件夹')
 
 
 # 程序的主入口

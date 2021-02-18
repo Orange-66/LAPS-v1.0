@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 # @Time : 2021/1/23 4:08 下午
-# @Author : Qi Tianyue
+# @Author : Qi Tian yue
 # @Github : Orange-66
 # @PROJECT : LAPS 
 # @File : settings.py
 # @Remark : 应用中各项参数
 # -----------------------------
 from PyQt5.QtGui import QPixmap, QColor
+import logging
+
 
 # -------------应用-------------
 from PyQt5.QtSql import QSqlDatabase
@@ -42,7 +44,14 @@ db = QSqlDatabase.addDatabase("QSQLITE")
 # 加载数据库文件
 db.setDatabaseName(db_path)
 
-# -------------口口-------------
+# -------------日志-------------
+log = logging
+log.basicConfig(level=logging.DEBUG,
+                format='%(asctime)s - %(levelname)s - %(message)s',
+                filename='logging.txt',
+                filemode='w')
+# 日志记录开关
+# log.disable(log.DEBUG)
 
 # -------------口口-------------
 

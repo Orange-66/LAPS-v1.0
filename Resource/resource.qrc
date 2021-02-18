@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="Root">
+    <file>Qss/flatwhite.qss</file>
     <file>Images/Png/backwark.png</file>
     <file>Images/Png/cancel.png</file>
     <file>Images/Png/delete.png</file>

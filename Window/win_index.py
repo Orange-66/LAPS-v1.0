@@ -75,36 +75,36 @@ class Win_Index(QMainWindow):
     @pyqtSlot(bool)
     # 新建按钮-点击-槽函数
     def on_act_new_single_triggered(self):
-        tool_win.console_print("on_btn_new_single_clicked")
+        tool_win.logging("on_btn_new_single_clicked")
         settings.Win_New_Single = Win_New_Single()
         settings.Win_New_Single.show()
 
     @pyqtSlot(bool)
     # 导入按钮-点击-槽函数
     def on_act_import_triggered(self):
-        tool_win.console_print("on_btn_import_clicked")
+        tool_win.logging("on_btn_import_clicked")
 
     @pyqtSlot(bool)
     # 绘画按钮-点击-槽函数
     def on_act_painting_triggered(self):
-        tool_win.console_print("on_btn_painting_clicked")
+        tool_win.logging("on_btn_painting_clicked")
         settings.Win_Painting = Win_Painting()
         settings.Win_Painting.show()
 
     @pyqtSlot()
     # 上一张图片按钮-点击-槽函数
     def on_btn_up_page_clicked(self):
-        tool_win.console_print("on_btn_up_page_clicked")
+        tool_win.logging("on_btn_up_page_clicked")
 
     @pyqtSlot()
     # 下一张图片按钮-点击-槽函数
     def on_btn_down_page_clicked(self):
-        tool_win.console_print("on_btn_down_page_clicked")
+        tool_win.logging("on_btn_down_page_clicked")
 
     @pyqtSlot()
     # 图片信息按钮-点击-槽函数
     def on_btn_page_info_clicked(self):
-        tool_win.console_print("on_btn_page_info_clicked")
+        tool_win.logging("on_btn_page_info_clicked")
 
     # ========================自定义函数========================
     # def __refresh_patient_list(self):

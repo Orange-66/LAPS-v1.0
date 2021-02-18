@@ -16,7 +16,7 @@ from Utils import settings, tool_win
 # 打开数据库
 def open_db():
     if settings.db.open():
-        tool_win.console_print("成功打开数据库！")
+        tool_win.logging("成功打开数据库！")
         return True
     else:
         QMessageBox.warning("错误", "打开数据库失败！")
@@ -25,7 +25,7 @@ def open_db():
 
 # 关闭数据库
 def close_db():
-    tool_win.console_print("数据库关闭！")
+    tool_win.logging("数据库关闭！")
     return settings.db.close()
 
 
@@ -45,7 +45,7 @@ def find_by_id(query_model, row):
     else:
         query_model_2.first()
 
-    tool_win.console_print(query_model_2.value("name"))
+    tool_win.logging(query_model_2.value("name"))
 
     item_create_date = QTableWidgetItem(query_model_2.value("create_date"), 1000)
     item_create_date.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
@@ -105,8 +105,8 @@ def find_all():
 # 插入项目至patient_info表
 def insert_info(id, name, create_date, modify_date,
                 gender, age, stature, weight, sbp, dbp, bsa, bmi, bmi_degree, state):
-    tool_win.console_print("接收到的数据：")
-    tool_win.console_print(id, type(id), name, type(name), create_date, type(create_date),
+    tool_win.logging("接收到的数据：")
+    tool_win.logging(id, type(id), name, type(name), create_date, type(create_date),
                            modify_date, type(modify_date), gender, type(gender),
                            age, type(age), stature, type(stature), weight, type(weight),
                            sbp, type(sbp), dbp, type(dbp), bsa, type(bsa),
@@ -125,7 +125,7 @@ def insert_info(id, name, create_date, modify_date,
     query.bindValue(":id", id)
     query.bindValue(":name", name)
     create_date_dt = QDateTime.fromString(create_date, "yyyy-MM-dd hh:mm:ss")
-    tool_win.console_print(create_date_dt)
+    tool_win.logging(create_date_dt)
     query.bindValue(":create_date", create_date)
     query.bindValue(":modify_date", modify_date)
     query.bindValue(":gender", gender)
@@ -141,9 +141,9 @@ def insert_info(id, name, create_date, modify_date,
 
     res = query.exec()
     if not res:
-        print("错误", "插入记录错误\n" + query.lastError().text())
+        tool_win.logging("错误", "插入记录错误\n" + query.lastError().text())
     else:
-        print("成功！")
+        tool_win.logging("成功！")
         # 刷新显示列表P213
         pass
 
@@ -206,7 +206,7 @@ def get_field_names(table_model):
         field_num.setdefault(field_name)
         field_num[field_name] = i
     # 显示字典数据
-    print(field_num)
+    tool_win.logging(field_num)
     return field_num
 
 

@@ -23,31 +23,31 @@ class Win_Painting(QWidget):
     @pyqtSlot()
     # 前进按钮-点击-槽函数
     def on_btn_forward_clicked(self):
-        # tool_win.console_print("on_btn_forward_clicked")
+        tool_win.logging("on_btn_forward_clicked")
         self.__ui.wid_canvas.forward()
 
     @pyqtSlot()
     # 后退按钮-点击-槽函数
     def on_btn_backward_clicked(self):
-        # tool_win.console_print("on_btn_backward_clicked")
+        tool_win.logging("on_btn_backward_clicked")
         self.__ui.wid_canvas.backward()
 
     @pyqtSlot()
     # 清除按钮-点击-槽函数
     def on_btn_clear_clicked(self):
-        # tool_win.console_print("on_btn_clear_clicked")
+        tool_win.logging("on_btn_clear_clicked")
         self.__ui.wid_canvas.clear()
 
     @pyqtSlot()
     # 完成按钮-点击-槽函数
     def on_btn_done_clicked(self):
-        tool_win.console_print("on_btn_done_clicked")
+        tool_win.logging("on_btn_done_clicked")
         # return self.wid_canvas.done()
 
     @pyqtSlot()
     # 取消按钮-点击-槽函数
     def on_btn_cancel_clicked(self):
-        # tool_win.console_print("on_btn_cancel_clicked")
+        tool_win.logging("on_btn_cancel_clicked")
         self.close()
 
 
