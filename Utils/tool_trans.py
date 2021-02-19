@@ -12,6 +12,8 @@ from PIL import Image
 
 # 所在地址
 # UI文件所在路径
+from Utils import tool_win
+
 ui_dir = '../UI/'
 # qrc文件所在路径
 qrc_dir = '../Resource/Qrc/'

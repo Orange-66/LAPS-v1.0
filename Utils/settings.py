@@ -48,11 +48,18 @@ db.setDatabaseName(db_path)
 log = logging
 log.basicConfig(level=logging.DEBUG,
                 format='%(asctime)s - %(levelname)s - %(message)s',
-                filename='logging.txt',
+                filename='../Docs/logging.txt',
                 filemode='w')
 # 日志记录开关
 # log.disable(log.DEBUG)
 
-# -------------口口-------------
-
+# -------------Excel-------------
+# 工作表标题
+excel_sheet_name = '患者基本信息表'
+excel_sheet_titles = ['id', 'name', 'gender', 'age']
+excel_file_name = '患者信息批量导入模版.xlsx'
+excel_freeze_strategy = 'A2'
+excel_title_width = 15
+excel_font_size = 14
+excel_bold = True
 # -------------口口-------------
