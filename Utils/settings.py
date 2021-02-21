@@ -30,6 +30,7 @@ wid_canvas_image_path = "/Users/orange/PycharmProjects/LAPS/Resource/Images/Png/
 win_index = None
 win_painting = None
 win_new_single = None
+wid_preview = None
 
 # -------------画笔-------------
 
@@ -48,7 +49,7 @@ db.setDatabaseName(db_path)
 log = logging
 log.basicConfig(level=logging.DEBUG,
                 format='%(asctime)s - %(levelname)s - %(message)s',
-                filename='../Docs/logging.txt',
+                filename='./Docs/logging.txt',
                 filemode='w')
 # 日志记录开关
 # log.disable(log.DEBUG)
@@ -62,4 +63,8 @@ excel_freeze_strategy = 'A2'
 excel_title_width = 15
 excel_font_size = 14
 excel_bold = True
+# -------------口口-------------
+# -------------口口-------------
+# -------------口口-------------
+# -------------口口-------------
 # -------------口口-------------

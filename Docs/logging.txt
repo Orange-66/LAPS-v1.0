@@ -1,0 +1,14 @@
+2021-02-22 00:12:25,066 - DEBUG - 成功打开数据库！
+2021-02-22 00:12:25,068 - DEBUG - 张三
+2021-02-22 00:12:26,567 - DEBUG - on_btn_new_single_clicked
+2021-02-22 00:12:28,005 - DEBUG - on_btn_add_image_clicked
+2021-02-22 00:12:33,187 - DEBUG - /Users/orange/Desktop/截屏2021-02-14 下午4.51.15.png
+2021-02-22 00:12:33,189 - DEBUG - 第0行的__new_btn_delete
+2021-02-22 00:12:33,189 - DEBUG - get_file_name/Users/orange/Desktop/截屏2021-02-14 下午4.51.15.png截屏2021-02-14 下午4.51.15.png
+2021-02-22 00:12:33,189 - DEBUG - __new_btn_preview
+2021-02-22 00:12:33,190 - DEBUG - __new_btn_delete
+2021-02-22 00:12:35,937 - DEBUG - do_btn_preview_clicked
+2021-02-22 00:12:38,206 - DEBUG - on_btn_add_image_clicked
+2021-02-22 00:12:40,698 - DEBUG - 
+2021-02-22 00:12:45,747 - DEBUG - 应用结束！
+2021-02-22 00:12:45,748 - DEBUG - 数据库关闭！

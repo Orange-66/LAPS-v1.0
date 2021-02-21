@@ -43,7 +43,7 @@ def win_test(window):
 def logging(*args):
     result_str = ''
     for i in args:
-        result_str += i
+        result_str += str(i)
     print(result_str)
     settings.log.debug(result_str)
 

@@ -9,14 +9,18 @@
 import os
 import zipfile
 import openpyxl
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QFileDialog
 from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
-from PyQt5.QtCore import QFile
+from PyQt5.QtCore import QFile, Qt
 
-from Utils import settings
-
+from Utils import settings, tool_win
 
 # 加载qss文件
+from Window.win_index import Win_Index
+
+
 def load_qss(qss_path):
     file = QFile(qss_path)
     file.open(QFile.ReadOnly)
@@ -79,7 +83,7 @@ def create_sample(save_dir):
 
     # 填写表头
     for i in range(len(settings.excel_sheet_titles)):
-        column = get_column_letter(i+1)
+        column = get_column_letter(i + 1)
         # 设置表头样式以及内容
         sheet[column + '1'].font = title_style
         sheet[column + '1'] = settings.excel_sheet_titles[i]
@@ -90,6 +94,16 @@ def create_sample(save_dir):
     work_book.save(os.path.join(save_dir, settings.excel_file_name))
 
 
-# 测试
-if __name__ == '__main__':
-    create_sample('../Docs')
+# 打开图片文件
+def open_image(window):
+    image_name, _ = QFileDialog.getOpenFileName(window, "Open Image File", "*.jpg;;*.png;;*.jpeg")
+    tool_win.logging(image_name)
+    image_pix = QPixmap(image_name)
+    return image_name, image_pix
+
+
+# 根据文件路径截取文件名
+def get_file_name(file_path):
+    file_name = file_path.split(os.sep)[-1]
+    tool_win.logging("get_file_name", file_path, file_name)
+    return file_name
