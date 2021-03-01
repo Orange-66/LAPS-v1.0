@@ -6,7 +6,7 @@
 # @File : tool_db.py
 # @Remark : 控制数据库的工具类
 # -----------------------------
-from PyQt5.QtCore import Qt, QItemSelectionModel, QDateTime
+from PyQt5.QtCore import Qt, QItemSelectionModel, QDateTime, QFile, QIODevice
 from PyQt5.QtSql import QSqlDatabase, QSqlQueryModel, QSqlQuery, QSqlTableModel
 from PyQt5.QtWidgets import QMessageBox, QDataWidgetMapper, QTableWidgetItem
 
@@ -138,6 +138,46 @@ def insert_info(id, name, create_date, modify_date,
     query.bindValue(":bmi", bmi)
     query.bindValue(":bmi_degree", bmi_degree)
     query.bindValue(":state", state)
+
+    res = query.exec()
+    if not res:
+        tool_win.logging("错误", "插入记录错误\n" + query.lastError().text())
+    else:
+        tool_win.logging("成功！")
+        # 刷新显示列表P213
+        pass
+
+
+def insert_image(id, image_path):
+    tool_win.logging("接收到的数据：")
+    tool_win.logging(id, type(id), image_path, type(image_path))
+
+    file = QFile(image_path)
+    file.open(QIODevice.ReadOnly)
+    original_image = file.readAll()
+    file.close()
+
+    query = QSqlQuery(settings.db)
+
+    query.prepare(
+        '''INSERT INTO 
+            patient_image ( id, original_image, processed_image, lap, tau, mve, mva,  mvs, iase, iasa,  iass)
+            VALUES
+            ( :id, :original_image, :processed_image, :lap, :tau, :mve, :mva, :mvs, :iase, :iasa, :iass)'''
+    )
+    query.bindValue(":id", id)
+    query.bindValue(":original_image", original_image)
+    query.bindValue(":processed_image", original_image)
+    query.bindValue(":lap", id)
+    query.bindValue(":tau", id)
+    query.bindValue(":mva", id)
+    query.bindValue(":mve", id)
+    query.bindValue(":mvs", id)
+    query.bindValue(":iasa", id)
+    query.bindValue(":iase", id)
+    query.bindValue(":iass", id)
+
+
 
     res = query.exec()
     if not res:
