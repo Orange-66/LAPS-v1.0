@@ -86,10 +86,24 @@ def find_by_id(query_model, row):
     return item_list
 
 
-def find_all():
+def find_all(keyword=""):
     if open_db():
         query_model = QSqlQueryModel()
-        query_model.setQuery('''SELECT state, id, name FROM patient_info ORDER BY id''')
+        if keyword == "":
+            query_model.setQuery('''SELECT state, id, name 
+                                    FROM patient_info 
+                                    ORDER BY modify_date''')
+        else:
+            query = QSqlQuery(settings.db)
+            query.prepare('''SELECT state, id, name 
+                                    FROM patient_info 
+                                    WHERE name=:keyword OR id=:keyword
+                                    ORDER BY modify_date''')
+
+            query.bindValue(":keyword", keyword)
+            query.exec()
+            query_model.setQuery(query)
+
         if query_model.lastError().isValid():
             QMessageBox.warning("错误", "数据表查询错误，出错消息\n" + query_model.lastError().text())
 

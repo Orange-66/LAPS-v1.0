@@ -42,14 +42,7 @@ class Win_Index(QMainWindow):
         item_title.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
         self.__ui.table_image_info.setItem(0, 0, item_title)
 
-
-        # 查询并刷新患者列表
-        self.query_model = tool_db.find_all()
-        select_model = QItemSelectionModel(self.query_model)
-        select_model.currentRowChanged.connect(self.do_currentRowChanged)
-
-        self.__ui.table_patient_list.setModel(self.query_model)
-        self.__ui.table_patient_list.setSelectionModel(select_model)
+        self.__refresh_patient_list()
 
     def do_currentRowChanged(self, current, previous):
         if current.isValid():
@@ -108,9 +101,21 @@ class Win_Index(QMainWindow):
     def on_btn_page_info_clicked(self):
         tool_win.logging("on_btn_page_info_clicked")
 
+    @pyqtSlot()
+    def on_line_search_bar_returnPressed(self):
+        tool_win.logging("on_line_search_bar_returnPressed", self.__ui.line_search_bar.text())
+        keyword = self.__ui.line_search_bar.text()
+        self.__refresh_patient_list(keyword)
+
     # ========================自定义函数========================
-    # def __refresh_patient_list(self):
-    #     tool_database
+    def __refresh_patient_list(self, keyword=''):
+        # 查询并刷新患者列表
+        self.query_model = tool_db.find_all(keyword)
+        select_model = QItemSelectionModel(self.query_model)
+        select_model.currentRowChanged.connect(self.do_currentRowChanged)
+
+        self.__ui.table_patient_list.setModel(self.query_model)
+        self.__ui.table_patient_list.setSelectionModel(select_model)
 
 
 # ============窗体测试程序============

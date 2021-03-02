@@ -314,18 +314,9 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,9">
         <item>
-         <widget class="QTextEdit" name="textEdit">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>30</height>
-           </size>
+         <widget class="QLineEdit" name="line_search_bar">
+          <property name="placeholderText">
+           <string>按下回车以搜索...</string>
           </property>
          </widget>
         </item>
