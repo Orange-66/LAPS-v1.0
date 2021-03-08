@@ -50,7 +50,7 @@ def logging(*args):
 
 # 关闭所有窗口，结束应用
 def close_all():
-    logging("应用结束！")
+    logging("close_all, 应用结束！")
     settings.app.exit()
 
 

@@ -12,7 +12,6 @@ from PIL import Image
 
 # 所在地址
 # UI文件所在路径
-from Utils import tool_win
 
 ui_dir = '../UI/'
 # qrc文件所在路径
@@ -109,7 +108,7 @@ def png_to_icon():
             path = os.path.join(png_icon_dir, icon_file)
             icon.save(path)
         except IOError:
-            tool_win.logging('connot convert :', png_file)
+            print('connot convert :', png_file)
 
 
 # 将此PyQT项目转换成exe文件
@@ -132,7 +131,7 @@ def project_to_exe(project_name="LAPS"):
     if os.path.exists(os.path.join(root_dir, spec_filename)):
         os.remove(os.path.join(root_dir, spec_filename))
     else:
-        tool_win.logging(f'没有找到 [{os.path.join(root_dir, spec_filename)}] 文件或文件夹')
+        print(f'没有找到 [{os.path.join(root_dir, spec_filename)}] 文件或文件夹')
 
     # 删除workspace文件夹
     root_dir = "./EXE/LAPS/"
@@ -144,7 +143,7 @@ def project_to_exe(project_name="LAPS"):
 
         os.rmdir(root_dir)
     else:
-        tool_win.logging(f'没有找到 [{root_dir}] 文件或文件夹')
+        print(f'没有找到 [{root_dir}] 文件或文件夹')
 
 
 # 程序的主入口
@@ -153,7 +152,7 @@ if __name__ == "__main__":
     # ui_to_py()
 
     # 调用系统命令把UI文件转换成Python文件-测试
-    # ui_to_py_x()
+    ui_to_py_x()
 
     # 调用系统命令把UI文件转换成Python文件-开发以及测试
     # ui_to_py_both()
@@ -165,4 +164,4 @@ if __name__ == "__main__":
     # png_to_icon()
 
     # 将此PyQT项目转换成exe文件
-    project_to_exe()
+    # project_to_exe()

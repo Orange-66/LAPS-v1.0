@@ -30,3 +30,14 @@ def set_image(image, window):
         window.resize(image.size())
         window.label.resize(image.size())
         return image
+
+
+# 将image填充至label中
+def set_image_by_label(image, label):
+    print("12312312312", type(image))
+    if isinstance(image, str):
+        scaled_image = QPixmap(image).scaled(900, 600, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        label.setPixmap(scaled_image)
+    else:
+        scaled_image = image.scaled(900, 600, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        label.setPixmap(scaled_image)

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Import_Image_Single</class>
- <widget class="QWidget" name="Import_Image_Single">
+ <class>Import_Image</class>
+ <widget class="QWidget" name="Import_Image">
   <property name="geometry">
    <rect>
     <x>0</x>

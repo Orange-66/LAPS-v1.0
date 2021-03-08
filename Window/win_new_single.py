@@ -72,10 +72,11 @@ class Win_New_Single(QWidget):
             dialog_title = "LAPS"
             dialog_info = "添加数据出现错误。"
         finally:
-            tool_win.logging(dialog_info)
+            tool_win.logging("on_btn_done_clicked", dialog_info)
             QMessageBox.about(self, dialog_title, dialog_info)
+            # 刷新主页面列表
+            settings.win_index.refresh_window()
             self.close()
-
 
     @pyqtSlot()
     # 取消按钮-点击-槽函数
@@ -123,13 +124,13 @@ class Win_New_Single(QWidget):
             ))
             self.__ui.label_degree.setText(tool_formula.formula_bmi_degree(float(self.__ui.spin_bmi.value())))
 
-            tool_win.logging(self.__ui.spin_bmi.value())
+            tool_win.logging("__refresh_bmi_bsa", self.__ui.spin_bmi.value())
         except ValueError:
             pass
         except ZeroDivisionError:
             pass
 
-    # 添加图像
+    # 添加一条图像项目
     def __createItemsARow(self, row_num, image_path, image_pix):
         # 图片名称
         image_item = self.__new_image_item(row_num, image_path)
@@ -159,7 +160,7 @@ class Win_New_Single(QWidget):
 
     # 新建相片item
     def __new_image_item(self, row_num, image_path):
-        tool_win.logging("第", row_num, "行的__new_btn_delete")
+        tool_win.logging("__new_image_item, 第", row_num, "行的__new_btn_delete")
         # image_name = tool_file.get_file_name(image_path)
         image_name = image_path
         return QTableWidgetItem(image_name, Qt.DisplayRole)

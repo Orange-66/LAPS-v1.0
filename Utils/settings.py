@@ -6,7 +6,7 @@
 # @File : settings.py
 # @Remark : 应用中各项参数
 # -----------------------------
-from PyQt5.QtGui import QPixmap, QColor
+from PyQt5.QtGui import QColor
 import logging
 
 
@@ -19,7 +19,7 @@ app = None
 # logo路径
 # logo_path = "./Resource/Images/Icon/win_logo.ico"
 logo_path = ":/icons/Images/Icon/win_logo.ico"
-
+source_empty_image = "./Resource/Images/Png/sample_album/result/125-678ZFY-WSP-031720200317084921720.jpg"
 # Mac路径
 wid_canvas_image_path = "/Users/orange/PycharmProjects/LAPS/Resource/Images/Png/wid_canvas_sample.png"
 # Windows路径
@@ -30,7 +30,9 @@ wid_canvas_image_path = "/Users/orange/PycharmProjects/LAPS/Resource/Images/Png/
 win_index = None
 win_painting = None
 win_new_single = None
+win_import_image = None
 wid_preview = None
+win_image_item = None
 
 # -------------画笔-------------
 
@@ -52,7 +54,7 @@ log.basicConfig(level=logging.DEBUG,
                 filename='./Docs/logging.txt',
                 filemode='w')
 # 日志记录开关
-# log.disable(log.DEBUG)
+log.disable(log.DEBUG)
 
 # -------------Excel-------------
 # 工作表标题
@@ -63,7 +65,21 @@ excel_freeze_strategy = 'A2'
 excel_title_width = 15
 excel_font_size = 14
 excel_bold = True
-# -------------口口-------------
+# -------------影像图片-------------
+# 当前患者id
+current_patient_id = None
+# 当前展示图片在列表中的坐标
+image_index = 0
+# 当前患者的原始影像图片列表
+original_image_list = []
+# 当前患者的处理后影像图片列表
+processed_image_list = []
+# 当前患者的处理后影像图片列表的信息
+processed_image_info_list = []
+# 当前界面展示的原始影像图片
+current_original_image = None
+# 当前界面展示的处理后影像图片
+current_processed_image = None
 # -------------口口-------------
 # -------------口口-------------
 # -------------口口-------------
