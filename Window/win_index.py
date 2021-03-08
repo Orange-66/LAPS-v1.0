@@ -143,7 +143,7 @@ class Win_Index(QMainWindow):
     def refresh_window(self, keyword=''):
         tool_win.logging("refresh_window, 界面刷新！")
         self.__refresh_patient_list(keyword)
-        self.__refresh_image_list()
+        self.refresh_image_list()
 
     # 刷新患者列表
     def __refresh_patient_list(self, keyword=''):
@@ -165,7 +165,7 @@ class Win_Index(QMainWindow):
         self.do_currentRowChanged(Current())
 
     # 刷新相册列表
-    def __refresh_image_list(self, row=0):
+    def refresh_image_list(self, row=0):
         if tool_db.find_image_by_patient_id(self.query_model, row) and len(settings.original_image_list) > 0:
             print(settings.original_image_list)
             self.__set_original_image(settings.original_image_list[0])
@@ -183,8 +183,9 @@ class Win_Index(QMainWindow):
             if item_list is not None:
                 self.__refresh_info_patient(item_list)
 
-            self.__refresh_image_list(current.row())
+            self.refresh_image_list(current.row())
             settings.current_patient_id = self.query_model.record(current.row()).value("patient_id")
+            settings.current_patient_name = self.query_model.record(current.row()).value("name")
 
     # 设置原始图片
     def __set_original_image(self, image):
@@ -204,7 +205,9 @@ class Win_Index(QMainWindow):
         # 设置处理后的图片到相应的图片上
         if settings.processed_image_list:
             tool_win.logging("__set_processed_image", settings.processed_image_info_list, settings.image_index)
-            self.__refresh_info_image(tool_db.dic_to_table_widget_item_list("patient_image", settings.processed_image_info_list[settings.image_index]))
+            self.__refresh_info_image(tool_db.dic_to_table_widget_item_list("patient_image",
+                                                                            settings.processed_image_info_list[
+                                                                                settings.image_index]))
 
     # 刷新图像所产生的基本信息在界面中部板上
     def __refresh_info_image(self, item_list):
@@ -253,6 +256,7 @@ class Win_Index(QMainWindow):
             self.__ui.btn_page_info.setText(f"第 {settings.image_index + 1} 张 / 共 {len(settings.original_image_list)} 张")
         else:
             self.__ui.btn_page_info.setText(f"第 {settings.image_index} 张 / 共 {len(settings.original_image_list)} 张")
+
 
 # ============窗体测试程序============
 if __name__ == "__main__":  # 用于当前窗体测试

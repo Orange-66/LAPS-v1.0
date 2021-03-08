@@ -255,6 +255,7 @@ def find_image_by_patient_id(query_model, row):
                                 'iasa': item_iasa, 'iass': item_iass}
 
         settings.processed_image_info_list.append(processed_image_item)
+        settings.image_id_list.append(str(query_model_2.value("image_id")))
 
     return True
 
@@ -321,7 +322,7 @@ def insert_image(patient_id, image_path):
 
     res = query.exec()
     if not res:
-        tool_win.logging("insert_image，错误", "插入记录错误\n" + query.lastError().text())
+        tool_win.logging("insert_image，错误 - 插入记录错误" + query.lastError().text())
     else:
         tool_win.logging("insert_image，成功！")
         # 刷新显示列表
@@ -414,3 +415,27 @@ def delete_patient(patient_id):
         tool_win.logging("insert_image，错误", "删除记录失败\n" + patient_res.lastError().text())
     else:
         tool_win.logging("insert_image，删除记录成功！")
+
+
+# 删除图片信息
+def delete_current_image():
+    tool_win.logging("delete_current_image，image_id：", settings.image_id_list[settings.image_index])
+
+    # 删除patient_image列表中的项目
+    query_image = QSqlQuery(settings.db)
+
+    query_image.prepare(
+        '''DELETE FROM patient_image 
+            WHERE image_id = :image_id'''
+    )
+    query_image.bindValue(":image_id", settings.image_id_list[settings.image_index])
+
+    image_res = query_image.exec()
+    if not image_res:
+        tool_win.logging("insert_image，错误", "删除记录失败" + query_image.lastError().text())
+        QMessageBox.warning(settings.win_index, "错误", "删除记录失败")
+    else:
+        tool_win.logging("insert_image，成功", "成功删除记录" + query_image.lastError().text())
+        QMessageBox.about(settings.win_index, "成功", "成功删除记录")
+
+    settings.win_image_item.close()

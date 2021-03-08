@@ -68,8 +68,12 @@ excel_bold = True
 # -------------影像图片-------------
 # 当前患者id
 current_patient_id = None
+# 当前患者name
+current_patient_name = None
 # 当前展示图片在列表中的坐标
 image_index = 0
+# 图片的id列表
+image_id_list = []
 # 当前患者的原始影像图片列表
 original_image_list = []
 # 当前患者的处理后影像图片列表

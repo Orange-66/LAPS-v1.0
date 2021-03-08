@@ -11,28 +11,24 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Wid_Image_Item(object):
-    def setupUi(self, Wid_Image_Item):
-        Wid_Image_Item.setObjectName("Wid_Image_Item")
-        Wid_Image_Item.resize(207, 228)
-        self.verticalLayout = QtWidgets.QVBoxLayout(Wid_Image_Item)
+class Ui_Image_Item(object):
+    def setupUi(self, Image_Item):
+        Image_Item.setObjectName("Image_Item")
+        Image_Item.resize(342, 324)
+        self.verticalLayout = QtWidgets.QVBoxLayout(Image_Item)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.pushButton = QtWidgets.QPushButton(Wid_Image_Item)
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout.addWidget(self.pushButton)
-        self.label = QtWidgets.QLabel(Wid_Image_Item)
-        self.label.setText("")
-        self.label.setObjectName("label")
-        self.verticalLayout.addWidget(self.label)
-        self.label_2 = QtWidgets.QLabel(Wid_Image_Item)
-        self.label_2.setObjectName("label_2")
-        self.verticalLayout.addWidget(self.label_2)
+        self.label_image_item = QtWidgets.QLabel(Image_Item)
+        self.label_image_item.setText("")
+        self.label_image_item.setObjectName("label_image_item")
+        self.verticalLayout.addWidget(self.label_image_item)
+        self.btn_delete = QtWidgets.QPushButton(Image_Item)
+        self.btn_delete.setObjectName("btn_delete")
+        self.verticalLayout.addWidget(self.btn_delete)
 
-        self.retranslateUi(Wid_Image_Item)
-        QtCore.QMetaObject.connectSlotsByName(Wid_Image_Item)
+        self.retranslateUi(Image_Item)
+        QtCore.QMetaObject.connectSlotsByName(Image_Item)
 
-    def retranslateUi(self, Wid_Image_Item):
+    def retranslateUi(self, Image_Item):
         _translate = QtCore.QCoreApplication.translate
-        Wid_Image_Item.setWindowTitle(_translate("Wid_Image_Item", "Form"))
-        self.pushButton.setText(_translate("Wid_Image_Item", "删除"))
-        self.label_2.setText(_translate("Wid_Image_Item", "图片名.png"))
+        Image_Item.setWindowTitle(_translate("Image_Item", "原图"))
+        self.btn_delete.setText(_translate("Image_Item", "删除"))

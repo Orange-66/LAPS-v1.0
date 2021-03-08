@@ -1,37 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Wid_Image_Item</class>
- <widget class="QWidget" name="Wid_Image_Item">
+ <class>Image_Item</class>
+ <widget class="QWidget" name="Image_Item">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>207</width>
-    <height>228</height>
+    <width>342</width>
+    <height>324</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>原图</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QPushButton" name="pushButton">
-     <property name="text">
-      <string>删除</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="label_image_item">
      <property name="text">
       <string/>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_2">
+    <widget class="QPushButton" name="btn_delete">
      <property name="text">
-      <string>图片名.png</string>
+      <string>删除</string>
      </property>
     </widget>
    </item>
