@@ -4,13 +4,13 @@
 # @Github : Orange-66
 # @PROJECT : LAPS 
 # @File : tool_image.py
-# @Remark : 
+# @Remark : 图片处理工具类
 # -----------------------------
-from PIL import Image
-import os
 from PyQt5.QtCore import Qt
 # 剪裁图片
 from PyQt5.QtGui import QPixmap
+
+from Utils import tool_trans
 
 
 def crop_image(image, lt, rt, lb, rb):
@@ -34,10 +34,19 @@ def set_image(image, window):
 
 # 将image填充至label中
 def set_image_by_label(image, label):
-    print("12312312312", type(image))
     if isinstance(image, str):
         scaled_image = QPixmap(image).scaled(900, 600, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         label.setPixmap(scaled_image)
     else:
         scaled_image = image.scaled(900, 600, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         label.setPixmap(scaled_image)
+
+
+# 将pixmap格式的图片转换成pil类型的图片
+def pixmap_to_pil(pixmap_image):
+    tool_trans.pixmap_to_pil(pixmap_image)
+
+
+# 将pil格式的图片转换成pixmap类型的图片
+def pil_to_pixmap(pil_image):
+    tool_trans.pil_to_pixmap(pil_image)

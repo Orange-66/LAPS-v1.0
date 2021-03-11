@@ -1,33 +1,17 @@
 # -*- coding: utf-8 -*-
 # @Time : 2021/1/24 11:19 下午
-# @Author : Qi Tianyue
+# @Author : Qi Tian yue
 # @Github : Orange-66
 # @PROJECT : LAPS 
 # @File : tool_trans.py
 # @Remark : 转换格式类型的工具类
 # -----------------------------
-import os
+from Utils import settings
+from PyQt5.QtCore import QBuffer
+from PIL import Image, ImageQt
 from tqdm import *
-from PIL import Image
-
-# 所在地址
-# UI文件所在路径
-
-ui_dir = '../UI/'
-# qrc文件所在路径
-qrc_dir = '../Resource/Qrc/'
-# png文件所在路径
-png_dir = '../Resource/Images/Png/'
-
-# 保存地址
-# ui to py文件保存路径-开发
-ui_py_dir = '../PyUI/'
-# ui to py文件保存路径-测试
-ui_py_x_dir = '../PyUI-test/'
-# qrc to py文件保存路径
-qrc_py_dir = '../Resource/Qrc-py/'
-# png to icon文件保存路径
-png_icon_dir = '../Resource/Images/Icon/'
+import io
+import os
 
 
 # 列出目录下的所有xxx文件
@@ -48,28 +32,30 @@ def to_xxx_file(file_type, filename, suffix=""):
 
 # 调用系统命令把UI文件转换成Python文件-开发
 def ui_to_py():
-    ui_file_list = get_xxx_file_list(ui_dir, ".ui")
+    ui_file_list = get_xxx_file_list(settings.ui_dir, ".ui")
 
     for i in tqdm(range(len(ui_file_list)), ascii=True, desc="Process: "):
         ui_file = ui_file_list[i]
 
         # 不可直接执行版本-开发
         py_file = to_xxx_file(".py", ui_file)
-        cmd = 'pyuic5 {ui_file} -o {py_file}'.format(ui_file=ui_dir + ui_file, py_file=ui_py_dir + py_file)
+        cmd = 'pyuic5 {ui_file} -o {py_file}'.format(ui_file=settings.ui_dir + ui_file,
+                                                     py_file=settings.ui_py_dir + py_file)
 
         os.system(cmd)
 
 
 # 调用系统命令把UI文件转换成Python文件-测试
 def ui_to_py_x():
-    ui_file_list = get_xxx_file_list(ui_dir, ".ui")
+    ui_file_list = get_xxx_file_list(settings.ui_dir, ".ui")
 
     for i in tqdm(range(len(ui_file_list)), ascii=True, desc="Process: "):
         ui_file = ui_file_list[i]
 
         # 可直接执行版本-测试
         py_file_x = to_xxx_file(".py", ui_file, "_x")
-        cmd_x = 'pyuic5 {ui_file} -o {py_file} -x'.format(ui_file=ui_dir + ui_file, py_file=ui_py_x_dir + py_file_x)
+        cmd_x = 'pyuic5 {ui_file} -o {py_file} -x'.format(ui_file=settings.ui_dir + ui_file,
+                                                          py_file=settings.ui_py_x_dir + py_file_x)
 
         os.system(cmd_x)
 
@@ -82,30 +68,31 @@ def ui_to_py_both():
 
 # 调用系统命令把qrc文件转换成Python文件
 def qrc_to_py():
-    qrc_file_list = get_xxx_file_list(qrc_dir, ".qrc")
+    qrc_file_list = get_xxx_file_list(settings.qrc_dir, ".qrc")
 
     for i in tqdm(range(len(qrc_file_list)), ascii=True, desc="Process: "):
         qrc_file = qrc_file_list[i]
         py_file = to_xxx_file(".py", qrc_file, "_rc")
         # 不可直接执行版本-开发
-        cmd = 'pyrcc5 {qrc_file} -o {py_file}'.format(qrc_file=qrc_dir + qrc_file, py_file=qrc_py_dir + py_file)
+        cmd = 'pyrcc5 {qrc_file} -o {py_file}'.format(qrc_file=settings.qrc_dir + qrc_file,
+                                                      py_file=settings.qrc_py_dir + py_file)
         os.system(cmd)
 
 
 # 把png文件转换成ico文件
 def png_to_icon():
     # 获取目录下文件名
-    png_file_files = get_xxx_file_list(png_dir, ".png")
+    png_file_files = get_xxx_file_list(settings.png_dir, ".png")
     # 图标大小
     size = (256, 256)
 
     for i in tqdm(range(len(png_file_files)), ascii=True, desc="Process: "):
         png_file = png_file_files[i]
         icon_file = to_xxx_file(".ico", png_file)
-        icon = Image.open(png_dir + png_file)
+        icon = Image.open(settings.png_dir + png_file)
         try:
             # 图标文件保存至icon目录
-            path = os.path.join(png_icon_dir, icon_file)
+            path = os.path.join(settings.png_icon_dir, icon_file)
             icon.save(path)
         except IOError:
             print('connot convert :', png_file)
@@ -144,6 +131,18 @@ def project_to_exe(project_name="LAPS"):
         os.rmdir(root_dir)
     else:
         print(f'没有找到 [{root_dir}] 文件或文件夹')
+
+
+# PIL格式转QPixmap格式
+def pil_to_pixmap(pil_image):
+    pixmap_image = ImageQt.toqpixmap(pil_image)
+    return pixmap_image
+
+
+# QPixmap格式转PIL格式
+def pixmap_to_pil(pixmap_image):
+    pil_image = ImageQt.fromqpixmap(pixmap_image)
+    return pil_image
 
 
 # 程序的主入口

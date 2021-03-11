@@ -91,4 +91,20 @@ current_processed_image = None
 # -------------口口-------------
 # -------------口口-------------
 # -------------口口-------------
-# -------------口口-------------
+# -------------各个文件的所在地址-------------
+# UI文件所在路径
+ui_dir = '../UI/'
+# qrc文件所在路径
+qrc_dir = '../Resource/Qrc/'
+# png文件所在路径
+png_dir = '../Resource/Images/Png/'
+
+# -------------各个文件的保存地址-------------
+# ui to py文件保存路径-开发
+ui_py_dir = '../PyUI/'
+# ui to py文件保存路径-测试
+ui_py_x_dir = '../PyUI-test/'
+# qrc to py文件保存路径
+qrc_py_dir = '../Resource/Qrc-py/'
+# png to icon文件保存路径
+png_icon_dir = '../Resource/Images/Icon/'
