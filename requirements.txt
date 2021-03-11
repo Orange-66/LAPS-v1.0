@@ -1,7 +1,7 @@
 PyQt5==5.15.2
 
 pytesseract~=0.3.7
-numpy~=1.18.5
+numpy~=1.16.0
 pillow~=8.0.1
 keras~=2.4.3
 scipy~=1.5.4
