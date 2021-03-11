@@ -96,10 +96,14 @@ def create_sample(save_dir):
 
 # 打开图片文件
 def open_image(window):
-    image_name, _ = QFileDialog.getOpenFileName(window, "Open Image File", "*.jpg;;*.png;;*.jpeg")
-    tool_win.logging(image_name)
-    image_pix = QPixmap(image_name)
-    return image_name, image_pix
+    image_name_list, _ = \
+        QFileDialog.getOpenFileNames(window, "Open Image File", os.getcwd(), "Image(*.jpg *.png *.jpeg)")
+    tool_win.logging(image_name_list)
+    image_pix_list = []
+    for image_name in image_name_list:
+        image_pix = QPixmap(image_name)
+        image_pix_list.append(image_pix)
+    return image_name_list, image_pix_list
 
 
 # 根据文件路径截取文件名
