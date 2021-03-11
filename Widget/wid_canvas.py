@@ -22,6 +22,7 @@ class Wid_Canvas(QWidget):
     pen = QPen()
     pen.setWidth(settings.pen_width)
     pen.setColor(settings.pen_color)
+    white_background = False
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -29,13 +30,14 @@ class Wid_Canvas(QWidget):
 
         self.resize(600, 1200)
 
-        self.canvas = QPixmap(600, 500)  # 设置画布大小
+        self.canvas = QPixmap(settings.canvas_width, settings.canvas_height)  # 设置画布大小
         self.canvas_clear()
 
     # ========================事件函数========================
-    # 绘图
+    # 绘图事件
     def paintEvent(self, event):
-        self.canvas_clear()
+        # 清空画布
+        self.canvas_clear(self.white_background)
 
         painter = QPainter(self.canvas)
         painter.setPen(self.pen)
@@ -78,10 +80,15 @@ class Wid_Canvas(QWidget):
 
     # ========================自定义函数========================
     # 重绘背景图片
-    def canvas_clear(self):
+    def canvas_clear(self, white_background=False):
         painter = QPainter(self.canvas)
-        canvas_image = QPixmap(settings.wid_canvas_image_path)
-        painter.drawPixmap(0, 0, 600, 500, canvas_image)
+        if white_background:
+            rect = QRect(0, 0, settings.canvas_width, settings.canvas_height)
+            painter.fillRect(rect, Qt.white)
+        else:
+            # canvas_image = QPixmap(settings.wid_canvas_image_path)
+            canvas_image = settings.original_image_list[settings.image_index]
+            painter.drawPixmap(0, 0, settings.canvas_width, settings.canvas_height, canvas_image)
 
     # 前进操作
     def forward(self):
@@ -118,6 +125,10 @@ class Wid_Canvas(QWidget):
     # 完成操作
     def done(self):
         self.setMouseTracking(False)
+        self.white_background = True
+        self.paintEvent(None)
+        self.white_background = False
+        return self.canvas
 
 
 # ============窗体测试程序============

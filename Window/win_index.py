@@ -106,7 +106,7 @@ class Win_Index(QMainWindow):
             self.__set_original_image(settings.current_original_image)
 
             settings.current_processed_image = settings.processed_image_list[settings.image_index]
-            self.__set_processed_image(settings.current_processed_image)
+            self.set_processed_image(settings.current_processed_image)
             # 刷新btn_down_page按钮上文字
             self.__refresh_btn_page_info()
 
@@ -120,7 +120,7 @@ class Win_Index(QMainWindow):
             self.__set_original_image(settings.current_original_image)
 
             settings.current_processed_image = settings.processed_image_list[settings.image_index]
-            self.__set_processed_image(settings.current_processed_image)
+            self.set_processed_image(settings.current_processed_image)
             # 刷新btn_down_page按钮上文字
             self.__refresh_btn_page_info()
 
@@ -169,10 +169,10 @@ class Win_Index(QMainWindow):
         if tool_db.find_image_by_patient_id(self.query_model, row) and len(settings.original_image_list) > 0:
             print(settings.original_image_list)
             self.__set_original_image(settings.original_image_list[0])
-            self.__set_processed_image(settings.processed_image_list[0])
+            self.set_processed_image(settings.processed_image_list[0])
         else:
             self.__set_original_image(None)
-            self.__set_processed_image(None)
+            self.set_processed_image(None)
 
         self.__refresh_btn_page_info()
 
@@ -195,7 +195,7 @@ class Win_Index(QMainWindow):
             tool_image.set_image_by_label(image, self.__ui.label_original_image)
 
     # 设置处理后的图片
-    def __set_processed_image(self, image):
+    def set_processed_image(self, image):
         # 为当前处理后页面赋值
         settings.current_processed_image = image
         # 如果当前还没有产生过相应的图片
@@ -204,10 +204,13 @@ class Win_Index(QMainWindow):
 
         # 设置处理后的图片到相应的图片上
         if settings.processed_image_list:
-            tool_win.logging("__set_processed_image", settings.processed_image_info_list, settings.image_index)
+            tool_win.logging("set_processed_image-1", settings.processed_image_info_list, settings.image_index)
+
             self.__refresh_info_image(tool_db.dic_to_table_widget_item_list("patient_image",
                                                                             settings.processed_image_info_list[
                                                                                 settings.image_index]))
+            tool_image.set_image_by_label(image, self.__ui.label_original_image)
+            settings.processed_image_list[settings.image_index] = image
 
     # 刷新图像所产生的基本信息在界面中部板上
     def __refresh_info_image(self, item_list):

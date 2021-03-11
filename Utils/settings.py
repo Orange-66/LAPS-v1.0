@@ -21,7 +21,8 @@ app = None
 logo_path = ":/icons/Images/Icon/win_logo.ico"
 source_empty_image = "./Resource/Images/Png/sample_album/result/125-678ZFY-WSP-031720200317084921720.jpg"
 # Mac路径
-wid_canvas_image_path = "/Users/orange/PycharmProjects/LAPS/Resource/Images/Png/wid_canvas_sample.png"
+# wid_canvas_image_path = "/Users/orange/PycharmProjects/LAPS/Resource/Images/Png/wid_canvas_sample.png"
+
 # Windows路径
 # wid_canvas_image_path = "C:\\Users\\Orange\\PycharmProjects\\LAPS\\Resource\\Images\\Png\\wid_canvas_sample.png"
 
@@ -35,9 +36,12 @@ wid_preview = None
 win_image_item = None
 
 # -------------画笔-------------
-
 pen_color = QColor(209, 26, 45)
 pen_width = 2
+
+# -------------画布-------------
+canvas_width = 896
+canvas_height = 392
 
 # -------------数据库-------------
 # 数据库路径
