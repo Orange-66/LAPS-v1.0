@@ -19,7 +19,7 @@ app = None
 # logo路径
 # logo_path = "./Resource/Images/Icon/win_logo.ico"
 logo_path = ":/icons/Images/Icon/win_logo.ico"
-source_empty_image = "./Resource/Images/Png/sample_album/result/125-678ZFY-WSP-031720200317084921720.jpg"
+source_empty_image = "./Resource/Images/Png/empty_image.png"
 # Mac路径
 # wid_canvas_image_path = "/Users/orange/PycharmProjects/LAPS/Resource/Images/Png/wid_canvas_sample.png"
 
@@ -84,10 +84,6 @@ original_image_list = []
 processed_image_list = []
 # 当前患者的处理后影像图片列表的信息
 processed_image_info_list = []
-# 当前界面展示的原始影像图片
-current_original_image = None
-# 当前界面展示的处理后影像图片
-current_processed_image = None
 # -------------口口-------------
 # -------------口口-------------
 # -------------口口-------------

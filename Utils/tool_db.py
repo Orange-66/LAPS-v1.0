@@ -233,12 +233,21 @@ def find_image_by_patient_id(query_model, row):
     settings.processed_image_info_list = []
 
     while query_model_2.next():
-        original_image = QPixmap()
-        original_image.loadFromData(query_model_2.value("original_image"))
-        processed_image = QPixmap()
-        processed_image.loadFromData(query_model_2.value("processed_image"))
-        settings.original_image_list.append(original_image)
-        settings.processed_image_list.append(processed_image)
+        original_query = query_model_2.value("original_image")
+        if not original_query == '':
+            original_image = QPixmap()
+            original_image.loadFromData(original_query)
+            settings.original_image_list.append(original_image)
+        else:
+            settings.original_image_list.append(None)
+
+        processed_query = query_model_2.value("processed_image")
+        if not processed_query == '':
+            processed_image = QPixmap()
+            processed_image.loadFromData(processed_query)
+            settings.processed_image_list.append(processed_image)
+        else:
+            settings.processed_image_list.append(None)
 
         item_lap = str(query_model_2.value("lap"))
         item_tau = str(query_model_2.value("tau"))
@@ -295,30 +304,32 @@ def dic_to_table_widget_item_list(dic_name, dictionary):
 
 
 # 插入图片-完成
-def insert_image(patient_id, image_path):
+def insert_image(patient_id, uncropped_image_path):
     tool_win.logging("insert_image, 接收到的数据：", patient_id, type(patient_id),
-                     image_path, type(image_path))
+                     uncropped_image_path, type(uncropped_image_path))
 
-    file = QFile(image_path)
+    file = QFile(uncropped_image_path)
     if not file.open(QIODevice.ReadOnly):
-        tool_win.logging("insert_image, 该路径下无此文件，" + image_path)
-        QMessageBox.warning(settings.win_index, "错误", "该路径下无此文件,", image_path)
+        tool_win.logging("insert_image, 该路径下无此文件，" + uncropped_image_path)
+        QMessageBox.warning(settings.win_index, "错误", "该路径下无此文件,", uncropped_image_path)
         return False
     else:
-        original_image = file.readAll()
+        uncropped_image = file.readAll()
         file.close()
 
     query = QSqlQuery(settings.db)
 
     query.prepare(
         '''INSERT INTO 
-            patient_image (patient_id, original_image, processed_image)
+            patient_image (patient_id, uncropped_image, original_image)
             VALUES
-            (:patient_id, :original_image, :processed_image)'''
+            (:patient_id, :uncropped_image, :original_image)'''
     )
     query.bindValue(":patient_id", patient_id)
-    query.bindValue(":original_image", original_image)
-    query.bindValue(":processed_image", original_image)
+    query.bindValue(":uncropped_image", uncropped_image)
+    query.bindValue(":original_image", uncropped_image)
+
+    # query.bindValue(":processed_image", original_image)
 
     res = query.exec()
     if not res:

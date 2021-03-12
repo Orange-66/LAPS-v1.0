@@ -45,8 +45,6 @@ class Win_Painting(QWidget):
     def on_btn_done_clicked(self):
         tool_win.logging("on_btn_done_clicked")
         processed_image = self.__ui.wid_canvas.done()
-        filename = str(random.randint(0, 99))
-        processed_image.save(filename + '.png')
         settings.win_index.set_processed_image(processed_image)
         self.__ui.wid_canvas.clear()
         self.close()

@@ -10,8 +10,7 @@ from PyQt5.QtCore import pyqtSlot, Qt, QItemSelectionModel
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QAbstractItemView, QMessageBox, QTableWidgetItem)
 
 from PyUI.ui_index import Ui_Index
-from Utils import settings, tool_win, tool_db, tool_image
-# from Utils.LAP_Caculation_System import System
+from Utils import settings, tool_win, tool_db, tool_image, tool_lap
 from Widget.wid_preview import Wid_Preview
 from Window.win_image_item import Win_Image_Item
 from Window.win_painting import Win_Painting
@@ -73,12 +72,12 @@ class Win_Index(QMainWindow):
         settings.win_painting.show()
 
     @pyqtSlot()
-    # 撤销按钮-点击-槽函数
+    # 撤销按钮-点击-槽函数-未完成
     def on_act_backward_triggered(self):
         pass
 
     @pyqtSlot()
-    # 取消按钮-点击-槽函数
+    # 取消按钮-点击-槽函数-未完成
     def on_act_cancel_triggered(self):
         pass
 
@@ -92,7 +91,7 @@ class Win_Index(QMainWindow):
             settings.win_index.refresh_window()
 
     @pyqtSlot()
-    # 保存按钮-点击-槽函数
+    # 保存按钮-点击-槽函数-未完成
     def on_act_save_triggered(self):
         pass
 
@@ -102,11 +101,11 @@ class Win_Index(QMainWindow):
         tool_win.logging("on_btn_up_page_clicked")
         if settings.image_index > 0:
             settings.image_index -= 1
-            settings.current_original_image = settings.original_image_list[settings.image_index]
-            self.__set_original_image(settings.current_original_image)
+            current_original_image = settings.original_image_list[settings.image_index]
+            self.__set_original_image(current_original_image)
 
-            settings.current_processed_image = settings.processed_image_list[settings.image_index]
-            self.set_processed_image(settings.current_processed_image)
+            current_processed_image = settings.processed_image_list[settings.image_index]
+            self.set_processed_image(current_processed_image)
             # 刷新btn_down_page按钮上文字
             self.__refresh_btn_page_info()
 
@@ -116,11 +115,11 @@ class Win_Index(QMainWindow):
         tool_win.logging("on_btn_down_page_clicked")
         if settings.image_index + 1 < len(settings.original_image_list):
             settings.image_index += 1
-            settings.current_original_image = settings.original_image_list[settings.image_index]
-            self.__set_original_image(settings.current_original_image)
+            current_original_image = settings.original_image_list[settings.image_index]
+            self.__set_original_image(current_original_image)
 
-            settings.current_processed_image = settings.processed_image_list[settings.image_index]
-            self.set_processed_image(settings.current_processed_image)
+            current_processed_image = settings.processed_image_list[settings.image_index]
+            self.set_processed_image(current_processed_image)
             # 刷新btn_down_page按钮上文字
             self.__refresh_btn_page_info()
 
@@ -167,7 +166,6 @@ class Win_Index(QMainWindow):
     # 刷新相册列表
     def refresh_image_list(self, row=0):
         if tool_db.find_image_by_patient_id(self.query_model, row) and len(settings.original_image_list) > 0:
-            print(settings.original_image_list)
             self.__set_original_image(settings.original_image_list[0])
             self.set_processed_image(settings.processed_image_list[0])
         else:
@@ -195,22 +193,31 @@ class Win_Index(QMainWindow):
             tool_image.set_image_by_label(image, self.__ui.label_original_image)
 
     # 设置处理后的图片
-    def set_processed_image(self, image):
-        # 为当前处理后页面赋值
-        settings.current_processed_image = image
-        # 如果当前还没有产生过相应的图片
-        if not settings.current_processed_image:
-            settings.current_processed_image = settings.current_original_image
+    def set_processed_image(self, current_processed_image):
+        tool_win.logging("set_processed_image", current_processed_image)
+        # 如果当前还没有计算过相应的图片的lap,则为原图计算lap并同时产生相应的处理后的processed_image
+        if not current_processed_image:
+            if not len(settings.original_image_list):
+                tool_image.set_image_by_label(settings.source_empty_image, self.__ui.label_processed_image)
+                return
+            # 处理并计算得出lap以及相应的图片
+            lap, settings.processed_image_list[settings.image_index] = \
+                tool_lap.process_original_image(settings.original_image_list[settings.image_index])
+            # 将得到的图片存储到数据库中
+            tool_db.insert_processed_image(settings.image_id_list[settings.image_index],
+                                           settings.processed_image_list[settings.image_index])
 
-        # 设置处理后的图片到相应的图片上
-        if settings.processed_image_list:
-            tool_win.logging("set_processed_image-1", settings.processed_image_info_list, settings.image_index)
+        # 设置处理后的图片到相应的图片位置上
+        if settings.processed_image_list[settings.image_index]:
+            tool_win.logging("set_processed_image", settings.processed_image_info_list, settings.image_index)
 
+            # 刷新图片信息板
             self.__refresh_info_image(tool_db.dic_to_table_widget_item_list("patient_image",
-                                                                            settings.processed_image_info_list[
-                                                                                settings.image_index]))
-            tool_image.set_image_by_label(image, self.__ui.label_original_image)
-            settings.processed_image_list[settings.image_index] = image
+                                                                            settings.processed_image_info_list
+                                                                            [settings.image_index]))
+
+            tool_image.set_image_by_label(current_processed_image, self.__ui.label_processed_image)
+            settings.processed_image_list[settings.image_index] = current_processed_image
 
     # 刷新图像所产生的基本信息在界面中部板上
     def __refresh_info_image(self, item_list):

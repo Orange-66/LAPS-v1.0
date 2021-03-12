@@ -9,12 +9,8 @@
 from PyQt5.QtCore import Qt
 # 剪裁图片
 from PyQt5.QtGui import QPixmap
-
+from PIL import Image
 from Utils import tool_trans
-
-
-def crop_image(image, lt, rt, lb, rb):
-    return image.crop((lt, rt, lb, rb))
 
 
 # 设置图片大小
@@ -44,9 +40,37 @@ def set_image_by_label(image, label):
 
 # 将pixmap格式的图片转换成pil类型的图片
 def pixmap_to_pil(pixmap_image):
-    tool_trans.pixmap_to_pil(pixmap_image)
+    q_image = tool_trans.pixmap_to_QImage(pixmap_image)
+    return tool_trans.QImage_to_Image(q_image)
 
 
 # 将pil格式的图片转换成pixmap类型的图片
 def pil_to_pixmap(pil_image):
-    tool_trans.pil_to_pixmap(pil_image)
+    q_image = tool_trans.Image_to_QImage(pil_image)
+    return tool_trans.QImage_to_pixmap(q_image)
+
+
+# 读取图片
+def open_image(image_path):
+    return Image.open(image_path)
+
+
+# 剪裁图片
+def crop_image(image_path, x1, y1, x2, y2):
+    image = open_image(image_path)
+    cropped_image = image.crop((x1, y1, x2, y2))
+    return cropped_image
+
+
+# 粘贴图片
+def paste_image(original_image_path, target_image_path, x, y):
+    original_image = open_image(original_image_path)
+    target_image = open_image(target_image_path)
+
+    target_image.paste(original_image, (x, y))
+    return target_image
+
+
+# 保存图片
+def save_image(image, save_path):
+    image.save(save_path)

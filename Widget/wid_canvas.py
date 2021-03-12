@@ -52,8 +52,6 @@ class Wid_Canvas(QWidget):
         if self.hasMouseTracking() and len(self.painting_path) > 0:
             painter.drawLine(self.painting_path[len(self.painting_path) - 1], self.cursor_point)
 
-        # painter.drawPixmap(0, 0, self.canvas)
-
         painter = QPainter(self)
         painter.drawPixmap(0, 0, self.canvas)
 
@@ -101,7 +99,7 @@ class Wid_Canvas(QWidget):
             self.painting_path.append(pop_item)
             self.update()
         else:
-            tool_win.logging("前无可取")
+            tool_win.logging("forward, 前无可取")
 
     # 后撤操作
     def backward(self):
@@ -114,7 +112,7 @@ class Wid_Canvas(QWidget):
             self.tem_painting_path.append(pop_item)
             self.update()
         else:
-            tool_win.logging("后无可退")
+            tool_win.logging("forward, 后无可退")
 
     # 清除操作
     def clear(self):

@@ -134,15 +134,23 @@ def project_to_exe(project_name="LAPS"):
 
 
 # PIL格式转QPixmap格式
-def pil_to_pixmap(pil_image):
-    pixmap_image = ImageQt.toqpixmap(pil_image)
-    return pixmap_image
+def QImage_to_pixmap(q_image):
+    return ImageQt.toqpixmap(q_image)
 
 
 # QPixmap格式转PIL格式
-def pixmap_to_pil(pixmap_image):
-    pil_image = ImageQt.fromqpixmap(pixmap_image)
-    return pil_image
+def pixmap_to_QImage(pixmap_image):
+    return ImageQt.fromqpixmap(pixmap_image)
+
+
+# QImage转Image
+def QImage_to_Image(q_image):
+    return ImageQt.fromqimage(q_image)
+
+
+# Image转QImage
+def Image_to_QImage(image):
+    return ImageQt.ImageQt(image)
 
 
 # 程序的主入口

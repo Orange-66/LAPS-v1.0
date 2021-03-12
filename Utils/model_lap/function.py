@@ -1,13 +1,13 @@
 from __future__ import division
 import os
 import sympy
-import models as M
+import Utils.model_lap.models as M
 import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
 from PIL import Image
 from keras.preprocessing.image import array_to_img
-import NoSh as N
+import Utils.model_lap.NoSh as N
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 
@@ -178,10 +178,10 @@ def curve_fit(picture_path, predicted_path):
     return sum(result_full) / len(result_full) / 3, fitted_picture_path
 
 
-def process_original_image(picture_path):
-    file_path = picture_Preprocess(picture_path)
+def process_original_image(original_image):
+    file_path = picture_Preprocess(original_image)
     predicted_path = edge_Predict(file_path)
-    result, path = curve_fit(picture_path, predicted_path)
+    result, path = curve_fit(original_image, predicted_path)
     return result, path
 
 

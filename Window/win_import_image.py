@@ -37,10 +37,10 @@ class Win_Import_Image(QWidget):
                 tool_win.logging("on_btn_done_clicked - ", patient_id, " - ", image_path)
 
             dialog_title = "LAPS"
-            dialog_info = "添加数据成功！"
+            dialog_info = "on_btn_done_clicked，添加数据成功！"
         except Exception as e:
             dialog_title = "LAPS"
-            dialog_info = "添加数据出现错误。"
+            dialog_info = "on_btn_done_clicked，添加数据出现错误。"
         finally:
             tool_win.logging("on_btn_done_clicked", dialog_info)
             QMessageBox.about(self, dialog_title, dialog_info)
@@ -59,14 +59,15 @@ class Win_Import_Image(QWidget):
     def on_btn_add_image_clicked(self):
         tool_win.logging("on_btn_add_image_clicked")
         # 打开文件获取路径以及Pixmap对象
-        image_path, image_pix = tool_file.open_image(self)
-        if not image_path == '':
+        image_path_list, image_pix_list = tool_file.open_image(self)
+
+        for i in range(len(image_path_list)):
             # 获得当前表格的行数
             current_row = self.__ui.wtable_album.rowCount()
             # 插入
             self.__ui.wtable_album.insertRow(current_row)
             # 设置单元格中的各个item
-            self.__createItemsARow(current_row, image_path, image_pix)
+            self.__createItemsARow(current_row, image_path_list[i], image_pix_list[i])
 
     # ========================手动关联槽函数========================
     # 预览按钮槽函数

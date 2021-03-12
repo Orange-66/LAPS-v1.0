@@ -15,7 +15,6 @@ def img2dict(image_path):
                }
 
     img1 = Image.open(image_path)
-
     img1 = img1.convert('L')
     mat = np.array(img1)
     if mat.shape[0] != 768:
