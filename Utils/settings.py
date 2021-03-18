@@ -7,24 +7,16 @@
 # @Remark : 应用中各项参数
 # -----------------------------
 from PyQt5.QtGui import QColor
-import logging
-
-
-# -------------应用-------------
 from PyQt5.QtSql import QSqlDatabase
 
+# -------------应用-------------
 app = None
 
 # -------------路径-------------
 # logo路径
 # logo_path = "./Resource/Images/Icon/win_logo.ico"
 logo_path = ":/icons/Images/Icon/win_logo.ico"
-source_empty_image = "./Resource/Images/Png/empty_image.png"
-# Mac路径
-# wid_canvas_image_path = "/Users/orange/PycharmProjects/LAPS/Resource/Images/Png/wid_canvas_sample.png"
-
-# Windows路径
-# wid_canvas_image_path = "C:\\Users\\Orange\\PycharmProjects\\LAPS\\Resource\\Images\\Png\\wid_canvas_sample.png"
+source_empty_image = "Resource/Images/Button/empty_image.png"
 
 # -------------窗口-------------
 
@@ -45,20 +37,11 @@ canvas_height = 392
 
 # -------------数据库-------------
 # 数据库路径
-db_path = "./Resource/Database/laps.db"
+db_path = "Database/laps.db"
 # 加载数据库驱动
 db = QSqlDatabase.addDatabase("QSQLITE")
 # 加载数据库文件
 db.setDatabaseName(db_path)
-
-# -------------日志-------------
-log = logging
-log.basicConfig(level=logging.DEBUG,
-                format='%(asctime)s - %(levelname)s - %(message)s',
-                filename='./Docs/logging.txt',
-                filemode='w')
-# 日志记录开关
-log.disable(log.DEBUG)
 
 # -------------Excel-------------
 # 工作表标题
@@ -69,38 +52,18 @@ excel_freeze_strategy = 'A2'
 excel_title_width = 15
 excel_font_size = 14
 excel_bold = True
+
 # -------------影像图片-------------
 # 当前患者id
 current_patient_id = None
 # 当前患者name
 current_patient_name = None
 # 当前展示图片在列表中的坐标
-image_index = 0
-# 图片的id列表
-image_id_list = []
-# 当前患者的原始影像图片列表
-original_image_list = []
-# 当前患者的处理后影像图片列表
-processed_image_list = []
-# 当前患者的处理后影像图片列表的信息
-processed_image_info_list = []
-# -------------口口-------------
-# -------------口口-------------
-# -------------口口-------------
-# -------------各个文件的所在地址-------------
-# UI文件所在路径
-ui_dir = '../UI/'
-# qrc文件所在路径
-qrc_dir = '../Resource/Qrc/'
-# png文件所在路径
-png_dir = '../Resource/Images/Png/'
+image_index = None
+# 当前患者的影像图片信息列表
+patient_image_list = []
 
-# -------------各个文件的保存地址-------------
-# ui to py文件保存路径-开发
-ui_py_dir = '../PyUI/'
-# ui to py文件保存路径-测试
-ui_py_x_dir = '../PyUI-test/'
-# qrc to py文件保存路径
-qrc_py_dir = '../Resource/Qrc-py/'
-# png to icon文件保存路径
-png_icon_dir = '../Resource/Images/Icon/'
+# -------------口口-------------
+# -------------口口-------------
+# -------------口口-------------
+

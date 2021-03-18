@@ -13,20 +13,12 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 
 
 def picture_Preprocess(picture_path):
-    if os.path.exists("output"):
-        pass
-    else:
-        os.mkdir("output")
-
-    if os.path.exists("dataset"):
-        pass
-    else:
-        os.mkdir("dataset")
+    output_folder = 'Database/Temp'
 
     val = np.ones((2, 392, 448), dtype='float32')
 
     count1 = 0
-
+    # for i in x:
     image1 = Image.open(picture_path)
     image1 = image1.resize((1024, 768))
     image1 = image1.convert("L")
@@ -38,22 +30,17 @@ def picture_Preprocess(picture_path):
     mat[0:392, 0:448] = val[0]
     mat[0:392, 448:896] = val[1]
     image = array_to_img(np.reshape(mat, (392, 896, 1)))
-    image.save('output/original.png')
-    np.save('dataset/picture_preprocessed.npy', val)
-    return 'dataset/picture_preprocessed.npy'
+    image.save(output_folder + '/original.png')
+    np.save(output_folder + '/picture_preprocessed.npy', val)
+    return output_folder + '/picture_preprocessed.npy'
 
 
 def edge_Predict(file_path):
     te_data = np.load(file_path)
-    output_folder = 'output'
-
-    if os.path.exists(output_folder):
-        pass
-    else:
-        os.mkdir(output_folder)
+    output_folder = 'Database/Temp'
 
     model = M.BCDU_net_D3(input_size=(392, 448, 1))
-    model.load_weights('model/model_version_2.h5')
+    model.load_weights('Utils/model_lap/model_lap.h5')
     predictions = model.predict(te_data, batch_size=1, verbose=1)
     mat_predicted = np.zeros((392, 896))
     mat_predicted[0:392, 0:448] = predictions[0].reshape(392, 448)
@@ -65,6 +52,8 @@ def edge_Predict(file_path):
 
 def curve_fit(picture_path, predicted_path):
     predict = N.img2dict(picture_path)
+
+    output_folder = 'Database/Temp'
 
     result_full = []
 
@@ -127,16 +116,16 @@ def curve_fit(picture_path, predicted_path):
         f1 = np.polyfit(fit_y, fit_x, 6)
         p1 = np.poly1d(f1)
 
-        image2 = plt.imread('output/original.png')
+        image2 = plt.imread(output_folder + '/original.png')
         plt.imshow(image2)
         xvals = p1(fit_y)  # 拟合y值
-
+        # plt.scatter(fit_y, fit_x)
         plt.plot(fit_y, xvals, c='r')
 
         fit_x = [(i + 340 - origin_x) / x_scale for i in fit_x]
         fit_y = [(i + 40 - origin_y) / y_scale * 0.15 for i in fit_y]
 
-        f1 = np.polyfit(fit_y, fit_x, 2)
+        f1 = np.polyfit(fit_y, fit_x, 6)
         p1 = np.poly1d(f1)
 
         T1 = (p1 - 1).roots
@@ -164,24 +153,34 @@ def curve_fit(picture_path, predicted_path):
                 for i in result:
                     result_full.append(i)
 
+                # result = [i / 3 for i in result]
+                # print("LAP predicted by System:")
+                # print(result)
+    # plt.scatter(y, x)
     plt.scatter(peak_y, peak_x, c='r')
 
-    if os.path.exists("fig"):
+    plt.savefig(output_folder + "/figure.png")
+
+    # plt.pause(0.5)
+    plt.clf()
+
+    return sum(result_full) / len(result_full) / 4, output_folder + "/figure.png"
+
+
+def process_original_image(picture_path):
+    if os.path.exists("Database"):
         pass
     else:
-        os.mkdir("fig")
+        os.mkdir("Database")
 
-    fitted_picture_path = 'fig/Figure.png'
+    if os.path.exists("Database/Temp"):
+        pass
+    else:
+        os.mkdir("Database/Temp")
 
-    plt.savefig(fitted_picture_path)
-
-    return sum(result_full) / len(result_full) / 3, fitted_picture_path
-
-
-def process_original_image(original_image):
-    file_path = picture_Preprocess(original_image)
+    file_path = picture_Preprocess(picture_path)
     predicted_path = edge_Predict(file_path)
-    result, path = curve_fit(original_image, predicted_path)
+    result, path = curve_fit(picture_path, predicted_path)
     return result, path
 
 
@@ -252,7 +251,7 @@ def process_painting_image(picture_path, predicted_path):
         image2 = plt.imread('output/original.png')
         plt.imshow(image2)
         xvals = p1(fit_y)  # 拟合y值
-
+        # plt.scatter(fit_y, fit_x)
         plt.plot(fit_y, xvals, c='r')
 
         fit_x = [(i + 340 - origin_x) / x_scale for i in fit_x]
@@ -286,6 +285,10 @@ def process_painting_image(picture_path, predicted_path):
                 for i in result:
                     result_full.append(i)
 
+                # result = [i / 3 for i in result]
+                # print("LAP predicted by System:")
+                # print(result)
+    # plt.scatter(y, x)
     plt.scatter(peak_y, peak_x, c='r')
 
     if os.path.exists("fig"):
@@ -296,5 +299,8 @@ def process_painting_image(picture_path, predicted_path):
     fitted_picture_path = 'fig/Figure.png'
 
     plt.savefig(fitted_picture_path)
+
+    plt.pause(0.5)
+    plt.clf()
 
     return sum(result_full) / len(result_full) / 3, fitted_picture_path

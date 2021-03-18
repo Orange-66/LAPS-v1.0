@@ -11,7 +11,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtSql import QSqlQueryModel, QSqlQuery, QSqlTableModel
 from PyQt5.QtWidgets import QMessageBox, QTableWidgetItem
 
-from Utils import settings, tool_win
+from Utils import settings, tool_log
 
 
 # 打开数据库-完成
@@ -19,12 +19,12 @@ def open_db():
     # 如果settings类中的db可以打开
     if settings.db.open():
         # 则在日志中记录数据库打开成功
-        tool_win.logging("open_db, 成功打开数据库！")
+        tool_log.logging("tool_db - open_db, 成功打开数据库！")
         return True
     else:
         # 如果不可以打开
         # 则在日志中记录数据库打开失败
-        tool_win.logging("打开数据库失败！")
+        tool_log.logging("tool_db - open_db, 打开数据库失败！")
         # 同时予以用户以提示
         QMessageBox.warning(settings.win_index, "错误", "打开数据库失败！")
         return False
@@ -33,13 +33,13 @@ def open_db():
 # 关闭数据库-完成
 def close_db():
     # 在日志中记录数据库的关闭
-    tool_win.logging("close_db, 数据库关闭！")
+    tool_log.logging("tool_db - close_db, 数据库关闭！")
     # 关闭数据库
     return settings.db.close()
 
 
-# 打开数据表
-def open_table(table_name):
+# 打开数据表 - 未被使用？？？
+def open_table(table_name, order_by="patient_id", order_type=Qt.AscendingOrder):
     # 打开数据库
     if open_db():
         # 数据模型
@@ -47,7 +47,7 @@ def open_table(table_name):
         # 设置数据表
         table_model.setTable(table_name)
         # 排序
-        table_model.setSort(table_model.fieldIndex("patient_id"), Qt.AscendingOrder)
+        table_model.setSort(table_model.fieldIndex(order_by), order_type)
         # 设置编辑策略;
         # OnFieldChange：字段的值变化时立即更新到数据库;
         # OnRowChange：当前行变化时更新到数据库;
@@ -55,7 +55,7 @@ def open_table(table_name):
         table_model.setEditStrategy(QSqlTableModel.OnManualSubmit)
         # 查询数据失败
         if not table_model.select():
-            QMessageBox.critical("出错消息", "打开数据库表错误，出错消息\n" + table_model.lastError().text())
+            QMessageBox.critical(settings.win_index, "错误", "打开数据库表错误，出错消息\n" + table_model.lastError().text())
             return
 
         return table_model
@@ -67,8 +67,7 @@ def find_info_by_patient_id(query_model, row):
     cur_record = query_model.record(row)
     # 设置查询条件：以病人id为搜索条件，按照修改时间进行排序
     query_model_2 = QSqlQuery(settings.db)
-    query_model_2.prepare('''
-                            SELECT * FROM patient_info 
+    query_model_2.prepare('''SELECT * FROM patient_info 
                             WHERE patient_id = :patient_id''')
     # 获得记录中patient_id属性的值，并赋值给sql语句
     patient_id = cur_record.value("patient_id")
@@ -78,52 +77,32 @@ def find_info_by_patient_id(query_model, row):
     if not query_model_2.exec():
         # 如果执行失败，提示用户执行失败，并将相应的情况记录在日志中
         QMessageBox.warning("错误", "数据表查询错误，出错消息\n" + query_model_2.lastError().text())
-        tool_win.logging("find_in_info_by_patient_id, 数据表查询错误，出错消息", query_model_2.lastError().text())
+        tool_log.logging("tool_db - find_in_info_by_patient_id, 数据表查询错误，出错消息", query_model_2.lastError().text())
         return None
 
     # 获取查询到的第一个项目
     query_model_2.first()
 
-    tool_win.logging("find_in_info_by_patient_id, 患者姓名：", query_model_2.value("name"),
+    tool_log.logging("tool_db - find_in_info_by_patient_id, 患者姓名：", query_model_2.value("name"),
                      "患者id：", query_model_2.value("patient_id"))
 
     # 将获取到的第一个项目中的每一个属性建造成一个QTableWidgetItem对象，最后一并放入item_list中
-    item_create_date = QTableWidgetItem(query_model_2.value("create_date"), 1000)
-    item_create_date.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+    item_create_date = query_model_2.value("create_date")
+    item_id = query_model_2.value("patient_id")
+    item_name = query_model_2.value("name")
+    item_gender = query_model_2.value("gender")
+    item_age = query_model_2.value("age")
+    item_stature = query_model_2.value("stature")
+    item_weight = query_model_2.value("weight")
+    item_sbp = query_model_2.value("sbp")
+    item_dbp = query_model_2.value("dbp")
+    item_bsa = query_model_2.value("bsa")
+    item_bmi = str(query_model_2.value("bmi")) + str(query_model_2.value("bmi_degree"))
 
-    item_id = QTableWidgetItem(str(query_model_2.value("patient_id")), 1000)
-    item_id.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-    item_name = QTableWidgetItem(str(query_model_2.value("name")), 1000)
-    item_name.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-    item_gender = QTableWidgetItem(str(query_model_2.value("gender")), 1000)
-    item_gender.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-    item_age = QTableWidgetItem(str(query_model_2.value("age")), 1000)
-    item_age.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-    item_stature = QTableWidgetItem(str(query_model_2.value("stature")), 1000)
-    item_stature.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-    item_weight = QTableWidgetItem(str(query_model_2.value("weight")), 1000)
-    item_weight.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-    item_sbp = QTableWidgetItem(str(query_model_2.value("sbp")), 1000)
-    item_sbp.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-    item_dbp = QTableWidgetItem(str(query_model_2.value("dbp")), 1000)
-    item_dbp.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-    item_bsa = QTableWidgetItem(str(query_model_2.value("bsa")), 1000)
-    item_bsa.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-    item_bmi = QTableWidgetItem(str(query_model_2.value("bmi")) + ' [' + str(query_model_2.value("bmi_degree")) + ']',
-                                1000)
-    item_bmi.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-    item_list = [item_create_date, item_id, item_name, item_gender, item_age, item_stature,
-                 item_weight, item_sbp, item_dbp, item_bsa, item_bmi]
+    item_list = {"item_create_date": item_create_date, "item_id": item_id, "item_name": item_name,
+                 "item_gender": item_gender, "item_age": item_age, "item_stature": item_stature,
+                 "item_weight": item_weight, "item_sbp": item_sbp, "item_dbp": item_dbp,
+                 "item_bsa": item_bsa, "item_bmi": item_bmi}
 
     return item_list
 
@@ -149,16 +128,16 @@ def find_info_by_keyword(keyword=""):
             query.bindValue(":keyword", keyword)
             if not query.exec():
                 # 如果执行失败，提示用户执行失败，并将相应的情况记录在日志中
-                QMessageBox.warning("错误", "数据表查询错误，出错消息\n" + query.lastError().text())
-                tool_win.logging("find_by_keyword, 数据表查询错误，出错消息", query.lastError().text())
+                QMessageBox.warning(settings.win_index, "错误", "数据表查询错误，出错消息\n" + query.lastError().text())
+                tool_log.logging("find_by_keyword, 数据表查询错误，出错消息", query.lastError().text())
                 return None
 
             query_model.setQuery(query)
 
         if query_model.lastError().isValid():
             # 如果执行失败，提示用户执行失败，并将相应的情况记录在日志中
-            QMessageBox.warning("错误", "数据表查询错误，出错消息\n" + query_model.lastError().text())
-            tool_win.logging("find_by_keyword", "数据表查询错误，出错消息", query_model.lastError().text())
+            QMessageBox.warning(settings.win_index, "错误", "数据表查询错误，出错消息\n" + query_model.lastError().text())
+            tool_log.logging("find_by_keyword", "数据表查询错误，出错消息", query_model.lastError().text())
 
         query_model.setHeaderData(0, Qt.Horizontal, "状态")
         query_model.setHeaderData(1, Qt.Horizontal, "编号")
@@ -170,7 +149,7 @@ def find_info_by_keyword(keyword=""):
 # 插入项目至patient_info表-完成
 def insert_info(patient_id, name, create_date, modify_date,
                 gender, age, stature, weight, sbp, dbp, bsa, bmi, bmi_degree, state):
-    tool_win.logging("insert_into_info, 接收到的数据：", patient_id, type(patient_id), name, type(name), create_date,
+    tool_log.logging("tool_db - insert_into_info, 接收到的数据：", patient_id, type(patient_id), name, type(name), create_date,
                      type(create_date),
                      modify_date, type(modify_date), gender, type(gender),
                      age, type(age), stature, type(stature), weight, type(weight),
@@ -205,9 +184,10 @@ def insert_info(patient_id, name, create_date, modify_date,
 
     res = query.exec()
     if not res:
-        tool_win.logging("insert_info, 错误", "插入记录错误\n" + query.lastError().text())
+        tool_log.logging("tool_db - insert_info, 错误", "插入记录错误\n" + query.lastError().text())
+        QMessageBox.warning(settings.win_index, "错误", "数据库插入记录错误，出错消息\n" + query.lastError().text())
     else:
-        tool_win.logging("insert_info, 成功！")
+        tool_log.logging("tool_db - insert_info, 成功！")
         # 刷新列表
         settings.win_index.refresh_window()
 
@@ -224,31 +204,34 @@ def find_image_by_patient_id(query_model, row):
 
     if not query_model_2.exec():
         QMessageBox.warning(settings.win_index, "错误", "数据表查询错误，出错消息\n" + query_model_2.lastError().text())
-        tool_win.logging("find_image_by_patient_id, 数据表查询错误，出错消息" + query_model_2.lastError().text())
+        tool_log.logging("find_image_by_patient_id, 数据表查询错误，出错消息" + query_model_2.lastError().text())
         return False
 
-    settings.image_index = 0
-    settings.original_image_list = []
-    settings.processed_image_list = []
-    settings.processed_image_info_list = []
+    patient_image_list = []
 
     while query_model_2.next():
+        uncropped_query = query_model_2.value("uncropped_image")
+        if not uncropped_query == '':
+            uncropped_image = QPixmap()
+            uncropped_image.loadFromData(uncropped_query)
+        else:
+            uncropped_image = None
+
         original_query = query_model_2.value("original_image")
         if not original_query == '':
             original_image = QPixmap()
             original_image.loadFromData(original_query)
-            settings.original_image_list.append(original_image)
         else:
-            settings.original_image_list.append(None)
+            original_image = None
 
         processed_query = query_model_2.value("processed_image")
         if not processed_query == '':
             processed_image = QPixmap()
             processed_image.loadFromData(processed_query)
-            settings.processed_image_list.append(processed_image)
         else:
-            settings.processed_image_list.append(None)
+            processed_image = None
 
+        item_id = str(query_model_2.value("image_id"))
         item_lap = str(query_model_2.value("lap"))
         item_tau = str(query_model_2.value("tau"))
         item_mve = str(query_model_2.value("mve"))
@@ -258,61 +241,41 @@ def find_image_by_patient_id(query_model, row):
         item_iasa = str(query_model_2.value("iasa"))
         item_iass = str(query_model_2.value("iass"))
 
-        processed_image_item = {'lap': item_lap, 'tau': item_tau,
-                                'mve': item_mve, 'mva': item_mva,
-                                'mvs': item_mvs, 'iase': item_iase,
-                                'iasa': item_iasa, 'iass': item_iass}
+        image_item = {'id': item_id, 'lap': item_lap, 'tau': item_tau,
+                      'uncropped_image':uncropped_image, 'original_image':original_image,
+                      'processed_image':processed_image, 'mve': item_mve, 'mva': item_mva,
+                       'mvs': item_mvs, 'iase': item_iase, 'iasa': item_iasa, 'iass': item_iass}
 
-        settings.processed_image_info_list.append(processed_image_item)
-        settings.image_id_list.append(str(query_model_2.value("image_id")))
+        patient_image_list.append(image_item)
 
-    return True
+    settings.image_index = 0
+    settings.patient_image_list = patient_image_list
+
+    return len(settings.patient_image_list)
 
 
 # 将字典中的str类型数据转换成QTableWidgetItem类型
-def dic_to_table_widget_item_list(dic_name, dictionary):
-    if dic_name == "patient_image":
-        item_lap = QTableWidgetItem(dictionary['lap'], 1000)
-        item_lap.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+def dic_to_table_widget_item_list(dictionary):
+    widget_item_list = {}
+    for key, value in dictionary.items():
+        item = QTableWidgetItem(value, 1000)
+        item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
 
-        item_tau = QTableWidgetItem(dictionary["tau"], 1000)
-        item_tau.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+        widget_item_list[key] = item
 
-        item_mve = QTableWidgetItem(dictionary["mve"], 1000)
-        item_mve.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-        item_mva = QTableWidgetItem(dictionary["mva"], 1000)
-        item_mva.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-        item_mvs = QTableWidgetItem(dictionary["mvs"], 1000)
-        item_mvs.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-        item_iase = QTableWidgetItem(dictionary["iase"], 1000)
-        item_iase.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-        item_iasa = QTableWidgetItem(dictionary["iasa"], 1000)
-        item_iasa.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-
-        item_iass = QTableWidgetItem(dictionary["iass"], 1000)
-        item_iass.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-        processed_image_item = {'lap': item_lap, 'tau': item_tau,
-                                'mve': item_mve, 'mva': item_mva,
-                                'mvs': item_mvs, 'iase': item_iase,
-                                'iasa': item_iasa, 'iass': item_iass}
-
-        return processed_image_item
+    return widget_item_list
 
 
 # 插入图片-完成
 def insert_image(patient_id, uncropped_image_path):
-    tool_win.logging("insert_image, 接收到的数据：", patient_id, type(patient_id),
+    tool_log.logging("tool_db - insert_image, 接收到的数据：", patient_id, type(patient_id),
                      uncropped_image_path, type(uncropped_image_path))
 
     file = QFile(uncropped_image_path)
     if not file.open(QIODevice.ReadOnly):
-        tool_win.logging("insert_image, 该路径下无此文件，" + uncropped_image_path)
-        QMessageBox.warning(settings.win_index, "错误", "该路径下无此文件,", uncropped_image_path)
-        return False
+        tool_log.logging("tool_db - insert_image, 该路径下无此文件，" + uncropped_image_path)
+        QMessageBox.warning(settings.win_index, "错误", "该路径下无此文件,"+ uncropped_image_path)
+        return
     else:
         uncropped_image = file.readAll()
         file.close()
@@ -329,15 +292,19 @@ def insert_image(patient_id, uncropped_image_path):
     query.bindValue(":uncropped_image", uncropped_image)
     query.bindValue(":original_image", uncropped_image)
 
-    # query.bindValue(":processed_image", original_image)
-
     res = query.exec()
     if not res:
-        tool_win.logging("insert_image，错误 - 插入记录错误" + query.lastError().text())
+        QMessageBox.warning(settings.win_index, "错误", "插入记录错误,"+ query.lastError().text())
+        tool_log.logging("insert_image，错误 - 插入记录错误" + query.lastError().text())
     else:
-        tool_win.logging("insert_image，成功！")
+        tool_log.logging("insert_image，成功！")
         # 刷新显示列表
         settings.win_index.refresh_window()
+
+
+# 修改患者processed_image信息
+def update_processed_image(image_id, processed_image):
+    pass
 
 
 # 获得所有字段名称
@@ -354,7 +321,7 @@ def get_field_names(table_model):
         field_num.setdefault(field_name)
         field_num[field_name] = i
     # 显示字典数据
-    tool_win.logging("get_field_names, field_num", field_num)
+    tool_log.logging("get_field_names, field_num", field_num)
     return field_num
 
 
@@ -395,7 +362,7 @@ def set_table_header(table_name, table_model, field_num):
 
 # 删除患者信息
 def delete_patient(patient_id):
-    tool_win.logging("delete_patient，patient_id：", patient_id)
+    tool_log.logging("delete_patient，patient_id：", patient_id)
 
     # 删除patient_image列表中的项目
     query_image = QSqlQuery(settings.db)
@@ -408,7 +375,7 @@ def delete_patient(patient_id):
 
     image_res = query_image.exec()
     if not image_res:
-        tool_win.logging("insert_image，错误", "删除记录失败\n" + query_image.lastError().text())
+        tool_log.logging("insert_image，错误", "删除记录失败\n" + query_image.lastError().text())
         return
 
     # 删除patient_info列表中的项目
@@ -423,14 +390,14 @@ def delete_patient(patient_id):
     patient_res = query_patient.exec()
 
     if not patient_res:
-        tool_win.logging("insert_image，错误", "删除记录失败\n" + patient_res.lastError().text())
+        tool_log.logging("insert_image，错误", "删除记录失败\n" + patient_res.lastError().text())
     else:
-        tool_win.logging("insert_image，删除记录成功！")
+        tool_log.logging("insert_image，删除记录成功！")
 
 
 # 删除图片信息
-def delete_current_image():
-    tool_win.logging("delete_current_image，image_id：", settings.image_id_list[settings.image_index])
+def delete_current_image(image_id):
+    tool_log.logging("delete_current_image，image_id：", image_id)
 
     # 删除patient_image列表中的项目
     query_image = QSqlQuery(settings.db)
@@ -439,14 +406,14 @@ def delete_current_image():
         '''DELETE FROM patient_image 
             WHERE image_id = :image_id'''
     )
-    query_image.bindValue(":image_id", settings.image_id_list[settings.image_index])
+    query_image.bindValue(":image_id", image_id)
 
     image_res = query_image.exec()
     if not image_res:
-        tool_win.logging("insert_image，错误", "删除记录失败" + query_image.lastError().text())
+        tool_log.logging("insert_image，错误", "删除记录失败" + query_image.lastError().text())
         QMessageBox.warning(settings.win_index, "错误", "删除记录失败")
     else:
-        tool_win.logging("insert_image，成功", "成功删除记录" + query_image.lastError().text())
+        tool_log.logging("insert_image，成功", "成功删除记录" + query_image.lastError().text())
         QMessageBox.about(settings.win_index, "成功", "成功删除记录")
 
     settings.win_image_item.close()

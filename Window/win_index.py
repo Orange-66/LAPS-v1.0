@@ -165,7 +165,8 @@ class Win_Index(QMainWindow):
 
     # 刷新相册列表
     def refresh_image_list(self, row=0):
-        if tool_db.find_image_by_patient_id(self.query_model, row) and len(settings.original_image_list) > 0:
+        # 为什么要这么写呢？直接叫find函数返回的本身就是len不好么
+        if tool_db.find_image_by_patient_id(self.query_model, row):
             self.__set_original_image(settings.original_image_list[0])
             self.set_processed_image(settings.processed_image_list[0])
         else:
@@ -178,7 +179,7 @@ class Win_Index(QMainWindow):
     def do_currentRowChanged(self, current, previous=""):
         if current.isValid():
             item_list = tool_db.find_info_by_patient_id(self.query_model, current.row())
-            if item_list is not None:
+            if not item_list:
                 self.__refresh_info_patient(item_list)
 
             self.refresh_image_list(current.row())

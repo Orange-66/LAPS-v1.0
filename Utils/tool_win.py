@@ -39,15 +39,6 @@ def win_test(window):
     sys.exit(app.exec_())
 
 
-# 日志打印
-def logging(*args):
-    result_str = ''
-    for i in args:
-        result_str += str(i)
-    print(result_str)
-    settings.log.debug(result_str)
-
-
 # 关闭所有窗口，结束应用
 def close_all():
     logging("close_all, 应用结束！")
