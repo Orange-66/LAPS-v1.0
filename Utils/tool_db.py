@@ -106,7 +106,7 @@ def find_info_by_patient_id(query_model, row):
     item_sbp = query_model_2.value("sbp")
     item_dbp = query_model_2.value("dbp")
     item_bsa = query_model_2.value("bsa")
-    item_bmi = str(query_model_2.value("bmi")) + str(query_model_2.value("bmi_degree"))
+    item_bmi = str(query_model_2.value("bmi")) + " [" + str(query_model_2.value("bmi_degree")) + "]"
 
     item_list = {"create_date": item_create_date, "patient_id": item_id, "name": item_name,
                  "gender": item_gender, "age": item_age, "stature": item_stature,
