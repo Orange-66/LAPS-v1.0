@@ -6,13 +6,21 @@
 # @File : tool_lap.py
 # @Remark : 左房压计算工具
 # -----------------------------
-from Utils import tool_win
+from Utils import tool_log
 from Utils.model_lap import function
 
 
 # 处理原始图片
-def process_original_image(original_image):
-    tool_win.logging("process_original_image",original_image)
+def process_original_image(original_image_path):
+    """
 
-    lap, process_image = function.process_original_image(original_image)
-    return lap, process_image
+    Args:
+        original_image_path: String, 图片路径
+
+    Returns:
+        返回lap数据以及process_image_path
+    """
+    tool_log.debug("process_original_image",original_image_path)
+
+    lap, process_image_path = function.process_original_image(original_image_path)
+    return lap, process_image_path

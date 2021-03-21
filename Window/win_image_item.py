@@ -9,7 +9,7 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QWidget
 from PyUI.ui_image_item import Ui_Image_Item
-from Utils import tool_db, tool_image, settings, tool_win
+from Utils import tool_db, tool_image, settings, tool_log
 
 
 class Win_Image_Item(QWidget):
@@ -25,6 +25,6 @@ class Win_Image_Item(QWidget):
     @pyqtSlot()
     # 删除按钮-槽函数
     def on_btn_delete_clicked(self):
-        tool_win.logging("on_btn_delete_clicked")
+        tool_log.debug("on_btn_delete_clicked")
         tool_db.delete_current_image()
         settings.win_index.refresh_image_list()

@@ -1,4 +1,0 @@
-2021-03-19 01:29:19,057 - DEBUG - Falling back to TensorFlow client; we recommended you install the Cloud TPU client directly with pip install cloud-tpu-client.
-2021-03-19 01:29:20,191 - DEBUG - CACHEDIR=C:\Users\Orange\.matplotlib
-2021-03-19 01:29:20,194 - DEBUG - Using fontManager instance from C:\Users\Orange\.matplotlib\fontlist-v330.json
-2021-03-19 01:29:20,292 - DEBUG - Loaded backend module://backend_interagg version unknown.

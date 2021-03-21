@@ -9,7 +9,7 @@
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QWidget, QMessageBox, QPushButton, QTableWidgetItem
 from PyUI.ui_import_image import Ui_Import_Image
-from Utils import tool_win, tool_db, settings, tool_file, tool_image
+from Utils import tool_win, tool_db, settings, tool_file, tool_image, tool_log
 
 
 class Win_Import_Image(QWidget):
@@ -26,7 +26,7 @@ class Win_Import_Image(QWidget):
     @pyqtSlot()
     # 完成按钮-点击-槽函数
     def on_btn_done_clicked(self):
-        tool_win.logging("on_btn_done_clicked")
+        tool_log.debug("on_btn_done_clicked")
         # 获取窗口所有信息
         patient_id = self.__ui.line_patient_id.text()
         image_list = self.__get_album()
@@ -34,7 +34,7 @@ class Win_Import_Image(QWidget):
         try:
             for image_path in image_list:
                 tool_db.insert_image(patient_id, image_path)
-                tool_win.logging("on_btn_done_clicked - ", patient_id, " - ", image_path)
+                tool_log.debug("on_btn_done_clicked - ", patient_id, " - ", image_path)
 
             dialog_title = "LAPS"
             dialog_info = "on_btn_done_clicked，添加数据成功！"
@@ -42,7 +42,7 @@ class Win_Import_Image(QWidget):
             dialog_title = "LAPS"
             dialog_info = "on_btn_done_clicked，添加数据出现错误。"
         finally:
-            tool_win.logging("on_btn_done_clicked", dialog_info)
+            tool_log.debug("on_btn_done_clicked", dialog_info)
             QMessageBox.about(self, dialog_title, dialog_info)
             # 刷新主页面列表
             settings.win_index.refresh_window()
@@ -51,13 +51,13 @@ class Win_Import_Image(QWidget):
     @pyqtSlot()
     # 取消按钮-点击-槽函数
     def on_btn_cancel_clicked(self):
-        tool_win.logging("on_btn_cancel_clicked")
+        tool_log.debug("on_btn_cancel_clicked")
         self.close()
 
     @pyqtSlot()
     # 添加图片按钮-槽函数
     def on_btn_add_image_clicked(self):
-        tool_win.logging("on_btn_add_image_clicked")
+        tool_log.debug("on_btn_add_image_clicked")
         # 打开文件获取路径以及Pixmap对象
         image_path_list, image_pix_list = tool_file.open_image(self)
 
@@ -72,13 +72,13 @@ class Win_Import_Image(QWidget):
     # ========================手动关联槽函数========================
     # 预览按钮槽函数
     def do_btn_preview_clicked(self, image_pix):
-        tool_win.logging("do_btn_preview_clicked")
+        tool_log.debug("do_btn_preview_clicked")
         settings.wid_preview.label.setPixmap(tool_image.set_image(image_pix, settings.wid_preview))
         settings.wid_preview.show()
 
     # 删除按钮槽函数
     def do_btn_delete_clicked(self, item):
-        tool_win.logging("do_btn_delete_clicked")
+        tool_log.debug("do_btn_delete_clicked")
         # 根据item得到它对应的行数
         row_num = self.__ui.wtable_album.indexFromItem(item).row()
         self.__ui.wtable_album.removeRow(row_num)
@@ -99,21 +99,21 @@ class Win_Import_Image(QWidget):
 
     # 新建预览按钮
     def __new_btn_preview(self, image_pix):
-        tool_win.logging("__new_btn_preview")
+        tool_log.debug("__new_btn_preview")
         btn_preview = QPushButton("预览")
         btn_preview.clicked.connect(lambda: self.do_btn_preview_clicked(image_pix))
         return btn_preview
 
     # 新建删除按钮
     def __new_btn_delete(self, image_item):
-        tool_win.logging("__new_btn_delete")
+        tool_log.debug("__new_btn_delete")
         btn_delete = QPushButton("删除")
         btn_delete.clicked.connect(lambda: self.do_btn_delete_clicked(image_item))
         return btn_delete
 
     # 新建相片item
     def __new_image_item(self, row_num, image_path):
-        tool_win.logging("__new_image_item, 第", row_num, "行的__new_btn_delete")
+        tool_log.debug("__new_image_item, 第", row_num, "行的__new_btn_delete")
         # image_name = tool_file.get_file_name(image_path)
         image_name = image_path
         return QTableWidgetItem(image_name, Qt.DisplayRole)

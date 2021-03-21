@@ -7,11 +7,9 @@
 # @Remark : 新建病例-子窗口
 # -----------------------------
 from PyQt5.QtCore import pyqtSlot, Qt
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QTableWidgetItem, QListWidgetItem, QLabel, QMessageBox
+from PyQt5.QtWidgets import QWidget, QPushButton, QTableWidgetItem, QMessageBox
 from PyUI.ui_new_single import Ui_New_Single
-from Utils import tool_win, settings, tool_time, tool_formula, tool_db, tool_image, tool_file
-from Widget.wid_preview import Wid_Preview
+from Utils import settings, tool_win, tool_time, tool_formula, tool_db, tool_image, tool_file, tool_log
 
 
 class Win_New_Single(QWidget):
@@ -28,19 +26,19 @@ class Win_New_Single(QWidget):
     @pyqtSlot(int)
     # 身高输入框-值改变-槽函数
     def on_spin_stature_valueChanged(self, string):
-        tool_win.logging("on_line_stature_textChanged", string)
+        tool_log.debug("on_line_stature_textChanged", string)
         self.__refresh_bmi_bsa()
 
     @pyqtSlot(float)
     # 体重输入框-值改变-槽函数
     def on_spin_weight_valueChanged(self, string):
-        tool_win.logging("on_line_weight_textChanged", string)
+        tool_log.debug("on_line_weight_textChanged", string)
         self.__refresh_bmi_bsa()
 
     @pyqtSlot()
     # 完成按钮-点击-槽函数
     def on_btn_done_clicked(self):
-        tool_win.logging("on_btn_done_clicked")
+        tool_log.debug("on_btn_done_clicked")
         # 获取窗口所有信息
         create_date = self.__ui.line_create_date.text()
         patient_id = self.__ui.line_id.text()
@@ -57,7 +55,7 @@ class Win_New_Single(QWidget):
 
         image_list = self.__get_album()
 
-        tool_win.logging(create_date, patient_id, name, gender, age, stature, weight, bsa, bmi, bmi_degree, sbp, dbp)
+        tool_log.debug(create_date, patient_id, name, gender, age, stature, weight, bsa, bmi, bmi_degree, sbp, dbp)
         try:
             # 添加到数据库
             tool_db.insert_info(patient_id, name, create_date, None,
@@ -72,7 +70,7 @@ class Win_New_Single(QWidget):
             dialog_title = "LAPS"
             dialog_info = "添加数据出现错误。"
         finally:
-            tool_win.logging("on_btn_done_clicked", dialog_info)
+            tool_log.debug("on_btn_done_clicked", dialog_info)
             QMessageBox.about(self, dialog_title, dialog_info)
             # 刷新主页面列表
             settings.win_index.refresh_window()
@@ -81,13 +79,13 @@ class Win_New_Single(QWidget):
     @pyqtSlot()
     # 取消按钮-点击-槽函数
     def on_btn_cancel_clicked(self):
-        tool_win.logging("on_btn_cancel_clicked")
+        tool_log.debug("on_btn_cancel_clicked")
         self.close()
 
     @pyqtSlot()
     # 添加图片按钮-槽函数
     def on_btn_add_image_clicked(self):
-        tool_win.logging("on_btn_add_image_clicked")
+        tool_log.debug("on_btn_add_image_clicked")
         # 打开文件获取路径以及Pixmap对象
         image_path_list, image_pix_list = tool_file.open_image(self)
         for i in range(len(image_path_list)):
@@ -101,13 +99,13 @@ class Win_New_Single(QWidget):
     # ========================手动关联槽函数========================
     # 预览按钮槽函数
     def do_btn_preview_clicked(self, image_pix):
-        tool_win.logging("do_btn_preview_clicked")
+        tool_log.debug("do_btn_preview_clicked")
         settings.wid_preview.label.setPixmap(tool_image.set_image(image_pix, settings.wid_preview))
         settings.wid_preview.show()
 
     # 删除按钮槽函数
     def do_btn_delete_clicked(self, item):
-        tool_win.logging("do_btn_delete_clicked")
+        tool_log.debug("do_btn_delete_clicked")
         # 根据item得到它对应的行数
         row_num = self.__ui.wtable_album.indexFromItem(item).row()
         self.__ui.wtable_album.removeRow(row_num)
@@ -124,7 +122,7 @@ class Win_New_Single(QWidget):
             ))
             self.__ui.label_degree.setText(tool_formula.formula_bmi_degree(float(self.__ui.spin_bmi.value())))
 
-            tool_win.logging("__refresh_bmi_bsa", self.__ui.spin_bmi.value())
+            tool_log.debug("__refresh_bmi_bsa", self.__ui.spin_bmi.value())
         except ValueError:
             pass
         except ZeroDivisionError:
@@ -146,21 +144,21 @@ class Win_New_Single(QWidget):
 
     # 新建预览按钮
     def __new_btn_preview(self, image_pix):
-        tool_win.logging("__new_btn_preview")
+        tool_log.debug("__new_btn_preview")
         btn_preview = QPushButton("预览")
         btn_preview.clicked.connect(lambda: self.do_btn_preview_clicked(image_pix))
         return btn_preview
 
     # 新建删除按钮
     def __new_btn_delete(self, image_item):
-        tool_win.logging("__new_btn_delete")
+        tool_log.debug("__new_btn_delete")
         btn_delete = QPushButton("删除")
         btn_delete.clicked.connect(lambda: self.do_btn_delete_clicked(image_item))
         return btn_delete
 
     # 新建相片item
     def __new_image_item(self, row_num, image_path):
-        tool_win.logging("__new_image_item, 第", row_num, "行的__new_btn_delete")
+        tool_log.debug("__new_image_item, 第", row_num, "行的__new_btn_delete")
         # image_name = tool_file.get_file_name(image_path)
         image_name = image_path
         return QTableWidgetItem(image_name, Qt.DisplayRole)

@@ -15,9 +15,9 @@ log.basicConfig(level=logging.DEBUG,
                 filename='Docs/logging.txt',
                 filemode='w')
 # 日志记录开关
-# log.disable(log.INFO)
-# log.disable(log.WARNING)
-# log.disable(log.DEBUG)
+log.disable(log.INFO)
+log.disable(log.WARNING)
+log.disable(log.DEBUG)
 # 打印开关
 is_console = True
 

@@ -10,12 +10,12 @@ import os
 import zipfile
 import openpyxl
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
-from PyQt5.QtCore import QFile, Qt
+from PyQt5.QtCore import QFile, Qt, QIODevice
 
-from Utils import settings, tool_win
+from Utils import settings, tool_win, tool_log
 
 # 加载qss文件
 from Window.win_index import Win_Index
@@ -98,7 +98,7 @@ def create_sample(save_dir):
 def open_image(window):
     image_name_list, _ = \
         QFileDialog.getOpenFileNames(window, "Open Image File", os.getcwd(), "Image(*.jpg *.png *.jpeg)")
-    tool_win.logging(image_name_list)
+    tool_log.debug(image_name_list)
     image_pix_list = []
     for image_name in image_name_list:
         image_pix = QPixmap(image_name)
@@ -109,5 +109,18 @@ def open_image(window):
 # 根据文件路径截取文件名
 def get_file_name(file_path):
     file_name = file_path.split(os.sep)[-1]
-    tool_win.logging("get_file_name", file_path, file_name)
+    tool_log.debug("get_file_name", file_path, file_name)
     return file_name
+
+
+# 打开图片文件，读取为二进制数据
+def open_image_file(image_path):
+    file = QFile(image_path)
+    if not file.open(QIODevice.ReadOnly):
+        tool_log.debug("tool_db - insert_image, 该路径下无此文件，" + image_path)
+        QMessageBox.warning(settings.win_index, "错误", "该路径下无此文件," + image_path)
+        return
+    else:
+        image = file.readAll()
+        file.close()
+        return image

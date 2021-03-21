@@ -12,7 +12,7 @@ import sys
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDesktopWidget, QApplication
 
-from Utils import settings, tool_file
+from Utils import settings, tool_file, tool_log
 
 
 # 添加窗口图标
@@ -41,7 +41,7 @@ def win_test(window):
 
 # 关闭所有窗口，结束应用
 def close_all():
-    logging("close_all, 应用结束！")
+    tool_log.debug("tool_win - close_all, 应用结束！")
     settings.app.exit()
 
 
