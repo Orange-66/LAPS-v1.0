@@ -13,43 +13,43 @@ from PyQt5.QtCore import QTime, QDate, QDateTime
 
 def q_date_current_date():
     result = QDate.currentDate()
-    # tool_win.logging(result)
+    print(result)
     return result
 
 
 def q_time_current_time():
     result = QTime.currentTime()
-    # tool_win.logging(result)
+    print(result)
     return result
 
 
 def q_datetime_current_datetime():
     result = QDateTime.currentDateTime()
-    # tool_win.logging(result)
+    print(result)
     return result
 
 
 def current_date():
     result = datetime.datetime.now().strftime('%Y/%m/%d')
-    # tool_win.logging(result)
+    print(result)
     return result
 
 
 def current_time_without_second():
     result = datetime.datetime.now().strftime('%H:%M')
-    # tool_win.logging(result)
+    print(result)
     return result
 
 
 def current_time_with_second():
     result = datetime.datetime.now().strftime('%H:%M:%S')
-    # tool_win.logging(result)
+    print(result)
     return result
 
 
 def current_datetime():
     result = datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
-    # tool_win.logging(result)
+    print(result)
     return result
 
 

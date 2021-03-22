@@ -7,6 +7,7 @@
 # @Remark : 新建病例-子窗口
 # -----------------------------
 from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QPushButton, QTableWidgetItem, QMessageBox
 from PyUI.ui_new_single import Ui_New_Single
 from Utils import settings, tool_win, tool_time, tool_formula, tool_db, tool_image, tool_file, tool_log
@@ -60,15 +61,40 @@ class Win_New_Single(QWidget):
             # 添加到数据库
             tool_db.insert_info(patient_id, name, create_date, None,
                                 gender, age, stature, weight, sbp, dbp, bsa, bmi, bmi_degree, 0)
+
+
             for image_path in image_list:
-                tool_db.insert_image(patient_id, image_path)
+                # 保存uncropped图片的路径以及文件名
+                new_uncropped_name = tool_file.make_filename()
+                # 旧文件的文件名
+                old_uncropped_name = tool_file.get_filename(image_path)
+                # 重命名后的文件名
+                uncropped_filename = tool_file.rename_file(old_uncropped_name, new_uncropped_name)
+                # 保存uncropped文件的路径名
+                uncropped_save_path = tool_file.make_path(settings.image_root_dir, patient_id + "-" + name, "uncropped")
+                # uncropped—image保存路径并保存到相应路径上
+                uncropped_image_path = tool_file.make_path(uncropped_save_path, uncropped_filename)
+                print("123",image_path, uncropped_image_path)
+                tool_image.save_image(image_path, uncropped_image_path)
+
+                # 根据uncropped-image的路径，获取到相应的图片，并根据该图片进行剪裁得到original-image图像
+                original_image = tool_image.crop_image_by_path(uncropped_image_path, 42, 342, 42 + 896, 342 + 392)
+                # 设计original-image的保存的文件名
+                new_original_name = tool_file.make_filename()
+                # 重命名后的文件名
+                original_filename = tool_file.rename_file(old_uncropped_name, new_original_name)
+                # 保存original-image文件的路径名
+                original_save_path = tool_file.make_path(settings.image_root_dir, patient_id + "-" + name, "original", original_filename)
+                tool_image.save_image_to_dir(original_image, original_save_path)
+                # 将图片路径保存在数据库中
+                tool_db.insert_image(patient_id, uncropped_image_path, original_save_path)
 
             dialog_title = "LAPS"
             dialog_info = "添加数据成功！"
 
         except Exception as e:
             dialog_title = "LAPS"
-            dialog_info = "添加数据出现错误。"
+            dialog_info = "添加数据出现错误:" + str(e)
         finally:
             tool_log.debug("on_btn_done_clicked", dialog_info)
             QMessageBox.about(self, dialog_title, dialog_info)

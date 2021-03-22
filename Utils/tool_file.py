@@ -7,6 +7,7 @@
 # @Remark : 控制文件的工具类
 # -----------------------------
 import os
+import random
 import zipfile
 import openpyxl
 from PyQt5.QtGui import QPixmap
@@ -14,7 +15,7 @@ from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
 from PyQt5.QtCore import QFile, Qt, QIODevice
-
+from shutil import copy, move
 from Utils import settings, tool_win, tool_log
 
 # 加载qss文件
@@ -124,3 +125,55 @@ def open_image_file(image_path):
         image = file.readAll()
         file.close()
         return image
+
+
+# 剪切文件到文件夹
+def move_file(src_path, dst_path):
+    make_dir(dst_path)
+
+    move(src_path, dst_path)
+
+
+# 复制文件到文件夹
+def copy_file(src_path, dst_path):
+    make_dir(dst_path)
+
+    copy(src_path, dst_path)
+
+
+# 重命名文件
+def rename_file(filename, newFilename):
+    temp = filename.split('.')
+    temp[0] = newFilename
+
+    return '.'.join(temp)
+
+
+# 根据路径字符串一层一层创建文件夹
+def make_dir(dir_string):
+    for i in range(len(dir_string.split("/"))-1):
+        dir_list = []
+        for j in range(i+1):
+            dir_list.append(dir_string.split('/')[j])
+        dirs = '/'.join(dir_list)
+        if not os.path.exists(dirs):
+            os.mkdir(dirs)
+
+# 连接路径字符串
+def make_path(*args):
+    result_list = []
+    for i in args:
+        result_list.append(str(i))
+
+    return '/'.join(result_list)
+
+# 根据路径获取文件名
+def get_filename(file_path):
+    return file_path.split('/')[-1]
+
+
+def make_filename():
+    # 多个字符中选取指定数量的字符组成新字符串：
+    return ''.join(random.sample(
+        ['z', 'y', 'x', 'w', 'v', 'u', 't', 's', 'r', 'q', 'p', 'o', 'n', 'm', 'l', 'k', 'j', 'i', 'h', 'g', 'f', 'e',
+         'd', 'c', 'b', 'a', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], 8))

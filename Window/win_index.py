@@ -7,10 +7,11 @@
 # @Remark : 主窗口
 # -----------------------------
 from PyQt5.QtCore import pyqtSlot, Qt, QItemSelectionModel
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QAbstractItemView, QMessageBox, QTableWidgetItem)
 
 from PyUI.ui_index import Ui_Index
-from Utils import settings, tool_win, tool_db, tool_image, tool_lap, tool_log
+from Utils import settings, tool_win, tool_db, tool_image, tool_lap, tool_log, tool_file
 from Widget.wid_preview import Wid_Preview
 from Window.win_image_item import Win_Image_Item
 from Window.win_painting import Win_Painting
@@ -103,11 +104,16 @@ class Win_Index(QMainWindow):
         tool_log.debug("on_btn_up_page_clicked")
         if settings.image_index > 0:
             settings.image_index -= 1
-            current_original_image = settings.patient_image_list[settings.image_index]['original_image']
+            current_image_info = settings.patient_image_list[settings.image_index]
+
+            current_original_image = current_image_info['original_image']
             self.__set_original_image(current_original_image)
 
-            current_processed_image = settings.patient_image_list[settings.image_index]['processed_image']
+            current_processed_image = current_image_info['processed_image']
             self.set_processed_image(current_processed_image)
+
+            uncropped_image_path = current_image_info['uncropped_image_path']
+            self.__set_others_image(uncropped_image_path)
             # 刷新btn_down_page按钮上文字
             self.__refresh_btn_page_info()
 
@@ -117,11 +123,16 @@ class Win_Index(QMainWindow):
         tool_log.debug("on_btn_down_page_clicked")
         if settings.image_index + 1 < len(settings.patient_image_list):
             settings.image_index += 1
-            current_original_image = settings.patient_image_list[settings.image_index]['original_image']
+            current_image_info = settings.patient_image_list[settings.image_index]
+
+            current_original_image = current_image_info['original_image']
             self.__set_original_image(current_original_image)
 
-            current_processed_image = settings.patient_image_list[settings.image_index]['processed_image']
+            current_processed_image = current_image_info['processed_image']
             self.set_processed_image(current_processed_image)
+
+            uncropped_image_path = current_image_info['uncropped_image_path']
+            self.__set_others_image(uncropped_image_path)
             # 刷新btn_down_page按钮上文字
             self.__refresh_btn_page_info()
 
@@ -169,11 +180,14 @@ class Win_Index(QMainWindow):
     # 刷新相册列表
     def refresh_image_list(self, row=0):
         if tool_db.find_image_by_patient_id(self.query_model, row):
-            self.__set_original_image(settings.patient_image_list[0]['original_image'])
-            self.set_processed_image(settings.patient_image_list[0]['processed_image'])
+            current_image_info = settings.patient_image_list[0]
+            self.__set_original_image(current_image_info['original_image'])
+            self.set_processed_image(current_image_info['processed_image'])
+            self.__set_others_image(current_image_info['uncropped_image_path'])
         else:
             self.__set_original_image(None)
             self.set_processed_image(None)
+            self.__set_others_image(None)
 
         self.__refresh_btn_page_info()
 
@@ -186,47 +200,104 @@ class Win_Index(QMainWindow):
             # 如果得到的数据是有效的，则刷新患者信息列表
             if item_list:
                 self.__refresh_info_patient(tool_db.dic_to_table_widget_item_list(item_list))
-                # 刷新患者影响列表
-                self.refresh_image_list(current.row())
 
                 # 更新当前画着的id以及姓名
                 settings.current_patient_id = self.query_model.record(current.row()).value("patient_id")
                 settings.current_patient_name = self.query_model.record(current.row()).value("name")
 
+                # 刷新患者影响列表
+                self.refresh_image_list(current.row())
+
     # 设置原始图片
-    def __set_original_image(self, image):
+    def __set_original_image(self, current_original_image):
         # 如果图象是无效的则将图片为空的图像素材打在相应界面上
-        if not image:
+        if not current_original_image:
             tool_image.set_image_by_label(settings.source_empty_image, self.__ui.label_original_image)
         # 反之提供相应的图片
         else:
-            tool_image.set_image_by_label(image, self.__ui.label_original_image)
+            tool_image.set_image_by_label(current_original_image, self.__ui.label_original_image)
 
     # 设置处理后的图片
     def set_processed_image(self, current_processed_image):
         tool_log.debug("set_processed_image", current_processed_image)
         # 如果当前还没有计算过相应的图片的lap,则为原图计算lap并同时产生相应的处理后的processed_image
-        if not current_processed_image:
-            if not len(settings.patient_image_list):
-                tool_image.set_image_by_label(settings.source_empty_image, self.__ui.label_processed_image)
-                return
-            # 处理并计算得出lap以及相应的图片
-            lap, settings.patient_image_list[settings.image_index] = \
-                tool_lap.process_original_image(settings.patient_image_list[settings.image_index]['original_image_path'])
-            # 将得到的图片存储到数据库中
-            tool_db.update_processed_image(settings.patient_image_list[settings.image_index]['image_id'],
-                                           settings.patient_image_list[settings.image_index]['processed_image_path'])
+        if not len(settings.patient_image_list):
+            tool_image.set_image_by_label(settings.source_empty_image, self.__ui.label_processed_image)
+            return
 
-        # 设置处理后的图片到相应的图片位置上
-        if settings.patient_image_list[settings.image_index]:
+        processed_image_info = settings.patient_image_list[settings.image_index]
+        if current_processed_image:
             tool_log.debug("set_processed_image", settings.patient_image_list, settings.image_index)
 
             # 刷新图片信息板
-            self.__refresh_info_image(tool_db.dic_to_table_widget_item_list(settings.patient_image_list
-                                                                            [settings.image_index]))
+            self.__refresh_info_image(tool_db.dic_to_table_widget_item_list(processed_image_info))
 
             tool_image.set_image_by_label(current_processed_image, self.__ui.label_processed_image)
-            settings.patient_image_list[settings.image_index]['processed_image'] = current_processed_image
+            processed_image_info['processed_image'] = current_processed_image
+        # 设置处理后的图片到相应的图片位置上
+        else:
+            # 处理并计算得出lap以及相应的图片
+            lap, processed_image_path = \
+                tool_lap.process_original_image(
+                    processed_image_info['uncropped_image_path'])
+
+            patient_id = str(settings.current_patient_id)
+            patient_name = settings.current_patient_name
+            image_id = processed_image_info['image_id']
+
+            # 保存processed图片的路径以及文件名
+            new_processed_name = tool_file.make_filename()
+
+            # 旧文件的文件名
+            old_processed_name = tool_file.get_filename(processed_image_path)
+            # 重命名后的文件名
+            processed_filename = tool_file.rename_file(old_processed_name, new_processed_name)
+            # 保存processed文件的路径名
+            processed_save_path = tool_file.make_path(settings.image_root_dir,
+                                                      patient_id + "-" + patient_name, "processed")
+            # processed—image保存路径并保存到相应路径上
+            new_processed_image_path = tool_file.make_path(processed_save_path, processed_filename)
+            tool_image.save_image(processed_image_path, new_processed_image_path)
+
+            # 将得到的图片存储到数据库中
+            tool_db.update_image(image_id, new_processed_image_path)
+
+            processed_image_info['processed_image_path'] = new_processed_image_path
+            processed_image_info['processed_image'] = QPixmap(new_processed_image_path)
+
+            # LAP
+            # 写入到数据库中
+            tool_db.update_image_lap(image_id, lap)
+            # 保存在当前list中
+            processed_image_info['lap'] = str(lap)
+
+        # 无论是有过没有过，都要更新相应的图像以及lap数值在中部现实板上
+        item_lap = QTableWidgetItem(processed_image_info['lap'], 1000)
+        item_lap.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+        tool_image.set_image_by_label(processed_image_info['processed_image'], self.__ui.label_processed_image)
+        self.__ui.table_image_info.setItem(7, 1, item_lap)
+
+    # 设置中部上方的两个图片
+    def __set_others_image(self, uncropped_image_path):
+        if uncropped_image_path:
+            # 截取中部左侧图片 起点275，80； 大小255
+            left_image_temp = tool_image.crop_image_by_path(uncropped_image_path, 275, 80, 275+255, 80+255)
+            left_temp_save_path = settings.temp_dir + "left_temp.png"
+            tool_image.save_image_to_dir(left_image_temp, left_temp_save_path)
+            left_image = QPixmap(left_temp_save_path)
+            # 截取中部右部侧图片 起点952，95； 大小72 230
+            right_image_temp = tool_image.crop_image_by_path(uncropped_image_path, 952, 95, 952+72, 95+230)
+            right_temp_save_path = settings.temp_dir + "right_temp.png"
+            tool_image.save_image_to_dir(right_image_temp, right_temp_save_path)
+            right_image = QPixmap(right_temp_save_path)
+
+            # 设置图片在相应的label上
+            tool_image.set_image_by_label(left_image, self.__ui.label_left_image, 240, 240)
+            tool_image.set_image_by_label(right_image, self.__ui.label_right_image, 80, 240)
+        else:
+            # 设置图片在相应的label上
+            tool_image.set_image_by_label(settings.source_empty_left_image, self.__ui.label_left_image)
+            tool_image.set_image_by_label(settings.source_empty_right_image, self.__ui.label_right_image)
 
     # 刷新图像所产生的基本信息在界面中部板上
     def __refresh_info_image(self, item_list):
@@ -246,7 +317,7 @@ class Win_Index(QMainWindow):
 
     # 刷新患者的基本信息在界面中部板上
     def __refresh_info_patient(self, item_list):
-        tool_log.debug("__refresh_info_patient", item_list)
+        tool_log.debug("__refresh_info_patient")
         # 日期
         self.__ui.table_image_info.setItem(1, 1, item_list['create_date'])
         # 编号

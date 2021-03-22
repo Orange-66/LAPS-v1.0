@@ -16,8 +16,12 @@ app = None
 # logo路径
 # logo_path = "./Resource/Images/Icon/win_logo.ico"
 logo_path = ":/icons/Images/Icon/win_logo.ico"
-source_empty_image = "Resource/Images/Button/empty_image.png"
+source_empty_image = "Resource/Images/Background/empty_image.png"
+source_empty_right_image = "Resource/Images/Background/empty_image.png"
+source_empty_left_image = "Resource/Images/Background/empty_image.png"
 
+image_root_dir = "Database/Images"
+temp_dir = "Database/Temp"
 # -------------窗口-------------
 
 win_index = None
@@ -63,7 +67,9 @@ image_index = None
 # 当前患者的影像图片信息列表
 patient_image_list = []
 
-# -------------口口-------------
+# -------------用户自由设置的开关-------------
+# 保存图像的模式是复制粘贴、直接剪切，True : 复制粘贴; False : 直接剪切
+saveImageMode = True
 # -------------口口-------------
 # -------------口口-------------
 

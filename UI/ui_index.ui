@@ -108,10 +108,30 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
-           <widget class="QGraphicsView" name="graphics_left_image"/>
+           <widget class="QLabel" name="label_left_image">
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background:rgb(255, 255, 255)</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
           </item>
           <item>
-           <widget class="QGraphicsView" name="graphics_right_image"/>
+           <widget class="QLabel" name="label_right_image">
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background:rgb(255, 255, 255)</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -348,7 +368,7 @@
      <x>0</x>
      <y>0</y>
      <width>858</width>
-     <height>24</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -401,7 +421,7 @@
   </widget>
   <action name="act_new_single">
    <property name="icon">
-    <iconset resource="../Resource/resource.qrc">
+    <iconset>
      <normaloff>:/Root/Images/Png/new.png</normaloff>:/Root/Images/Png/new.png</iconset>
    </property>
    <property name="text">
@@ -410,7 +430,7 @@
   </action>
   <action name="act_import">
    <property name="icon">
-    <iconset resource="../Resource/resource.qrc">
+    <iconset>
      <normaloff>:/Root/Images/Png/import.png</normaloff>:/Root/Images/Png/import.png</iconset>
    </property>
    <property name="text">
@@ -419,7 +439,7 @@
   </action>
   <action name="act_painting">
    <property name="icon">
-    <iconset resource="../Resource/resource.qrc">
+    <iconset>
      <normaloff>:/Root/Images/Png/painting.png</normaloff>:/Root/Images/Png/painting.png</iconset>
    </property>
    <property name="text">
@@ -428,7 +448,7 @@
   </action>
   <action name="act_backward">
    <property name="icon">
-    <iconset resource="../Resource/resource.qrc">
+    <iconset>
      <normaloff>:/Root/Images/Png/backwark.png</normaloff>:/Root/Images/Png/backwark.png</iconset>
    </property>
    <property name="text">
@@ -437,7 +457,7 @@
   </action>
   <action name="act_cancel">
    <property name="icon">
-    <iconset resource="../Resource/resource.qrc">
+    <iconset>
      <normaloff>:/Root/Images/Png/cancel.png</normaloff>:/Root/Images/Png/cancel.png</iconset>
    </property>
    <property name="text">
@@ -446,7 +466,7 @@
   </action>
   <action name="act_delete">
    <property name="icon">
-    <iconset resource="../Resource/resource.qrc">
+    <iconset>
      <normaloff>:/Root/Images/Png/delete.png</normaloff>:/Root/Images/Png/delete.png</iconset>
    </property>
    <property name="text">
@@ -455,7 +475,7 @@
   </action>
   <action name="act_save">
    <property name="icon">
-    <iconset resource="../Resource/resource.qrc">
+    <iconset>
      <normaloff>:/Root/Images/Png/save.png</normaloff>:/Root/Images/Png/save.png</iconset>
    </property>
    <property name="text">

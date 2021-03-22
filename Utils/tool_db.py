@@ -6,6 +6,8 @@
 # @File : tool_db.py
 # @Remark : 控制数据库的工具类
 # -----------------------------
+import os
+
 from PyQt5.QtCore import Qt, QDateTime, QFile, QIODevice
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtSql import QSqlQueryModel, QSqlQuery, QSqlTableModel
@@ -228,13 +230,22 @@ def find_image_by_patient_id(query_model, row):
 
     while query_model_2.next():
         uncropped_image_path = query_model_2.value("uncropped_image_path")
-        uncropped_image = QPixmap(uncropped_image_path)
+        if uncropped_image_path:
+            uncropped_image = QPixmap(uncropped_image_path)
+        else:
+            uncropped_image = None
 
         original_image_path = query_model_2.value("original_image_path")
-        original_image = QPixmap(original_image_path)
+        if original_image_path:
+            original_image = QPixmap(original_image_path)
+        else:
+            original_image = None
 
         processed_image_path = query_model_2.value("processed_image_path")
-        processed_image = QPixmap(processed_image_path)
+        if processed_image_path:
+            processed_image = QPixmap(processed_image_path)
+        else:
+            processed_image = None
 
         item_id = str(query_model_2.value("image_id"))
         item_lap = str(query_model_2.value("lap"))
@@ -246,7 +257,7 @@ def find_image_by_patient_id(query_model, row):
         item_iasa = str(query_model_2.value("iasa"))
         item_iass = str(query_model_2.value("iass"))
 
-        image_item = {'id': item_id, 'lap': item_lap, 'tau': item_tau,
+        image_item = {'image_id': item_id, 'lap': item_lap, 'tau': item_tau,
                       'uncropped_image': uncropped_image, 'uncropped_image_path': uncropped_image_path,
                       'original_image': original_image, 'original_image_path': original_image_path,
                       'processed_image': processed_image, 'processed_image_path': processed_image_path,
@@ -274,7 +285,7 @@ def dic_to_table_widget_item_list(dictionary):
 
 
 # 插入图片-完成
-def insert_image(patient_id, uncropped_image_path):
+def insert_image(patient_id, uncropped_image_path, original_image_path):
     """
 
     Args:
@@ -297,7 +308,7 @@ def insert_image(patient_id, uncropped_image_path):
     )
     query.bindValue(":patient_id", patient_id)
     query.bindValue(":uncropped_image_path", uncropped_image_path)
-    query.bindValue(":original_image_path", uncropped_image_path)
+    query.bindValue(":original_image_path", original_image_path)
 
     res = query.exec()
     if not res:
@@ -310,8 +321,69 @@ def insert_image(patient_id, uncropped_image_path):
 
 
 # 修改患者processed_image信息
-def update_processed_image(image_id, processed_image):
-    pass
+def update_image(image_id, image_path):
+    tool_log.debug("tool_db - insert_image, 接收到的数据：", image_id, type(image_id),
+                   image_path, type(image_path))
+
+    query = QSqlQuery(settings.db)
+
+    image_type = image_path.split('/')[-2]
+
+    if image_type == 'uncropped':
+        query.prepare(
+            '''UPDATE patient_image
+                SET uncropped_image_path=:image_path
+                WHERE image_id=:image_id'''
+        )
+    elif image_type == 'original':
+        query.prepare(
+            '''UPDATE patient_image
+                SET original_image_path=:image_path
+                WHERE image_id=:image_id'''
+        )
+    else:
+        query.prepare(
+            '''UPDATE patient_image
+                SET processed_image_path=:image_path
+                WHERE image_id=:image_id'''
+        )
+
+    query.bindValue(":image_path", image_path)
+    query.bindValue(":image_id", image_id)
+
+    res = query.exec()
+    if not res:
+        QMessageBox.warning(settings.win_index, "错误", "插入记录错误," + query.lastError().text())
+        tool_log.debug("update_image，错误 - 插入记录错误" + query.lastError().text())
+        return False
+    else:
+        tool_log.debug("update_image，成功！")
+        return True
+
+# 修改患者该processed_image的lap数值
+def update_image_lap(image_id, lap):
+    tool_log.debug("tool_db - insert_image, 接收到的数据：", image_id, type(image_id),
+                   lap, type(lap))
+
+    query = QSqlQuery(settings.db)
+
+    query.prepare(
+        '''UPDATE patient_image
+            SET lap=:lap
+            WHERE image_id=:image_id'''
+    )
+
+    query.bindValue(":lap", lap)
+    query.bindValue(":image_id", image_id)
+
+    res = query.exec()
+    if not res:
+        QMessageBox.warning(settings.win_index, "错误", "插入记录错误," + query.lastError().text())
+        tool_log.debug("update_image，错误 - 插入记录错误" + query.lastError().text())
+        return False
+    else:
+        tool_log.debug("update_image，成功！")
+        return True
 
 
 # 获得所有字段名称
