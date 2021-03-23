@@ -37,3 +37,9 @@ def formula_bmi_degree(bmi):
         return "重度肥胖"
     else:
         return "极重度肥胖"
+
+
+# 保留N位小数
+def set_round(num, place):
+    return round(num, place)
+

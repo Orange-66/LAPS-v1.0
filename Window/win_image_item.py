@@ -26,5 +26,8 @@ class Win_Image_Item(QWidget):
     # 删除按钮-槽函数
     def on_btn_delete_clicked(self):
         tool_log.debug("on_btn_delete_clicked")
-        tool_db.delete_current_image()
+        image_index = settings.image_index
+        image_info = settings.patient_image_list[image_index]
+        image_id = image_info['image_id']
+        tool_db.delete_current_image(image_id)
         settings.win_index.refresh_image_list()

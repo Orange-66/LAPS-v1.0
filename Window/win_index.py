@@ -140,8 +140,11 @@ class Win_Index(QMainWindow):
     # 图片信息按钮-点击-槽函数
     def on_btn_page_info_clicked(self):
         tool_log.debug("on_btn_page_info_clicked")
-        settings.win_image_item = Win_Image_Item()
-        settings.win_image_item.show()
+        if len(settings.patient_image_list):
+            settings.win_image_item = Win_Image_Item()
+            settings.win_image_item.show()
+        else:
+            QMessageBox.about(settings.win_index, "提示", "当前情况下没有图片可看！")
 
     @pyqtSlot()
     # 搜索框-回车-槽函数
@@ -233,7 +236,7 @@ class Win_Index(QMainWindow):
             self.__refresh_info_image(tool_db.dic_to_table_widget_item_list(processed_image_info))
 
             tool_image.set_image_by_label(current_processed_image, self.__ui.label_processed_image)
-            processed_image_info['processed_image'] = current_processed_image
+            # processed_image_info['processed_image'] = current_processed_image
         # 设置处理后的图片到相应的图片位置上
         else:
             # 处理并计算得出lap以及相应的图片
@@ -267,7 +270,7 @@ class Win_Index(QMainWindow):
 
             # LAP
             # 写入到数据库中
-            tool_db.update_image_lap(image_id, lap)
+            tool_db.update_image_lap(image_id, str(lap))
             # 保存在当前list中
             processed_image_info['lap'] = str(lap)
 

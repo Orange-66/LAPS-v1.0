@@ -134,7 +134,7 @@ def find_info_by_keyword(keyword=""):
         if keyword == "":
             query_model.setQuery('''SELECT state, patient_id, name 
                                     FROM patient_info 
-                                    ORDER BY modify_date
+                                    ORDER BY modify_date DESC 
                                     LIMIT 100''')
         else:
             query = QSqlQuery(settings.db)

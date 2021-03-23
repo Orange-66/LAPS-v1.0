@@ -26,6 +26,6 @@ def process_original_image(original_image_path):
     # 修正输出的图片
     cropped_image = tool_image.crop_image_by_path(process_image_path, 82, 136, 574, 350)
     tool_image.save_image_to_dir(cropped_image, process_image_path)
+    lap = tool_formula.set_round(lap, 4)
     # 设置lap返回的精确度
-    lap = tool_formula.round(lap, 4)
     return lap, process_image_path

@@ -85,7 +85,7 @@ class Wid_Canvas(QWidget):
             painter.fillRect(rect, Qt.white)
         else:
             # canvas_image = QPixmap(settings.wid_canvas_image_path)
-            canvas_image = settings.original_image_list[settings.image_index]
+            canvas_image = settings.patient_image_list[settings.image_index]['original_image']
             painter.drawPixmap(0, 0, settings.canvas_width, settings.canvas_height, canvas_image)
 
     # 前进操作

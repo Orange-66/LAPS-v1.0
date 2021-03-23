@@ -28,7 +28,7 @@ class Win_Import_Image(QWidget):
     def on_btn_done_clicked(self):
         tool_log.debug("on_btn_done_clicked")
         # 获取窗口所有信息
-        patient_id = settings.current_patient_id
+        patient_id = str(settings.current_patient_id)
         patient_name = settings.current_patient_name
         image_list = self.__get_album()
 
