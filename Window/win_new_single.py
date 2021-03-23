@@ -60,7 +60,7 @@ class Win_New_Single(QWidget):
         try:
             # 添加到数据库
             tool_db.insert_info(patient_id, name, create_date, None,
-                                gender, age, stature, weight, sbp, dbp, bsa, bmi, bmi_degree, 0)
+                                gender, age, stature, weight, sbp, dbp, bsa, bmi, bmi_degree, '×')
 
 
             for image_path in image_list:
