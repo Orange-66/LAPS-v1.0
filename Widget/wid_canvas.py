@@ -21,7 +21,7 @@ class Wid_Canvas(QWidget):
     # 设置画笔
     pen = QPen()
     pen.setWidth(settings.pen_width)
-    pen.setColor(settings.pen_color)
+    pen.setColor(settings.pen_color_red)
     white_background = False
 
     def __init__(self, parent=None):
@@ -124,6 +124,7 @@ class Wid_Canvas(QWidget):
     def done(self):
         self.setMouseTracking(False)
         self.white_background = True
+        self.pen.setColor(settings.pen_color_black)
         self.paintEvent(None)
         self.white_background = False
         return self.canvas

@@ -132,16 +132,16 @@ def find_info_by_keyword(keyword=""):
         query_model = QSqlQueryModel()
         # 如果keyword为空，则除查询数据库中全部数据的前100项数据
         if keyword == "":
-            query_model.setQuery('''SELECT state, patient_id, name 
+            query_model.setQuery('''SELECT state, patient_id, name
                                     FROM patient_info 
                                     ORDER BY modify_date DESC 
                                     LIMIT 100''')
         else:
             query = QSqlQuery(settings.db)
-            query.prepare('''SELECT state, patient_id, name 
+            query.prepare('''SELECT state, patient_id, name
                                     FROM patient_info 
                                     WHERE name=:keyword OR patient_id=:keyword
-                                    ORDER BY modify_date DESC 
+                                    ORDER BY modify_date DESC
                                     LIMIT 100''')
 
             query.bindValue(":keyword", keyword)
@@ -374,6 +374,32 @@ def update_image_lap(image_id, lap):
     )
 
     query.bindValue(":lap", lap)
+    query.bindValue(":image_id", image_id)
+
+    res = query.exec()
+    if not res:
+        QMessageBox.warning(settings.win_index, "错误", "插入记录错误," + query.lastError().text())
+        tool_log.debug("update_image，错误 - 插入记录错误" + query.lastError().text())
+        return False
+    else:
+        tool_log.debug("update_image，成功！")
+        return True
+
+
+# 修改患者该processed_image的tau数值
+def update_image_tau(image_id, tau):
+    tool_log.debug("tool_db - insert_image, 接收到的数据：", image_id, type(image_id),
+                   tau, type(tau))
+
+    query = QSqlQuery(settings.db)
+
+    query.prepare(
+        '''UPDATE patient_image
+            SET tau=:tau
+            WHERE image_id=:image_id'''
+    )
+
+    query.bindValue(":tau", tau)
     query.bindValue(":image_id", image_id)
 
     res = query.exec()

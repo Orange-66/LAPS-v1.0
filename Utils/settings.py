@@ -13,6 +13,7 @@ from PyQt5.QtSql import QSqlDatabase
 app = None
 
 # -------------路径-------------
+# 本地静态资源的路径用path
 # logo路径
 # logo_path = "./Resource/Images/Icon/win_logo.ico"
 logo_path = ":/icons/Images/Icon/win_logo.ico"
@@ -20,8 +21,12 @@ source_empty_image = "Resource/Images/Background/empty_image.png"
 source_empty_right_image = "Resource/Images/Background/empty_image.png"
 source_empty_left_image = "Resource/Images/Background/empty_image.png"
 
+# 动态保存修改的资源路径用dir
 image_root_dir = "Database/Images"
 temp_dir = "Database/Temp"
+painting_image_temp_dir = temp_dir + "/temp_painting.png"
+temp_left_image_dir = temp_dir + "/left_temp.png"
+temp_right_image_dir = temp_dir + "/right_temp.png"
 # -------------窗口-------------
 
 win_index = None
@@ -32,8 +37,10 @@ wid_preview = None
 win_image_item = None
 
 # -------------画笔-------------
-pen_color = QColor(209, 26, 45)
-pen_width = 2
+pen_color_red = QColor(209, 26, 45)
+pen_color_black = QColor(0, 0, 0)
+
+pen_width = 3
 
 # -------------画布-------------
 canvas_width = 896

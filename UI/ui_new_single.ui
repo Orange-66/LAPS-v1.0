@@ -48,6 +48,10 @@
        </item>
        <item>
         <widget class="QPushButton" name="btn_done">
+         <property name="styleSheet">
+          <string notr="true">background:#1E50A2; 
+color: #FFFFFF;</string>
+         </property>
          <property name="text">
           <string>完成</string>
          </property>
@@ -351,6 +355,10 @@
      </item>
      <item>
       <widget class="QPushButton" name="btn_add_image">
+       <property name="styleSheet">
+        <string notr="true">background: #007B43;
+color: #FFFFFF</string>
+       </property>
        <property name="text">
         <string>添加</string>
        </property>

@@ -9,9 +9,10 @@
 import random
 
 from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QApplication
 from PyUI.ui_painting import Ui_Painting
-from Utils import tool_win, settings, tool_image, tool_log
+from Utils import tool_win, settings, tool_image, tool_log, tool_lap
 
 
 class Win_Painting(QWidget):
@@ -44,8 +45,28 @@ class Win_Painting(QWidget):
     # 完成按钮-点击-槽函数
     def on_btn_done_clicked(self):
         tool_log.debug("on_btn_done_clicked")
-        processed_image = self.__ui.wid_canvas.done()
-        settings.win_index.set_processed_image(processed_image)
+        painting_image = self.__ui.wid_canvas.done()
+        tool_image.save_image_to_dir(painting_image, settings.painting_image_temp_dir)
+
+        processed_image_info = settings.patient_image_list[settings.image_index]
+
+        painting_image = tool_image.paste_image(settings.painting_image_temp_dir,
+                                                processed_image_info['uncropped_image_path'],
+                                                42, 342)
+        tool_image.save_image_to_dir(painting_image, settings.painting_image_temp_dir)
+
+
+
+
+
+        # 交给tool_lap进行计算
+        lap, tau, processed_image_path = tool_lap.process_original_image(settings.painting_image_temp_dir)
+        processed_image_info['lap'] = lap
+        processed_image_info['tau'] = tau
+        processed_image_info['processed_image_path'] = processed_image_path
+        processed_image_info['processed_image'] = QPixmap(processed_image_path)
+
+        settings.win_index.set_processed_image(None)
         self.__ui.wid_canvas.clear()
         self.close()
         # return self.wid_canvas.done()

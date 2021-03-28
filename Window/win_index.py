@@ -9,6 +9,7 @@
 from PyQt5.QtCore import pyqtSlot, Qt, QItemSelectionModel
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QAbstractItemView, QMessageBox, QTableWidgetItem)
+from PyQt5 import QtCore
 
 from PyUI.ui_index import Ui_Index
 from Utils import settings, tool_win, tool_db, tool_image, tool_lap, tool_log, tool_file
@@ -41,7 +42,9 @@ class Win_Index(QMainWindow):
         # 设置表头
         item_title = QTableWidgetItem("患者基本信息", 1000)
         item_title.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+        item_title.setFlags(QtCore.Qt.NoItemFlags)
         self.__ui.table_image_info.setItem(0, 0, item_title)
+
 
         # 刷新界面
         self.refresh_window()
@@ -106,16 +109,17 @@ class Win_Index(QMainWindow):
             settings.image_index -= 1
             current_image_info = settings.patient_image_list[settings.image_index]
 
-            current_original_image = current_image_info['original_image']
-            self.__set_original_image(current_original_image)
+            # 刷新btn_down_page按钮上文字
+            self.__refresh_btn_page_info()
 
             current_processed_image = current_image_info['processed_image']
             self.set_processed_image(current_processed_image)
 
+            current_original_image = current_image_info['original_image']
+            self.__set_original_image(current_original_image)
+
             uncropped_image_path = current_image_info['uncropped_image_path']
             self.__set_others_image(uncropped_image_path)
-            # 刷新btn_down_page按钮上文字
-            self.__refresh_btn_page_info()
 
     @pyqtSlot()
     # 下一张图片按钮-点击-槽函数
@@ -125,16 +129,22 @@ class Win_Index(QMainWindow):
             settings.image_index += 1
             current_image_info = settings.patient_image_list[settings.image_index]
 
-            current_original_image = current_image_info['original_image']
-            self.__set_original_image(current_original_image)
+            # 刷新btn_down_page按钮上文字
+            self.__refresh_btn_page_info()
 
             current_processed_image = current_image_info['processed_image']
             self.set_processed_image(current_processed_image)
 
+            current_original_image = current_image_info['original_image']
+            self.__set_original_image(current_original_image)
+
             uncropped_image_path = current_image_info['uncropped_image_path']
             self.__set_others_image(uncropped_image_path)
-            # 刷新btn_down_page按钮上文字
-            self.__refresh_btn_page_info()
+
+
+
+
+
 
     @pyqtSlot()
     # 图片信息按钮-点击-槽函数
@@ -239,10 +249,12 @@ class Win_Index(QMainWindow):
             # processed_image_info['processed_image'] = current_processed_image
         # 设置处理后的图片到相应的图片位置上
         else:
+
             # 处理并计算得出lap以及相应的图片
-            lap, processed_image_path = \
+            lap, tau, processed_image_path = \
                 tool_lap.process_original_image(
                     processed_image_info['uncropped_image_path'])
+
 
             patient_id = str(settings.current_patient_id)
             patient_name = settings.current_patient_name
@@ -274,23 +286,28 @@ class Win_Index(QMainWindow):
             # 保存在当前list中
             processed_image_info['lap'] = str(lap)
 
-        # 无论是有过没有过，都要更新相应的图像以及lap数值在中部现实板上
-        item_lap = QTableWidgetItem(processed_image_info['lap'], 1000)
-        item_lap.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+            # TAU
+            # 写入到数据库中
+            tool_db.update_image_tau(image_id, str(tau))
+            # 保存在当前list中
+            processed_image_info['tau'] = str(tau)
+
+        # 展示图像在面板上
         tool_image.set_image_by_label(processed_image_info['processed_image'], self.__ui.label_processed_image)
-        self.__ui.table_image_info.setItem(7, 1, item_lap)
+        # 展示图片的信息在列表上
+        self.__refresh_info_image(tool_db.dic_to_table_widget_item_list(processed_image_info))
 
     # 设置中部上方的两个图片
     def __set_others_image(self, uncropped_image_path):
         if uncropped_image_path:
             # 截取中部左侧图片 起点275，80； 大小255
             left_image_temp = tool_image.crop_image_by_path(uncropped_image_path, 275, 80, 275+255, 80+255)
-            left_temp_save_path = settings.temp_dir + "left_temp.png"
+            left_temp_save_path = settings.temp_left_image_dir
             tool_image.save_image_to_dir(left_image_temp, left_temp_save_path)
             left_image = QPixmap(left_temp_save_path)
             # 截取中部右部侧图片 起点952，95； 大小72 230
             right_image_temp = tool_image.crop_image_by_path(uncropped_image_path, 952, 95, 952+72, 95+230)
-            right_temp_save_path = settings.temp_dir + "right_temp.png"
+            right_temp_save_path = settings.temp_right_image_dir
             tool_image.save_image_to_dir(right_image_temp, right_temp_save_path)
             right_image = QPixmap(right_temp_save_path)
 
@@ -306,9 +323,13 @@ class Win_Index(QMainWindow):
     def __refresh_info_image(self, item_list):
         tool_log.debug("__refresh_info_image", item_list)
         # LAP
-        self.__ui.table_image_info.setItem(7, 1, item_list['lap'])
+        item = item_list['lap']
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        self.__ui.table_image_info.setItem(7, 1, item)
         # TAU
-        self.__ui.table_image_info.setItem(7, 3, item_list['tau'])
+        item = item_list['tau']
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        self.__ui.table_image_info.setItem(7, 3, item)
         # MV[eas]
         self.__ui.table_image_info.setItem(9, 1, item_list['mve'])
         self.__ui.table_image_info.setItem(9, 2, item_list['mva'])
@@ -322,27 +343,49 @@ class Win_Index(QMainWindow):
     def __refresh_info_patient(self, item_list):
         tool_log.debug("__refresh_info_patient")
         # 日期
-        self.__ui.table_image_info.setItem(1, 1, item_list['create_date'])
+        item = item_list['create_date']
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        self.__ui.table_image_info.setItem(1, 1, item)
         # 编号
-        self.__ui.table_image_info.setItem(2, 1, item_list['patient_id'])
+        item = item_list['patient_id']
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        self.__ui.table_image_info.setItem(2, 1, item)
         # 姓名
-        self.__ui.table_image_info.setItem(2, 3, item_list['name'])
+        item = item_list['name']
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        self.__ui.table_image_info.setItem(2, 3, item)
         # 性别
-        self.__ui.table_image_info.setItem(3, 1, item_list['gender'])
+        item = item_list['gender']
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        self.__ui.table_image_info.setItem(3, 1, item)
         # 年龄
-        self.__ui.table_image_info.setItem(3, 3, item_list['age'])
+        item = item_list['age']
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        self.__ui.table_image_info.setItem(3, 3, item)
         # 身高
-        self.__ui.table_image_info.setItem(4, 1, item_list['stature'])
+        item = item_list['stature']
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        self.__ui.table_image_info.setItem(4, 1, item)
         # 体重
-        self.__ui.table_image_info.setItem(4, 3, item_list['weight'])
+        item = item_list['weight']
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        self.__ui.table_image_info.setItem(4, 3, item)
         # SBP
-        self.__ui.table_image_info.setItem(5, 1, item_list['sbp'])
+        item = item_list['sbp']
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        self.__ui.table_image_info.setItem(5, 1, item)
         # DBP
-        self.__ui.table_image_info.setItem(5, 3, item_list['dbp'])
+        item = item_list['dbp']
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        self.__ui.table_image_info.setItem(5, 3, item)
         # BSA
-        self.__ui.table_image_info.setItem(6, 1, item_list['bsa'])
+        item = item_list['bsa']
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        self.__ui.table_image_info.setItem(6, 1, item)
         # BMI
-        self.__ui.table_image_info.setItem(6, 3, item_list['bmi'])
+        item = item_list['bmi']
+        item.setFlags(QtCore.Qt.NoItemFlags)
+        self.__ui.table_image_info.setItem(6, 3, item)
 
     # 刷新btn_page_info按钮上的文字
     def __refresh_btn_page_info(self):

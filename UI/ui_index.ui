@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>858</width>
-    <height>555</height>
+    <width>1337</width>
+    <height>767</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -123,7 +123,7 @@
           <item>
            <widget class="QLabel" name="label_right_image">
             <property name="autoFillBackground">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="styleSheet">
              <string notr="true">background:rgb(255, 255, 255)</string>
@@ -205,110 +205,429 @@
            <property name="text">
             <string>新建列</string>
            </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>新建列</string>
+           <property name="font">
+            <font>
+             <family>Microsoft JhengHei UI</family>
+            </font>
            </property>
           </column>
           <column>
            <property name="text">
             <string>新建列</string>
            </property>
+           <property name="font">
+            <font>
+             <family>Microsoft YaHei UI</family>
+            </font>
+           </property>
           </column>
           <column>
            <property name="text">
             <string>新建列</string>
            </property>
+           <property name="font">
+            <font>
+             <family>Microsoft YaHei UI</family>
+            </font>
+           </property>
           </column>
+          <column>
+           <property name="text">
+            <string>新建列</string>
+           </property>
+           <property name="font">
+            <font>
+             <family>Microsoft YaHei UI</family>
+            </font>
+           </property>
+          </column>
+          <item row="0" column="0">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="0" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="0" column="2">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="0" column="3">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
           <item row="1" column="0">
            <property name="text">
             <string>日期</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="1" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
            </property>
           </item>
           <item row="1" column="2">
            <property name="text">
             <string/>
            </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="1" column="3">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
           </item>
           <item row="2" column="0">
            <property name="text">
             <string>编号</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="2" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
            </property>
           </item>
           <item row="2" column="2">
            <property name="text">
             <string>姓名</string>
            </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="2" column="3">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
           </item>
           <item row="3" column="0">
            <property name="text">
             <string>性别</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="3" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
            </property>
           </item>
           <item row="3" column="2">
            <property name="text">
             <string>年龄</string>
            </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="3" column="3">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
           </item>
           <item row="4" column="0">
            <property name="text">
             <string>身高</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="4" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
            </property>
           </item>
           <item row="4" column="2">
            <property name="text">
             <string>体重</string>
            </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="4" column="3">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
           </item>
           <item row="5" column="0">
            <property name="text">
             <string>SBP</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="5" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
            </property>
           </item>
           <item row="5" column="2">
            <property name="text">
             <string>DBP</string>
            </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="5" column="3">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
           </item>
           <item row="6" column="0">
            <property name="text">
             <string>BSA</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="6" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
            </property>
           </item>
           <item row="6" column="2">
            <property name="text">
             <string>BMI</string>
            </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="6" column="3">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
           </item>
           <item row="7" column="0">
            <property name="text">
             <string>LAP</string>
+           </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="background">
+            <brush brushstyle="Dense7Pattern">
+             <color alpha="255">
+              <red>230</red>
+              <green>230</green>
+              <blue>230</blue>
+             </color>
+            </brush>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="7" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
            </property>
           </item>
           <item row="7" column="2">
            <property name="text">
             <string>TAU</string>
            </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="background">
+            <brush brushstyle="Dense7Pattern">
+             <color alpha="255">
+              <red>230</red>
+              <green>230</green>
+              <blue>230</blue>
+             </color>
+            </brush>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="7" column="3">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
+          </item>
+          <item row="8" column="0">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
           </item>
           <item row="8" column="1">
            <property name="text">
             <string>e</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
            </property>
           </item>
           <item row="8" column="2">
            <property name="text">
             <string>a</string>
            </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
           </item>
           <item row="8" column="3">
            <property name="text">
             <string>s</string>
            </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
+           </property>
           </item>
           <item row="9" column="0">
            <property name="text">
             <string>MV</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
            </property>
           </item>
           <item row="9" column="1">
@@ -319,6 +638,12 @@
           <item row="10" column="0">
            <property name="text">
             <string>IAS</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>NoItemFlags</set>
            </property>
           </item>
          </widget>
@@ -367,7 +692,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>858</width>
+     <width>1337</width>
      <height>26</height>
     </rect>
    </property>

@@ -1,18 +1,19 @@
 from __future__ import division
+
+import math
 import os
 import sympy
-import Utils.model_lap.models as M
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+from Utils.model_lap import models as M
 import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
 from PIL import Image
 from keras.preprocessing.image import array_to_img
-import Utils.model_lap.NoSh as N
-
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
-
+from Utils.model_lap import NoSh as N
 
 def picture_Preprocess(picture_path):
+
     output_folder = 'Database/Temp'
 
     val = np.ones((2, 392, 448), dtype='float32')
@@ -34,7 +35,6 @@ def picture_Preprocess(picture_path):
     np.save(output_folder + '/picture_preprocessed.npy', val)
     return output_folder + '/picture_preprocessed.npy'
 
-
 def edge_Predict(file_path):
     te_data = np.load(file_path)
     output_folder = 'Database/Temp'
@@ -48,7 +48,6 @@ def edge_Predict(file_path):
     image = array_to_img(np.reshape(mat_predicted, (392, 896, 1)))
     image.save(output_folder + '/predicted.png')
     return output_folder + '/predicted.png'
-
 
 def curve_fit(picture_path, predicted_path):
     predict = N.img2dict(picture_path)
@@ -160,14 +159,19 @@ def curve_fit(picture_path, predicted_path):
     plt.scatter(peak_y, peak_x, c='r')
 
     plt.savefig(output_folder + "/figure.png")
-
-    # plt.pause(0.5)
     plt.clf()
 
-    return sum(result_full) / len(result_full) / 4, output_folder + "/figure.png"
+    result = sum(result_full) / len(result_full) / 4
 
+    tau = (1 - 2) / math.log((result + 16) / (result + 4))
+
+    try:
+        return result, tau, output_folder + "/figure.png"
+    except:
+        return 0, 0, output_folder + "/figure.png"
 
 def process_original_image(picture_path):
+
     if os.path.exists("Database"):
         pass
     else:
@@ -180,8 +184,8 @@ def process_original_image(picture_path):
 
     file_path = picture_Preprocess(picture_path)
     predicted_path = edge_Predict(file_path)
-    result, path = curve_fit(picture_path, predicted_path)
-    return result, path
+    result, tau, path = curve_fit(picture_path, predicted_path)
+    return result, tau, path
 
 
 def process_painting_image(picture_path, predicted_path):
