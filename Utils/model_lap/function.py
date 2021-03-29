@@ -188,8 +188,8 @@ def process_original_image(picture_path):
     return result, tau, path
 
 
-def process_painting_image(picture_path, predicted_path):
-    predict = N.img2dict(picture_path)
+def process_painting_image(painting_image):
+    predict = N.img2dict(painting_image)
 
     result_full = []
 
@@ -201,17 +201,19 @@ def process_painting_image(picture_path, predicted_path):
                      (predict['y2']['top'] - predict['y1']['top']) +
                      (predict['y1']['top'] - predict['y_cord']['top'])) / 3)
 
-    image_predicted = Image.open(predicted_path)
+    image_predicted = Image.open(painting_image)
     mat_predicted = np.array(image_predicted)
+    mat_predicted = mat_predicted[342:732, 42:936]
 
     x = []
     y = []
     for j in range(len(mat_predicted[0])):
         for i in range(len(mat_predicted)):
-            if mat_predicted[i][j] < 150:
+            if mat_predicted[i][j].all() == 0:
                 x.append(i)
                 y.append(j)
                 break
+
     peaks = signal.find_peaks(x, height=100, distance=100)
 
     peak_x = []
@@ -249,19 +251,10 @@ def process_painting_image(picture_path, predicted_path):
         fit_x = x[left:right]
         fit_y = y[left:right]
 
-        f1 = np.polyfit(fit_y, fit_x, 6)
-        p1 = np.poly1d(f1)
+        fitted_x = [(i + 340 - origin_x) / x_scale for i in fit_x]
+        fitted_y = [(i + 40 - origin_y) / y_scale * 0.15 for i in fit_y]
 
-        image2 = plt.imread('output/original.png')
-        plt.imshow(image2)
-        xvals = p1(fit_y)  # 拟合y值
-        # plt.scatter(fit_y, fit_x)
-        plt.plot(fit_y, xvals, c='r')
-
-        fit_x = [(i + 340 - origin_x) / x_scale for i in fit_x]
-        fit_y = [(i + 40 - origin_y) / y_scale * 0.15 for i in fit_y]
-
-        f1 = np.polyfit(fit_y, fit_x, 2)
+        f1 = np.polyfit(fitted_y, fitted_x, 6)
         p1 = np.poly1d(f1)
 
         T1 = (p1 - 1).roots
@@ -279,32 +272,39 @@ def process_painting_image(picture_path, predicted_path):
 
             lap = sympy.Symbol('lap')
 
-            if fit_y[0] <= t1.real <= fit_y[-1] and fit_y[0] <= t2.real <= fit_y[- 1] and fit_y[0] <= t3.real <= fit_y[
+            if fitted_y[0] <= t1.real <= fitted_y[-1] and fitted_y[0] <= t2.real <= fitted_y[-1] and fitted_y[0] <= t3.real <= fitted_y[
                 -1] \
                     and t1.imag == 0j and t2.imag == 0j and t3.imag == 0j:
 
                 result = sympy.solve(((1 / (lap + 16) - 1 / (lap + 4)) / (1 / (lap + 36) - 1 /
                                                                           (lap + 4)) - (t1 - t2) / (t1 - t3)), lap)
 
+
                 for i in result:
                     result_full.append(i)
+        fit_x = [i + 342 for i in fit_x]
+        fit_y = [i + 42 for i in fit_y]
 
-                # result = [i / 3 for i in result]
-                # print("LAP predicted by System:")
-                # print(result)
-    # plt.scatter(y, x)
-    plt.scatter(peak_y, peak_x, c='r')
+        f1 = np.polyfit(fit_y, fit_x, 6)
+        p1 = np.poly1d(f1)
 
-    if os.path.exists("fig"):
-        pass
-    else:
-        os.mkdir("fig")
+        image2 = plt.imread(painting_image)
+        plt.imshow(image2)
+        xvals = p1(fit_y)  # 拟合y值
+        plt.plot(fit_y, xvals, c='r')
 
-    fitted_picture_path = 'fig/Figure.png'
 
-    plt.savefig(fitted_picture_path)
+    plt.scatter([i + 42 for i in peak_y], [i + 342 for i in peak_x], c='r')
 
-    plt.pause(0.5)
-    plt.clf()
+    output_folder = 'Database/Temp/'
+    fitted_picture_path = 'figure.png'
 
-    return sum(result_full) / len(result_full) / 3, fitted_picture_path
+    plt.savefig(output_folder + fitted_picture_path)
+
+
+    try:
+        result = sum(result_full) / len(result_full) / 4
+        tau = (1 - 2) / math.log((result + 16) / (result + 4))
+        return result, tau, output_folder + fitted_picture_path
+    except:
+        return 0, 0, output_folder + fitted_picture_path

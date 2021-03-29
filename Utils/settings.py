@@ -73,10 +73,17 @@ current_patient_name = None
 image_index = None
 # 当前患者的影像图片信息列表
 patient_image_list = []
+# 当前患者影响的修改记录
+image_info_modify_record = []
+
+
+# 当前患者影像信息
+def current_image():
+    return patient_image_list[image_index]
+
 
 # -------------用户自由设置的开关-------------
 # 保存图像的模式是复制粘贴、直接剪切，True : 复制粘贴; False : 直接剪切
 saveImageMode = True
 # -------------口口-------------
 # -------------口口-------------
-

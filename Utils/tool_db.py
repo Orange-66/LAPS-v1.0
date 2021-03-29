@@ -522,3 +522,35 @@ def delete_current_image(image_id):
         QMessageBox.about(settings.win_index, "成功", "成功删除记录")
 
     settings.win_image_item.close()
+
+
+# 将mv数据以及ias数据保存在数据库中
+def update_mv_ias(image_id, mv_ias_list):
+    tool_log.debug("tool_db - insert_image, 接收到的数据：", image_id, type(image_id),
+                   mv_ias_list, type(mv_ias_list))
+
+    query = QSqlQuery(settings.db)
+
+    query.prepare(
+        '''UPDATE patient_image
+            SET mvs=:mvs, mve=:mve, mva=:mva, iass=:iass, iase=:iase, iasa=:iasa
+            WHERE image_id=:image_id'''
+    )
+
+    query.bindValue(":image_id", image_id)
+    query.bindValue(":mvs", mv_ias_list['mvs'])
+    query.bindValue(":mve", mv_ias_list['mve'])
+    query.bindValue(":mva", mv_ias_list['mva'])
+    query.bindValue(":iass", mv_ias_list['iass'])
+    query.bindValue(":iase", mv_ias_list['iase'])
+    query.bindValue(":iasa", mv_ias_list['iasa'])
+
+    res = query.exec()
+    if not res:
+        QMessageBox.warning(settings.win_index, "错误", "插入记录错误," + query.lastError().text())
+        tool_log.debug("update_image，错误 - 插入记录错误" + query.lastError().text())
+        return False
+    else:
+        tool_log.debug("update_image，成功！")
+        return True
+

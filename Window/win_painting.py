@@ -55,18 +55,13 @@ class Win_Painting(QWidget):
                                                 42, 342)
         tool_image.save_image_to_dir(painting_image, settings.painting_image_temp_dir)
 
-
-
-
-
         # 交给tool_lap进行计算
-        lap, tau, processed_image_path = tool_lap.process_original_image(settings.painting_image_temp_dir)
+        lap, tau, processed_image_path = tool_lap.process_painting_image(settings.painting_image_temp_dir)
         processed_image_info['lap'] = lap
         processed_image_info['tau'] = tau
         processed_image_info['processed_image_path'] = processed_image_path
         processed_image_info['processed_image'] = QPixmap(processed_image_path)
-
-        settings.win_index.set_processed_image(None)
+        settings.win_index.set_processed_image(processed_image_info['processed_image'])
         self.__ui.wid_canvas.clear()
         self.close()
         # return self.wid_canvas.done()

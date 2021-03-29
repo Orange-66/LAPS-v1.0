@@ -9,8 +9,8 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-from Utils import settings
-from Utils import tool_win
+from Utils import settings, tool_win
+from Utils import tool_log
 
 
 class Wid_Canvas(QWidget):
@@ -99,7 +99,7 @@ class Wid_Canvas(QWidget):
             self.painting_path.append(pop_item)
             self.update()
         else:
-            tool_win.logging("forward, 前无可取")
+            tool_log.debug("forward, 前无可取")
 
     # 后撤操作
     def backward(self):
@@ -112,7 +112,7 @@ class Wid_Canvas(QWidget):
             self.tem_painting_path.append(pop_item)
             self.update()
         else:
-            tool_win.logging("forward, 后无可退")
+            tool_log.debug("forward, 后无可退")
 
     # 清除操作
     def clear(self):

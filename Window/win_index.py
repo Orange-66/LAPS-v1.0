@@ -21,6 +21,9 @@ from Window.win_import_image import Win_Import_Image
 
 
 class Win_Index(QMainWindow):
+    image_info_lock = False
+    is_action = False
+
     # ========================构造函数========================
     def __init__(self, parent=None):
         super().__init__(parent)  # 调用父类构造函数，创建窗体
@@ -48,6 +51,7 @@ class Win_Index(QMainWindow):
 
         # 刷新界面
         self.refresh_window()
+        self.image_info_lock = True
 
     # ========================重载事件函数========================
     def closeEvent(self, event):
@@ -80,71 +84,62 @@ class Win_Index(QMainWindow):
     @pyqtSlot()
     # 撤销按钮-点击-槽函数-未完成
     def on_act_backward_triggered(self):
-        pass
+        tool_log.debug("on_act_backward_triggered")
+        if len(settings.image_info_modify_record):
+            self.is_action = True
+            deleted_item = settings.image_info_modify_record.pop()
+            self.__set_item_text(deleted_item['row'], deleted_item['column'], deleted_item['before'])
+
 
     @pyqtSlot()
     # 取消按钮-点击-槽函数-未完成
     def on_act_cancel_triggered(self):
-        pass
+        tool_log.debug("on_act_cancel_triggered")
+
+        self.is_action = True
+        item_list = tool_db.dic_to_table_widget_item_list(settings.current_image())
+        self.__refresh_mv_ias(item_list)
+        settings.image_info_modify_record.clear()
 
     @pyqtSlot()
     # 删除按钮-点击-槽函数
     def on_act_delete_triggered(self):
         tool_log.debug("on_act_delete_triggered - 删除patient_id", settings.current_patient_id)
-        if QMessageBox.warning(settings.win_index, "注意", "确认删除此患者数据？"):
+        if QMessageBox.warning(settings.win_index, "注意", "确认删除此患者数据？", QMessageBox.Yes | QMessageBox.No,
+                                             QMessageBox.Yes) == QMessageBox.Yes:
             tool_db.delete_patient(settings.current_patient_id)
             # 刷新显示列表
             settings.win_index.refresh_window()
+            settings.image_info_modify_record.clear()
 
     @pyqtSlot()
     # 保存按钮-点击-槽函数-未完成
     def on_act_save_triggered(self):
-        pass
+        tool_log.debug("on_act_save_triggered")
+        self.is_action = True
+        mv_ias_list = self.__get_mv_ias_list()
+        tool_db.update_mv_ias(settings.patient_image_list[settings.image_index]['image_id'], mv_ias_list)
+        settings.image_info_modify_record.clear()
 
     @pyqtSlot()
     # 上一张图片按钮-点击-槽函数
     def on_btn_up_page_clicked(self):
         tool_log.debug("on_btn_up_page_clicked")
         if settings.image_index > 0:
+            self.__update_mv_ias(settings.current_image())
             settings.image_index -= 1
             current_image_info = settings.patient_image_list[settings.image_index]
-
-            # 刷新btn_down_page按钮上文字
-            self.__refresh_btn_page_info()
-
-            current_processed_image = current_image_info['processed_image']
-            self.set_processed_image(current_processed_image)
-
-            current_original_image = current_image_info['original_image']
-            self.__set_original_image(current_original_image)
-
-            uncropped_image_path = current_image_info['uncropped_image_path']
-            self.__set_others_image(uncropped_image_path)
+            self.__refresh_image_info(current_image_info)
 
     @pyqtSlot()
     # 下一张图片按钮-点击-槽函数
     def on_btn_down_page_clicked(self):
         tool_log.debug("on_btn_down_page_clicked")
         if settings.image_index + 1 < len(settings.patient_image_list):
+            self.__update_mv_ias(settings.current_image())
             settings.image_index += 1
             current_image_info = settings.patient_image_list[settings.image_index]
-
-            # 刷新btn_down_page按钮上文字
-            self.__refresh_btn_page_info()
-
-            current_processed_image = current_image_info['processed_image']
-            self.set_processed_image(current_processed_image)
-
-            current_original_image = current_image_info['original_image']
-            self.__set_original_image(current_original_image)
-
-            uncropped_image_path = current_image_info['uncropped_image_path']
-            self.__set_others_image(uncropped_image_path)
-
-
-
-
-
+            self.__refresh_image_info(current_image_info)
 
     @pyqtSlot()
     # 图片信息按钮-点击-槽函数
@@ -163,6 +158,39 @@ class Win_Index(QMainWindow):
         keyword = self.__ui.line_search_bar.text()
         self.refresh_window(keyword)
 
+    @pyqtSlot(QTableWidgetItem)
+    # 图像信息记录-改变-槽函数
+    def on_table_image_info_itemChanged(self, item):
+        if self.image_info_lock and not self.is_action:
+            tool_log.debug("on_table_image_info_itemChanged", item.text(), item.column(), item.row())
+
+            flag = None
+            for i in settings.image_info_modify_record:
+                if i['type'] == item.data(Qt.UserRole):
+                    flag = i
+
+            if flag:
+                settings.image_info_modify_record.append(
+                    {'after': item.text(),
+                     'before': flag['after'],
+                     'type': item.data(Qt.UserRole),
+                     'column': item.column(),
+                     'row': item.row()}
+                )
+            else:
+                settings.image_info_modify_record.append(
+                    {'after':item.text(),
+                     'before': settings.patient_image_list[settings.image_index][item.data(Qt.UserRole)],
+                     'type': item.data(Qt.UserRole),
+                     'column':item.column(),
+                     'row':item.row()})
+
+            tool_log.debug("on_table_image_info_itemChanged", settings.image_info_modify_record)
+
+        self.is_action = False
+
+
+
     # ========================自定义函数========================
     # 刷新界面
     def refresh_window(self, keyword=''):
@@ -172,11 +200,11 @@ class Win_Index(QMainWindow):
 
     # 刷新患者列表
     def __refresh_patient_list(self, keyword=''):
+        self.image_info_lock = False
         # 查询并刷新患者列表
         self.query_model = tool_db.find_info_by_keyword(keyword)
         select_model = QItemSelectionModel(self.query_model)
         select_model.currentRowChanged.connect(self.do_currentRowChanged)
-
 
         self.__ui.table_patient_list.setModel(self.query_model)
         self.__ui.table_patient_list.setSelectionModel(select_model)
@@ -189,20 +217,53 @@ class Win_Index(QMainWindow):
                 return 0
 
         self.do_currentRowChanged(Current())
+        self.image_info_lock = True
 
     # 刷新相册列表
     def refresh_image_list(self, row=0):
+        if settings.image_index is not None:
+            self.__update_mv_ias(settings.current_image())
         if tool_db.find_image_by_patient_id(self.query_model, row):
             current_image_info = settings.patient_image_list[0]
-            self.__set_original_image(current_image_info['original_image'])
-            self.set_processed_image(current_image_info['processed_image'])
-            self.__set_others_image(current_image_info['uncropped_image_path'])
+            tool_log.debug("refresh_image_list", current_image_info)
+            self.__refresh_image_info(current_image_info)
         else:
-            self.__set_original_image(None)
-            self.set_processed_image(None)
-            self.__set_others_image(None)
+            tool_log.debug("refresh_image_list", "None")
+            self.__refresh_image_info(None)
 
+    # 判断是否更新mv与ias
+    def __update_mv_ias(self, previous_image_info):
+        if len(settings.image_info_modify_record):
+            result = QMessageBox.information(self, '提示', '是否对已修改的数据进行保存？', QMessageBox.Yes | QMessageBox.No,
+                                             QMessageBox.Yes)
+            if result == QMessageBox.Yes:
+                mv_ias_list = self.__get_mv_ias_list()
+                for key, value in mv_ias_list.items():
+                    settings.current_image()[key] = value
+                tool_db.update_mv_ias(previous_image_info['image_id'], mv_ias_list)
+    
+            settings.image_info_modify_record.clear()
+            
+    # 更新图像信息
+    def __refresh_image_info(self, current_image_info):
+        self.image_info_lock = False
+        if current_image_info:
+        # 刷新btn_down_page按钮上文字
+            current_processed_image = current_image_info['processed_image']
+            current_original_image = current_image_info['original_image']
+            uncropped_image_path = current_image_info['uncropped_image_path']
+        else:
+            current_processed_image = None
+            current_original_image = None
+            uncropped_image_path = None
+
+        self.__set_others_image(uncropped_image_path)
         self.__refresh_btn_page_info()
+        self.__set_original_image(current_original_image)
+
+        self.set_processed_image(current_processed_image)
+
+        self.image_info_lock = True
 
     # 用户点击患者列表中的Item所出发的刷新界面函数
     def do_currentRowChanged(self, current, previous=""):
@@ -330,17 +391,63 @@ class Win_Index(QMainWindow):
         item = item_list['tau']
         item.setFlags(QtCore.Qt.NoItemFlags)
         self.__ui.table_image_info.setItem(7, 3, item)
+        # MV[eas] & IAS[eas]
+        self.__refresh_mv_ias(item_list)
+
+    # 更新mv以及ias属性
+    def __refresh_mv_ias(self, item_list):
+        mve = item_list['mve']
+        mva = item_list['mva']
+        mvs = item_list['mvs']
+        iase = item_list['iase']
+        iasa = item_list['iasa']
+        iass = item_list['iass']
+
+        # if not self.image_info_lock:
+        mve.setData(Qt.UserRole, "mve")
+        mva.setData(Qt.UserRole, "mva")
+        mvs.setData(Qt.UserRole, "mvs")
+        iase.setData(Qt.UserRole, "iase")
+        iasa.setData(Qt.UserRole, "iasa")
+        iass.setData(Qt.UserRole, "iass")
+
         # MV[eas]
-        self.__ui.table_image_info.setItem(9, 1, item_list['mve'])
-        self.__ui.table_image_info.setItem(9, 2, item_list['mva'])
-        self.__ui.table_image_info.setItem(9, 3, item_list['mvs'])
+        self.__ui.table_image_info.setItem(9, 1, mve)
+        self.__ui.table_image_info.setItem(9, 2, mva)
+        self.__ui.table_image_info.setItem(9, 3, mvs)
         # IAS[eas]
-        self.__ui.table_image_info.setItem(10, 1, item_list['iase'])
-        self.__ui.table_image_info.setItem(10, 2, item_list['iasa'])
-        self.__ui.table_image_info.setItem(10, 3, item_list['iass'])
+        self.__ui.table_image_info.setItem(10, 1, iase)
+        self.__ui.table_image_info.setItem(10, 2, iasa)
+        self.__ui.table_image_info.setItem(10, 3, iass)
+
+
+    # 设置项目文字
+    def __set_item_text(self, row, column, text):
+        item = self.__ui.table_image_info.item(row, column)
+        item.setText(text)
+        self.__ui.table_image_info.setItem(row, column, item)
+
+
+# 获取mv以及ias列表
+    def __get_mv_ias_list(self):
+        # MV[eas]
+        mve = self.__ui.table_image_info.item(9,1).text()
+        mva = self.__ui.table_image_info.item(9,2).text()
+        mvs = self.__ui.table_image_info.item(9,3).text()
+
+        # IAS[eas]
+        iase = self.__ui.table_image_info.item(10, 1).text()
+        iasa = self.__ui.table_image_info.item(10, 2).text()
+        iass = self.__ui.table_image_info.item(10, 3).text()
+
+        return {'mve': mve, 'mva': mva, 'mvs': mvs,
+                'iase': iase, 'iasa': iasa, 'iass': iass}
+
+
 
     # 刷新患者的基本信息在界面中部板上
     def __refresh_info_patient(self, item_list):
+        self.image_info_lock = False
         tool_log.debug("__refresh_info_patient")
         # 日期
         item = item_list['create_date']
@@ -386,6 +493,7 @@ class Win_Index(QMainWindow):
         item = item_list['bmi']
         item.setFlags(QtCore.Qt.NoItemFlags)
         self.__ui.table_image_info.setItem(6, 3, item)
+        self.image_info_lock = True
 
     # 刷新btn_page_info按钮上的文字
     def __refresh_btn_page_info(self):
