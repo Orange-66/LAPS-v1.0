@@ -1,0 +1,6 @@
+# Python:
+*.py[cod]
+
+#图片
+*.jpg
+*.png
