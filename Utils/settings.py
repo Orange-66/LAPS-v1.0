@@ -35,6 +35,7 @@ win_new_single = None
 win_import_image = None
 wid_preview = None
 win_image_item = None
+win_inspect = None
 
 # -------------画笔-------------
 pen_color_red = QColor(209, 26, 45)
@@ -76,10 +77,12 @@ patient_image_list = []
 # 当前患者影响的修改记录
 image_info_modify_record = []
 
+inspect_lock = False
 
 # 当前患者影像信息
 def current_image():
     return patient_image_list[image_index]
+
 
 
 # -------------用户自由设置的开关-------------

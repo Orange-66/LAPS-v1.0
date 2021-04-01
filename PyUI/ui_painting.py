@@ -14,12 +14,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Painting(object):
     def setupUi(self, Painting):
         Painting.setObjectName("Painting")
-        Painting.resize(525, 371)
         self.verticalLayout = QtWidgets.QVBoxLayout(Painting)
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.wid_canvas = Wid_Canvas(Painting)
+        Painting.resize(self.wid_canvas.height()+40, self.wid_canvas.width()+100)
         self.wid_canvas.setObjectName("wid_canvas")
         self.horizontalLayout_2.addWidget(self.wid_canvas)
         self.verticalLayout.addLayout(self.horizontalLayout_2)

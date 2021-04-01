@@ -8,8 +8,10 @@
 # -----------------------------
 import os
 import random
+import shutil
 import zipfile
 import openpyxl
+import send2trash
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from openpyxl.styles import Font
@@ -151,13 +153,14 @@ def rename_file(filename, newFilename):
 
 # 根据路径字符串一层一层创建文件夹
 def make_dir(dir_string):
-    for i in range(len(dir_string.split("/"))-1):
+    for i in range(len(dir_string.split("/")) - 1):
         dir_list = []
-        for j in range(i+1):
+        for j in range(i + 1):
             dir_list.append(dir_string.split('/')[j])
         dirs = '/'.join(dir_list)
         if not os.path.exists(dirs):
             os.mkdir(dirs)
+
 
 # 连接路径字符串
 def make_path(*args):
@@ -167,13 +170,26 @@ def make_path(*args):
 
     return '/'.join(result_list)
 
+
 # 根据路径获取文件名
 def get_filename(file_path):
     return file_path.split('/')[-1]
 
 
+# 随机赋值文件名
 def make_filename():
     # 多个字符中选取指定数量的字符组成新字符串：
     return ''.join(random.sample(
         ['z', 'y', 'x', 'w', 'v', 'u', 't', 's', 'r', 'q', 'p', 'o', 'n', 'm', 'l', 'k', 'j', 'i', 'h', 'g', 'f', 'e',
          'd', 'c', 'b', 'a', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], 8))
+
+
+# 删除指定文件夹
+def delete_file(file_dir, delete_mode):
+    tool_log.debug('delete_file: ', file_dir, " - ", delete_mode)
+    # ever
+    if delete_mode == 'e':
+        shutil.rmtree(file_dir)
+    # trash
+    elif delete_mode == 't':
+        send2trash.send2trash(file_dir)

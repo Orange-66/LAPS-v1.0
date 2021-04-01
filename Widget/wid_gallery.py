@@ -8,7 +8,7 @@
 # -----------------------------
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QTableWidget, QTableWidgetItem
 
-from PyUI.ui_image_item import Ui_Wid_Image_Item
+from PyUI.ui_image_item import Ui_Image_Item
 from Utils import tool_win
 
 

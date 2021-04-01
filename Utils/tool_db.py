@@ -203,8 +203,9 @@ def insert_info(patient_id, name, create_date, modify_date,
 
     res = query.exec()
     if not res:
-        tool_log.debug("tool_db - insert_info, 错误", "插入记录错误\n" + query.lastError().text())
-        QMessageBox.warning(settings.win_index, "错误", "数据库插入记录错误，出错消息\n" + query.lastError().text())
+        raise query.lastError()
+        # tool_log.debug("tool_db - insert_info, 错误", "插入记录错误\n" + query.lastError().text())
+        # QMessageBox.warning(settings.win_index, "错误", "数据库插入记录错误，出错消息\n" + query.lastError().text())
     else:
         tool_log.debug("tool_db - insert_info, 成功！")
         # 刷新列表

@@ -28,7 +28,7 @@ class Wid_Canvas(QWidget):
         super().__init__(parent)
         self.cursor_point = QPoint()
 
-        self.resize(600, 1200)
+        self.resize(392, 896)
 
         self.canvas = QPixmap(settings.canvas_width, settings.canvas_height)  # 设置画布大小
         self.canvas_clear()

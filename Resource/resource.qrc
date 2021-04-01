@@ -1,13 +1,15 @@
 <RCC>
   <qresource prefix="Root">
+    <file>Images/Button/inspect.png</file>
+    <file>Images/Button/predict.png</file>
+    <file>Images/Button/backwark.png</file>
+    <file>Images/Button/cancel.png</file>
+    <file>Images/Button/delete.png</file>
+    <file>Images/Button/import.png</file>
+    <file>Images/Button/new.png</file>
+    <file>Images/Button/painting.png</file>
+    <file>Images/Button/save.png</file>
     <file>Qss/flatwhite.qss</file>
-    <file>Images/Png/backwark.png</file>
-    <file>Images/Png/cancel.png</file>
-    <file>Images/Png/delete.png</file>
-    <file>Images/Png/import.png</file>
-    <file>Images/Png/new.png</file>
-    <file>Images/Png/painting.png</file>
-    <file>Images/Png/save.png</file>
     <file>Images/Icon/win_logo.ico</file>
   </qresource>
 </RCC>

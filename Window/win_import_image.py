@@ -63,16 +63,17 @@ class Win_Import_Image(QWidget):
                 tool_log.debug("on_btn_done_clicked")
 
             dialog_title = "LAPS"
-            dialog_info = "on_btn_done_clicked，添加数据成功！"
-        except Exception as e:
-            dialog_title = "LAPS"
-            dialog_info = "on_btn_done_clicked，添加数据出现错误：" + str(e)
-        finally:
-            self.close()
-            tool_log.debug("on_btn_done_clicked", dialog_info)
-            QMessageBox.about(settings.win_index, dialog_title, dialog_info)
+            dialog_info = "添加数据成功！"
+
             # 刷新主页面列表
             settings.win_index.refresh_window()
+            self.close()
+        except Exception as e:
+            dialog_title = "LAPS"
+            dialog_info = "添加数据出现错误：" + str(e)
+        finally:
+            tool_log.debug("on_btn_done_clicked", dialog_info)
+            QMessageBox.about(settings.win_index, dialog_title, dialog_info)
 
     @pyqtSlot()
     # 取消按钮-点击-槽函数
@@ -139,17 +140,19 @@ class Win_Import_Image(QWidget):
 
     # 新建相片item
     def __new_image_item(self, row_num, image_path):
-        tool_log.debug("__new_image_item, 第", row_num, "行的__new_btn_delete")
-        # image_name = tool_file.get_file_name(image_path)
-        image_name = image_path
-        return QTableWidgetItem(image_name, Qt.DisplayRole)
+        tool_log.debug("__new_image_item, 第", row_num, "行的__new_image_item", image_path)
+        image_name = tool_file.get_file_name(image_path)
+        image_item = QTableWidgetItem(image_name, Qt.DisplayRole)
+        image_item.setData(Qt.UserRole, image_path)
+
+        return image_item
 
     # 获得当前列表中的所有图像对象
     def __get_album(self):
         row_count = self.__ui.wtable_album.rowCount()
         result = []
         for i in range(row_count):
-            image_path = self.__ui.wtable_album.item(i, 2).text()
+            image_path = self.__ui.wtable_album.item(i, 2).data(Qt.UserRole)
             result.append(image_path)
-
+        print(result)
         return result

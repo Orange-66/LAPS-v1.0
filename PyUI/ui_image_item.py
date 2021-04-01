@@ -22,6 +22,7 @@ class Ui_Image_Item(object):
         self.label_image_item.setObjectName("label_image_item")
         self.verticalLayout.addWidget(self.label_image_item)
         self.btn_delete = QtWidgets.QPushButton(Image_Item)
+        self.btn_delete.setStyleSheet("color:#ffffff;background:#7c1823")
         self.btn_delete.setObjectName("btn_delete")
         self.verticalLayout.addWidget(self.btn_delete)
 

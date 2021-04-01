@@ -10,7 +10,7 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QPushButton, QTableWidgetItem, QMessageBox
 from PyUI.ui_new_single import Ui_New_Single
-from Utils import settings, tool_win, tool_time, tool_formula, tool_db, tool_image, tool_file, tool_log
+from Utils import settings, tool_win, tool_time, tool_formula, tool_db, tool_image, tool_file, tool_log, tool_validator
 
 
 class Win_New_Single(QWidget):
@@ -57,50 +57,56 @@ class Win_New_Single(QWidget):
         image_list = self.__get_album()
 
         tool_log.debug(create_date, patient_id, name, gender, age, stature, weight, bsa, bmi, bmi_degree, sbp, dbp)
-        try:
-            # 添加到数据库
-            tool_db.insert_info(patient_id, name, create_date, None,
-                                gender, age, stature, weight, sbp, dbp, bsa, bmi, bmi_degree, '×')
+        is_validate, reason = tool_validator.new_single(patient_id, name, gender, age,
+                                                        stature, weight, sbp, dbp)
+        if is_validate:
+            try:
+                # 添加到数据库
+                tool_db.insert_info(patient_id, name, create_date, None,
+                                    gender, age, stature, weight, sbp, dbp, bsa, bmi, bmi_degree, '×')
 
+                for image_path in image_list:
+                    # 保存uncropped图片的路径以及文件名
+                    new_uncropped_name = tool_file.make_filename()
+                    # 旧文件的文件名
+                    old_uncropped_name = tool_file.get_filename(image_path)
+                    # 重命名后的文件名
+                    uncropped_filename = tool_file.rename_file(old_uncropped_name, new_uncropped_name)
+                    # 保存uncropped文件的路径名
+                    uncropped_save_path = tool_file.make_path(settings.image_root_dir, patient_id + "-" + name, "uncropped")
+                    # uncropped—image保存路径并保存到相应路径上
+                    uncropped_image_path = tool_file.make_path(uncropped_save_path, uncropped_filename)
+                    print("123",image_path, uncropped_image_path)
+                    tool_image.save_image(image_path, uncropped_image_path)
 
-            for image_path in image_list:
-                # 保存uncropped图片的路径以及文件名
-                new_uncropped_name = tool_file.make_filename()
-                # 旧文件的文件名
-                old_uncropped_name = tool_file.get_filename(image_path)
-                # 重命名后的文件名
-                uncropped_filename = tool_file.rename_file(old_uncropped_name, new_uncropped_name)
-                # 保存uncropped文件的路径名
-                uncropped_save_path = tool_file.make_path(settings.image_root_dir, patient_id + "-" + name, "uncropped")
-                # uncropped—image保存路径并保存到相应路径上
-                uncropped_image_path = tool_file.make_path(uncropped_save_path, uncropped_filename)
-                print("123",image_path, uncropped_image_path)
-                tool_image.save_image(image_path, uncropped_image_path)
+                    # 根据uncropped-image的路径，获取到相应的图片，并根据该图片进行剪裁得到original-image图像
+                    original_image = tool_image.crop_image_by_path(uncropped_image_path, 42, 342, 42 + 896, 342 + 392)
+                    # 设计original-image的保存的文件名
+                    new_original_name = tool_file.make_filename()
+                    # 重命名后的文件名
+                    original_filename = tool_file.rename_file(old_uncropped_name, new_original_name)
+                    # 保存original-image文件的路径名
+                    original_save_path = tool_file.make_path(settings.image_root_dir, patient_id + "-" + name, "original", original_filename)
+                    tool_image.save_image_to_dir(original_image, original_save_path)
+                    # 将图片路径保存在数据库中
+                    tool_db.insert_image(patient_id, uncropped_image_path, original_save_path)
 
-                # 根据uncropped-image的路径，获取到相应的图片，并根据该图片进行剪裁得到original-image图像
-                original_image = tool_image.crop_image_by_path(uncropped_image_path, 42, 342, 42 + 896, 342 + 392)
-                # 设计original-image的保存的文件名
-                new_original_name = tool_file.make_filename()
-                # 重命名后的文件名
-                original_filename = tool_file.rename_file(old_uncropped_name, new_original_name)
-                # 保存original-image文件的路径名
-                original_save_path = tool_file.make_path(settings.image_root_dir, patient_id + "-" + name, "original", original_filename)
-                tool_image.save_image_to_dir(original_image, original_save_path)
-                # 将图片路径保存在数据库中
-                tool_db.insert_image(patient_id, uncropped_image_path, original_save_path)
-
+                dialog_title = "LAPS"
+                dialog_info = "添加数据成功！"
+                # 刷新主页面列表
+                settings.win_index.refresh_window()
+                self.close()
+            except Exception as e:
+                dialog_title = "LAPS"
+                dialog_info = "添加数据错误: 该编号已经被占用，请选择其他编号注册该患者！"
+            finally:
+                tool_log.debug("on_btn_done_clicked", dialog_info)
+                QMessageBox.about(self, dialog_title, dialog_info)
+        else:
             dialog_title = "LAPS"
-            dialog_info = "添加数据成功！"
-
-        except Exception as e:
-            dialog_title = "LAPS"
-            dialog_info = "添加数据出现错误:" + str(e)
-        finally:
+            dialog_info = "添加数据错误: \n" + reason
             tool_log.debug("on_btn_done_clicked", dialog_info)
             QMessageBox.about(self, dialog_title, dialog_info)
-            # 刷新主页面列表
-            settings.win_index.refresh_window()
-            self.close()
 
     @pyqtSlot()
     # 取消按钮-点击-槽函数
@@ -184,19 +190,21 @@ class Win_New_Single(QWidget):
 
     # 新建相片item
     def __new_image_item(self, row_num, image_path):
-        tool_log.debug("__new_image_item, 第", row_num, "行的__new_btn_delete")
-        # image_name = tool_file.get_file_name(image_path)
-        image_name = image_path
-        return QTableWidgetItem(image_name, Qt.DisplayRole)
+        tool_log.debug("__new_image_item, 第", row_num, "行的__new_image_item", image_path)
+        image_name = tool_file.get_file_name(image_path)
+        image_item = QTableWidgetItem(image_name, Qt.DisplayRole)
+        image_item.setData(Qt.UserRole, image_path)
+
+        return image_item
 
     # 获得当前列表中的所有图像对象
     def __get_album(self):
         row_count = self.__ui.wtable_album.rowCount()
         result = []
         for i in range(row_count):
-            image_path = self.__ui.wtable_album.item(i, 2).text()
+            image_path = self.__ui.wtable_album.item(i, 2).data(Qt.UserRole)
             result.append(image_path)
-
+        print(result)
         return result
 
 

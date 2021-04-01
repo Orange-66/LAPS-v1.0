@@ -45,6 +45,7 @@ class Win_Painting(QWidget):
     # 完成按钮-点击-槽函数
     def on_btn_done_clicked(self):
         tool_log.debug("on_btn_done_clicked")
+        settings.win_index.image_info_lock = False
         painting_image = self.__ui.wid_canvas.done()
         tool_image.save_image_to_dir(painting_image, settings.painting_image_temp_dir)
 
@@ -64,6 +65,7 @@ class Win_Painting(QWidget):
         settings.win_index.set_processed_image(processed_image_info['processed_image'])
         self.__ui.wid_canvas.clear()
         self.close()
+        settings.win_index.image_info_lock = True
         # return self.wid_canvas.done()
 
     @pyqtSlot()

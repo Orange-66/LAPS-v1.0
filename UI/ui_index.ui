@@ -693,7 +693,7 @@
      <x>0</x>
      <y>0</y>
      <width>1337</width>
-     <height>26</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -736,18 +736,21 @@
    </attribute>
    <addaction name="act_new_single"/>
    <addaction name="act_import"/>
+   <addaction name="act_inspect"/>
    <addaction name="separator"/>
    <addaction name="act_painting"/>
+   <addaction name="act_predict"/>
    <addaction name="separator"/>
    <addaction name="act_backward"/>
    <addaction name="act_cancel"/>
-   <addaction name="act_delete"/>
    <addaction name="act_save"/>
+   <addaction name="separator"/>
+   <addaction name="act_delete"/>
   </widget>
   <action name="act_new_single">
    <property name="icon">
-    <iconset>
-     <normaloff>:/Root/Images/Png/new.png</normaloff>:/Root/Images/Png/new.png</iconset>
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Button/new.png</normaloff>:/Root/Images/Button/new.png</iconset>
    </property>
    <property name="text">
     <string>新建</string>
@@ -755,8 +758,8 @@
   </action>
   <action name="act_import">
    <property name="icon">
-    <iconset>
-     <normaloff>:/Root/Images/Png/import.png</normaloff>:/Root/Images/Png/import.png</iconset>
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Button/import.png</normaloff>:/Root/Images/Button/import.png</iconset>
    </property>
    <property name="text">
     <string>导入</string>
@@ -764,8 +767,8 @@
   </action>
   <action name="act_painting">
    <property name="icon">
-    <iconset>
-     <normaloff>:/Root/Images/Png/painting.png</normaloff>:/Root/Images/Png/painting.png</iconset>
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Button/painting.png</normaloff>:/Root/Images/Button/painting.png</iconset>
    </property>
    <property name="text">
     <string>绘图</string>
@@ -773,8 +776,8 @@
   </action>
   <action name="act_backward">
    <property name="icon">
-    <iconset>
-     <normaloff>:/Root/Images/Png/backwark.png</normaloff>:/Root/Images/Png/backwark.png</iconset>
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Button/backwark.png</normaloff>:/Root/Images/Button/backwark.png</iconset>
    </property>
    <property name="text">
     <string>撤销</string>
@@ -782,8 +785,8 @@
   </action>
   <action name="act_cancel">
    <property name="icon">
-    <iconset>
-     <normaloff>:/Root/Images/Png/cancel.png</normaloff>:/Root/Images/Png/cancel.png</iconset>
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Button/cancel.png</normaloff>:/Root/Images/Button/cancel.png</iconset>
    </property>
    <property name="text">
     <string>取消</string>
@@ -791,8 +794,8 @@
   </action>
   <action name="act_delete">
    <property name="icon">
-    <iconset>
-     <normaloff>:/Root/Images/Png/delete.png</normaloff>:/Root/Images/Png/delete.png</iconset>
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Button/delete.png</normaloff>:/Root/Images/Button/delete.png</iconset>
    </property>
    <property name="text">
     <string>删除</string>
@@ -800,11 +803,35 @@
   </action>
   <action name="act_save">
    <property name="icon">
-    <iconset>
-     <normaloff>:/Root/Images/Png/save.png</normaloff>:/Root/Images/Png/save.png</iconset>
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Button/save.png</normaloff>:/Root/Images/Button/save.png</iconset>
    </property>
    <property name="text">
     <string>保存</string>
+   </property>
+  </action>
+  <action name="act_predict">
+   <property name="icon">
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Button/predict.png</normaloff>:/Root/Images/Button/predict.png</iconset>
+   </property>
+   <property name="text">
+    <string>预测</string>
+   </property>
+   <property name="toolTip">
+    <string>预测</string>
+   </property>
+  </action>
+  <action name="act_inspect">
+   <property name="icon">
+    <iconset resource="../Resource/resource.qrc">
+     <normaloff>:/Root/Images/Button/inspect.png</normaloff>:/Root/Images/Button/inspect.png</iconset>
+   </property>
+   <property name="text">
+    <string>快速查看</string>
+   </property>
+   <property name="toolTip">
+    <string>快速查看</string>
    </property>
   </action>
  </widget>

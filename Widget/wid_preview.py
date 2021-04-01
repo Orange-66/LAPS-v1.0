@@ -16,6 +16,7 @@ class Wid_Preview(QWidget):
     def __init__(self):
         super().__init__()
         self.label = QLabel(self)
+        self.setWindowTitle("预览")
 
 
 # ============窗体测试程序============
