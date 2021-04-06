@@ -32,7 +32,7 @@ class Wid_Gallery(QWidget):
         tableWidget.setColumnCount(3)
         conLayout.addWidget(tableWidget)
 
-        image_item = QTableWidgetItem(Ui_Wid_Image_Item())
+        image_item = QTableWidgetItem(Ui_Image_Item())
         tableWidget.setCellWidget(0, 0, image_item)
 
         self.setLayout(conLayout)

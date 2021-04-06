@@ -49,7 +49,7 @@ class Win_Painting(QWidget):
         painting_image = self.__ui.wid_canvas.done()
         tool_image.save_image_to_dir(painting_image, settings.painting_image_temp_dir)
 
-        processed_image_info = settings.patient_image_list[settings.image_index]
+        processed_image_info = settings.current_image_info()
 
         painting_image = tool_image.paste_image(settings.painting_image_temp_dir,
                                                 processed_image_info['uncropped_image_path'],

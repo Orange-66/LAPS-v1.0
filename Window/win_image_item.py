@@ -19,7 +19,7 @@ class Win_Image_Item(QWidget):
         self.__ui = Ui_Image_Item()  # 创建UI对象
         self.__ui.setupUi(self)  # 构造UI界面
         tool_image.set_image_by_label(
-            settings.patient_image_list[settings.image_index]['uncropped_image'],
+            settings.current_image_info()['uncropped_image'],
             self.__ui.label_image_item)
 
     @pyqtSlot()
