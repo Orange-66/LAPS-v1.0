@@ -367,7 +367,7 @@
           </item>
           <item row="3" column="2">
            <property name="text">
-            <string>年龄</string>
+            <string>年龄 (岁)</string>
            </property>
            <property name="textAlignment">
             <set>AlignCenter</set>
@@ -386,7 +386,7 @@
           </item>
           <item row="4" column="0">
            <property name="text">
-            <string>身高</string>
+            <string>身高 (cm)</string>
            </property>
            <property name="textAlignment">
             <set>AlignCenter</set>
@@ -405,7 +405,7 @@
           </item>
           <item row="4" column="2">
            <property name="text">
-            <string>体重</string>
+            <string>体重 (kg)</string>
            </property>
            <property name="textAlignment">
             <set>AlignCenter</set>
@@ -424,7 +424,7 @@
           </item>
           <item row="5" column="0">
            <property name="text">
-            <string>SBP</string>
+            <string>SBP (mmHg)</string>
            </property>
            <property name="textAlignment">
             <set>AlignCenter</set>
@@ -443,7 +443,7 @@
           </item>
           <item row="5" column="2">
            <property name="text">
-            <string>DBP</string>
+            <string>DBP (mmHg)</string>
            </property>
            <property name="textAlignment">
             <set>AlignCenter</set>
@@ -462,7 +462,7 @@
           </item>
           <item row="6" column="0">
            <property name="text">
-            <string>BSA</string>
+            <string>BSA (m²)</string>
            </property>
            <property name="textAlignment">
             <set>AlignCenter</set>
