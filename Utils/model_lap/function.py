@@ -297,7 +297,7 @@ def process_painting_image(painting_image):
     plt.scatter([i + 42 for i in peak_y], [i + 342 for i in peak_x], c='r')
 
     output_folder = 'Database/Temp/'
-    fitted_picture_path = 'figure.png'
+    fitted_picture_path = 'figure_painting.png'
 
     plt.savefig(output_folder + fitted_picture_path)
 
