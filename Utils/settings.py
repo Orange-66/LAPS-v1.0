@@ -79,14 +79,27 @@ image_info_modify_record = []
 
 inspect_lock = False
 
-# 当前患者影像信息
-def current_image():
-    return patient_image_list[image_index]
 
+# 当前患者影像信息
+def current_image_info():
+    if image_index is not None and len(patient_image_list):
+        return patient_image_list[image_index]
+    else:
+        return None
+
+
+# 更新当前患者影像信息
+def update_current_image_info(mv_ias_list):
+    if image_index is not None and len(patient_image_list):
+        image_info = patient_image_list[image_index]
+        for key, value in mv_ias_list.items():
+            image_info[key] = value
 
 
 # -------------用户自由设置的开关-------------
 # 保存图像的模式是复制粘贴、直接剪切，True : 复制粘贴; False : 直接剪切
 saveImageMode = True
 # -------------口口-------------
+label_right = '✓'
+label_wrong = '×'
 # -------------口口-------------
