@@ -26,6 +26,14 @@ class Win_Inspect(QWidget):
         tool_log.debug("on_btn_done_clicked")
         # 获取窗口所有信息
         image_list = self.__get_album()
+
+        if not len(image_list):
+            dialog_title = "LAPS"
+            dialog_info = "添加数据出现错误：\n请选择要快速查看的图片！"
+            tool_log.debug("on_btn_done_clicked", dialog_info)
+            QMessageBox.about(settings.win_index, dialog_title, dialog_info)
+            return
+
         settings.patient_image_list.clear()
         for image_path in image_list:
             uncropped_image_path = image_path
@@ -42,10 +50,13 @@ class Win_Inspect(QWidget):
                                                 'processed_image_path': '',
                                                 'processed_image': ''})
         settings.inspect_lock = True
-        settings.win_index.image_info_lock = True
         settings.image_index = 0
         # 刷新主页面列表
         settings.win_index.refresh_image_list()
+        settings.win_index.refresh_info_patient('')
+
+        settings.win_index.clear_selection()
+
         self.close()
         dialog_title = "LAPS"
         dialog_info = "添加数据成功！"
