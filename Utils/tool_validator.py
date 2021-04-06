@@ -7,6 +7,8 @@
 # @File : tool_validator.py
 # @Remark : 合法性检测工具类
 # -----------------------------
+import re
+
 from Utils import tool_log
 
 
@@ -50,3 +52,20 @@ def new_single(patient_id, name, gender, age,
         reason += '请填写舒张压DBP；\n'
 
     return result, reason
+
+
+# 判断当前患者影像列表的状态（是否都已经查看核实）
+def patient_image_state(image_list):
+    for image in image_list:
+        if type(image['processed_image_path']) != str or image['processed_image_path'] == '':
+            return False
+
+    return True
+
+
+# 判断当前修改的患者图像信息数值是否合理
+def table_image_info(text):
+    if re.fullmatch("\d+(\.\d+)?", text):
+        return True
+    else:
+        return False
