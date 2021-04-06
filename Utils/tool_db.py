@@ -318,7 +318,7 @@ def insert_image(patient_id, uncropped_image_path, original_image_path):
     else:
         tool_log.debug("insert_image，成功！")
         # 刷新显示列表
-        settings.win_index.refresh_window()
+        # settings.win_index.refresh_window()
 
 
 # 修改患者processed_image信息
@@ -555,3 +555,29 @@ def update_mv_ias(image_id, mv_ias_list):
         tool_log.debug("update_image，成功！")
         return True
 
+
+# 根据患者id更新其状态
+def update_image_state(patient_id, state):
+    tool_log.debug("tool_db - update_image_state, 接收到的数据：",
+                   patient_id, type(patient_id),
+                   state, type(state))
+
+    query = QSqlQuery(settings.db)
+
+    query.prepare(
+        '''UPDATE patient_info
+            SET state=:state
+            WHERE patient_id=:patient_id'''
+    )
+
+    query.bindValue(":patient_id", patient_id)
+    query.bindValue(":state", state)
+
+    res = query.exec()
+    if not res:
+        QMessageBox.warning(settings.win_index, "错误", "插入记录错误," + query.lastError().text())
+        tool_log.debug("update_image，错误 - 插入记录错误" + query.lastError().text())
+        return False
+    else:
+        tool_log.debug("update_image，成功！")
+        return True
