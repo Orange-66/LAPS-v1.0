@@ -23,6 +23,18 @@ class Win_New_Single(QWidget):
         create_date = tool_time.current_datetime()
         self.__ui.line_create_date.setText(create_date)
 
+        if settings.inspect_lock:
+            if QMessageBox.information(settings.win_index, "注意", "是否将当前快速查看的图片作为新建患者的图片？", QMessageBox.Yes | QMessageBox.No,
+                                   QMessageBox.Yes) == QMessageBox.Yes:
+                for image in settings.patient_image_list:
+                    print(image)
+                    # 获得当前表格的行数
+                    current_row = self.__ui.wtable_album.rowCount()
+                    # 插入
+                    self.__ui.wtable_album.insertRow(current_row)
+                    # 设置单元格中的各个item
+                    self.__createItemsARow(current_row, image['uncropped_image_path'], image['uncropped_image'])
+
     # ========================自动关联槽函数========================
     @pyqtSlot(int)
     # 身高输入框-值改变-槽函数
@@ -56,6 +68,13 @@ class Win_New_Single(QWidget):
 
         image_list = self.__get_album()
 
+        if not len(image_list):
+            dialog_title = "LAPS"
+            dialog_info = "添加数据出现错误：\n请选择要新建添加的图片！"
+            tool_log.debug("on_btn_done_clicked", dialog_info)
+            QMessageBox.about(settings.win_index, dialog_title, dialog_info)
+            return
+
         tool_log.debug(create_date, patient_id, name, gender, age, stature, weight, bsa, bmi, bmi_degree, sbp, dbp)
         is_validate, reason = tool_validator.new_single(patient_id, name, gender, age,
                                                         stature, weight, sbp, dbp)
@@ -63,7 +82,7 @@ class Win_New_Single(QWidget):
             try:
                 # 添加到数据库
                 tool_db.insert_info(patient_id, name, create_date, None,
-                                    gender, age, stature, weight, sbp, dbp, bsa, bmi, bmi_degree, '×')
+                                    gender, age, stature, weight, sbp, dbp, bsa, bmi, bmi_degree, settings.label_wrong)
 
                 for image_path in image_list:
                     # 保存uncropped图片的路径以及文件名
@@ -93,12 +112,18 @@ class Win_New_Single(QWidget):
 
                 dialog_title = "LAPS"
                 dialog_info = "添加数据成功！"
+                settings.inspect_lock = False
                 # 刷新主页面列表
                 settings.win_index.refresh_window()
+                item_list = {"create_date": create_date, "patient_id": patient_id, "name": name,
+                             "gender": gender, "age": age, "stature": stature,
+                             "weight": weight, "sbp": sbp, "dbp": dbp,
+                             "bsa": bsa, "bmi": bmi}
+                settings.win_index.refresh_info_patient(tool_db.dic_to_table_widget_item_list(item_list))
                 self.close()
             except Exception as e:
                 dialog_title = "LAPS"
-                dialog_info = "添加数据错误: 该编号已经被占用，请选择其他编号注册该患者！"
+                dialog_info = "添加数据错误: 该编号已经被占用，请选择其他编号注册该患者！" + repr(e)
             finally:
                 tool_log.debug("on_btn_done_clicked", dialog_info)
                 QMessageBox.about(self, dialog_title, dialog_info)
