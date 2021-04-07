@@ -193,3 +193,8 @@ def delete_file(file_dir, delete_mode):
     # trash
     elif delete_mode == 't':
         send2trash.send2trash(file_dir)
+
+
+# 移动文件
+def move_file(source, destination):
+    shutil.move(source, destination)
