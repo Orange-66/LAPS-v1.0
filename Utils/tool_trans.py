@@ -6,12 +6,13 @@
 # @File : tool_trans.py
 # @Remark : 转换格式类型的工具类
 # -----------------------------
+import shutil
+
 from PIL import Image, ImageQt
 from tqdm import *
 import os
 
 # -------------各个文件的所在地址-------------
-# UI文件所在路径
 ui_dir = '../UI/'
 # qrc文件所在路径
 qrc_dir = '../Resource/'
@@ -114,10 +115,10 @@ def png_to_icon():
 
 
 # 将此PyQT项目转换成exe文件
-def project_to_exe(project_name="LAPS"):
-    # 打包项目
+def project_to_exe(project_name='LAPS'):
+    # 打包项目 无控制台
     cmd = 'pyinstaller -F -w ' \
-          '-i ../../Resource/Images/Icon/win_logo.ico ' \
+          '-i ../Resource/Images/Icon/win_logo.ico ' \
           '../main.py ' \
           '--workpath ../Application/ ' \
           '--specpath ../Application/ ' \
@@ -125,10 +126,39 @@ def project_to_exe(project_name="LAPS"):
           '--name {project_name} ' \
           '--clean '.format(project_name=project_name)
 
+    # 打包项目 有控制台
+    # cmd = 'pyinstaller -F ' \
+    #       '-i ../Resource/Images/Icon/win_logo.ico ' \
+    #       '../main.py ' \
+    #       '--workpath ../Application/ ' \
+    #       '--specpath ../Application/ ' \
+    #       '--distpath ../Application/ ' \
+    #       '--name {project_name} ' \
+    #       '--clean '.format(project_name=project_name)
+
     os.system(cmd)
 
+
+    fp = open('../Application/LAPS.spec')
+    lines = []
+    for line in fp.readlines():
+        lines.append(line)
+    fp.close()
+
+    lines.insert(1, 'import sys ; sys.setrecursionlimit(sys.getrecursionlimit() * 5)\n')  # 在第二行插入
+
+    s = ''.join(lines)
+
+    fp = open('../Application/LAPS.spec', 'w')
+    fp.write(s)
+    fp.close()
+
+    # 打包项目
+    cmd = 'pyinstaller ../Application/LAPS.spec'
+
+    os.system(cmd)
     # 删除spec文件
-    root_dir = "./EXE/"
+    root_dir = "../Application/"
     spec_filename = "LAPS.spec"
     if os.path.exists(os.path.join(root_dir, spec_filename)):
         os.remove(os.path.join(root_dir, spec_filename))
@@ -136,16 +166,10 @@ def project_to_exe(project_name="LAPS"):
         print(f'没有找到 [{os.path.join(root_dir, spec_filename)}] 文件或文件夹')
 
     # 删除workspace文件夹
-    root_dir = "./EXE/LAPS/"
-    if os.path.exists(root_dir):
-        files = os.listdir(root_dir)
-        for filename in files:
-            if os.path.exists(os.path.join(root_dir, filename)):
-                os.remove(os.path.join(root_dir, filename))
-
-        os.rmdir(root_dir)
-    else:
-        print(f'没有找到 [{root_dir}] 文件或文件夹')
+    shutil.rmtree('../Application/LAPS/')
+    shutil.rmtree('../Application/build')
+    shutil.move('../Application/dist/LAPS.exe', '../Application/')
+    shutil.rmtree('../Application/dist')
 
 
 # PIL格式转QPixmap格式
@@ -187,3 +211,4 @@ if __name__ == "__main__":
 
     # 将此PyQT项目转换成exe文件
     project_to_exe()
+
