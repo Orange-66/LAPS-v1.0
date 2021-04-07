@@ -14,7 +14,7 @@ import os
 # UI文件所在路径
 ui_dir = '../UI/'
 # qrc文件所在路径
-qrc_dir = '../Resource/Qrc/'
+qrc_dir = '../Resource/'
 # png文件所在路径
 png_dir = '../Resource/Images/Button/'
 
@@ -24,9 +24,10 @@ ui_py_dir = '../PyUI/'
 # ui to py文件保存路径-测试
 ui_py_x_dir = '../PyUI-test/'
 # qrc to py文件保存路径
-qrc_py_dir = '../Resource/Qrc-py/'
+qrc_py_dir = '../Resource/'
 # png to icon文件保存路径
 png_icon_dir = '../Resource/Images/Icon/'
+
 
 # 列出目录下的所有xxx文件
 def get_xxx_file_list(file_dir, file_type):
@@ -118,9 +119,9 @@ def project_to_exe(project_name="LAPS"):
     cmd = 'pyinstaller -F -w ' \
           '-i ../../Resource/Images/Icon/win_logo.ico ' \
           '../main.py ' \
-          '--workpath ./EXE/ ' \
-          '--specpath ./EXE/ ' \
-          '--distpath ./EXE/ ' \
+          '--workpath ../Application/ ' \
+          '--specpath ../Application/ ' \
+          '--distpath ../Application/ ' \
           '--name {project_name} ' \
           '--clean '.format(project_name=project_name)
 
@@ -185,4 +186,4 @@ if __name__ == "__main__":
     # png_to_icon()
 
     # 将此PyQT项目转换成exe文件
-    # project_to_exe()
+    project_to_exe()
